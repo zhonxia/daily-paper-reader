@@ -213,6 +213,11 @@ window.DPRWorkflowRunner = (function () {
 
   const getLocalApiUrl = (path) => {
     const base = String(window.DPR_LOCAL_API_BASE || '').trim().replace(/\/$/, '');
+    if (!base && isLocalDebugPage()) {
+      const protocol = String((window.location && window.location.protocol) || 'http:');
+      const hostname = String((window.location && window.location.hostname) || '127.0.0.1');
+      return `${protocol}//${hostname}:8000${path}`;
+    }
     if (!base) return path;
     return `${base}${path}`;
   };
