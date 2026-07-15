@@ -1,0 +1,39 @@
+{
+  "label": "2026-06-16 ~ 2026-07-15",
+  "date": "2026-06-16 ~ 2026-07-15",
+  "generated_at": "2026-07-15T04:47:40",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "20260616-20260715/2607.10491v1-evidentialrag-quantifying-and-mitigating-information-conflict-in-multi-source-retrieval-augmented-generation-via-evidential-deep-learning",
+      "section": "quick",
+      "title_en": "EvidentialRAG: Quantifying and Mitigating Information Conflict in Multi-Source Retrieval-Augmented Generation via Evidential Deep Learning",
+      "authors": "S M Asif Hossain, Ruksat Khan Shayoni, M. F. Mridha",
+      "date": "2026-07-11",
+      "pdf": "https://arxiv.org/pdf/2607.10491v1",
+      "score": "9.0",
+      "evidence": "使用证据深度学习和Dempster-Shafer融合处理不确定性",
+      "tldr": "检索增强生成中多源证据常存在时间漂移、错误或歧义引发的冲突，现有管道却将其视为一致上下文。ERAG 框架通过轻量评估器将检索块转化为 Dirichlet 证据，采用冲突保留的 Dempster-Shafer 融合规则将未解决分歧映射为认知不确定性，并依据融合不确定性分数路由至直接回答、冲突感知回答或弃权。在 CRAG、ConflictQA 等基准上，ERAG 在标准问答中保持竞争力，在冲突子集上将幻觉率从45.3%降至34.8%，冲突解决率从35.2%提升至51.2%，期望校准误差改善至0.122。工作表明证据建模是实现基座模型检索系统可信信息处理的实用机制。",
+      "tags": "query:brb-er",
+      "abstract_en": "Retrieval-augmented generation grounds large language models in external evidence, but most pipelines still treat retrieved passages as deterministic and mutually consistent context. In open information environments, retrieved sources may disagree because of temporal drift, source error, ambiguity, or genuine uncertainty. This paper introduces ERAG, an uncertainty-aware RAG framework that converts retrieved chunks into probabilistic evidence before generation. A lightweight evaluator extracts candidate claims and maps chunk-level support to Dirichlet evidence. A conflict-preserving Dempster-Shafer fusion rule then transfers unresolved disagreement into epistemic uncertainty rather than normalizing it away. The generator is routed to direct answering, conflict-aware answering, or abstention according to the fused uncertainty score. Experiments on CRAG, ConflictQA, and MuSiQue show that ERAG remains competitive with the strongest matched baseline on standard question answering while improving behavior under conflict. On the CRAG ambiguous subset, hallucination decreases from 45.3% for Corrective RAG to a human-calibrated estimate of 34.8%, conflict resolution increases from 35.2% to 51.2%, and expected calibration error improves to 0.122. These results suggest that evidential modeling is a practical mechanism for trustworthy information processing in foundation-model-based retrieval systems.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "20260616-20260715/2606.29776v1-towards-generalizable-and-evidential-nuclear-magnetic-resonance-based-molecular-structure-elucidation-via-large-language-model-agent",
+      "section": "quick",
+      "title_en": "Towards Generalizable and Evidential Nuclear Magnetic Resonance-Based Molecular Structure Elucidation via Large Language Model Agent",
+      "authors": "Zheng Fang, Chen Yang, Yusen Tan, Yunpeng Zhao, Fanjie Xu, Hongxin Xiang, Hanyu Sun, Hanyu Gao, Xiaojian Wang, Wenjie Du, Yuqiang Li, Jun Xia",
+      "date": "2026-06-29",
+      "pdf": "https://arxiv.org/pdf/2606.29776v1",
+      "score": "8.0",
+      "evidence": "将证据推理应用于大语言模型代理进行分子结构解析",
+      "tldr": "针对NMR谱图解析中数据库检索无法识别新骨架、从头模型缺乏可解释性的问题，提出NMRAgent，一种基于大语言模型的证据推理代理。它集成专业谱分析工具与化学知识图，模拟专家演绎推理，通过规划解析流程、候选结构生成、峰-原子一致性验证及公式感知片段优化，实现透明且准确的分子结构解析。在含新骨架的测试集上，top-1准确率较SOTA提升46.5%，Tanimoto相似度提升0.502，并成功解析两种未知天然产物、纠正文献错误，为分析化学可解释AI建立新范式。",
+      "tags": "query:brb-er",
+      "abstract_en": "Nuclear Magnetic Resonance (NMR) spectroscopy is the gold standard for molecular structure elucidation, yet interpreting complex spectra for unknown molecules remains a bottleneck reliant on human expertise. While artificial intelligence has advanced this field, current methods face a critical trade-off: database retrieval cannot identify novel scaffolds, while de novo molecular structure elucidation models operate as black boxes, lacking the atom-level interpretability required for rigorous scientific validation. Here, we present NMRAgent, an evidential reasoning agent powered by large language models (LLMs) that bridges this gap by integrating specialized spectral analysis tools with chemical knowledge graphs. Unlike previous approaches, NMRAgent mimics the deductive reasoning of human experts: it takes experimental NMR spectra and molecular formula as input, plans the elucidation process, proposes candidate structures, verifies peak-atom consistency, and refines misaligned substructure through formula-aware fragment optimization. Enabled by its evidential reasoning, NMRAgent outperforms state-of-the-art methods, improving top-1 accuracy by 46.5% and Tanimoto similarity by 0.502 on a scaffold-split benchmark with novel scaffolds in the test set. Besides, we demonstrate the agent's practical utility by elucidating the structures of two previously unknown natural products isolated from Hydrangea davidii and Vitex trifolia, and by correcting structural misassignments in established literature. By combining high-accuracy prediction with transparent and evidence-based reasoning, NMRAgent establishes a new paradigm for interpretable AI in analytical chemistry.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
