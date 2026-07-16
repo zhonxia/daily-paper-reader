@@ -1,0 +1,60 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-16T20:30:26.392956+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.11433v1",
+      "source": "arxiv",
+      "title": "Omni-Decision: A Progressive Evidence-State Agent System for Omni-Modal QA",
+      "abstract": "Omni-modal evidence-seeking QA requires agents to answer questions whose evidence is sparsely distributed across videos, audio, images, web pages, and computation results. Existing agentic multimodal systems often leave evidence in scratchpads, tool trajectories, or free-form histories, making it difficult to track what has been grounded, what remains missing, and when the evidence is sufficient to answer. We propose Omni-Decision, a training-free evidence-state system that turns omni-modal QA into a query-scoped evidence-closure process. For each query, Omni-Decision maintains a structured evidence state containing confirmed evidence, unresolved conflicts, fact and computation dependencies, and open evidence needs. A shared state view conditions planning, evidence acquisition, validation, repair, and finalization. Heterogeneous observations from media, web, computation, and verification modules are normalized, judged, and committed through deterministic state updates. This design enables targeted evidence acquisition, preserves sparse cross-modal cues, and provides inspectable control over repair and stopping. Omni-Decision achieves 45.6% accuracy on OmniGAIA and 58.3% on WorldSense, improving over the baselines by +27.3 and +30.2 percentage points, respectively. No-state ablations and trajectory audits further support the role of explicit evidence-state control in multi-step omni-modal evidence seeking.",
+      "authors": [
+        "Ming Ma",
+        "Yi Zhu",
+        "Yiran Zhong",
+        "Feida Zhu",
+        "Weigao Sun",
+        "Junhan Shi",
+        "Lingrui Mei",
+        "Tianming Yang",
+        "Steven Hoi"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-13T11:39:27+00:00",
+      "link": "https://arxiv.org/pdf/2607.11433v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "evidence-state system for decision making",
+      "llm_evidence_cn": "用于决策的证据状态系统",
+      "llm_evidence": "用于决策的证据状态系统",
+      "canonical_evidence": "用于决策的证据状态系统",
+      "llm_tldr_en": "Omni-Decision proposes a structured evidence-state system for omni-modal QA that tracks confirmed evidence, unresolved conflicts, and open needs, enabling query-scoped evidence closure.",
+      "llm_tldr_cn": "该论文针对多模态问答中证据分布稀疏难以跟踪的问题，提出Omni-Decision系统，通过维护结构化证据状态（包括已确认证据、未解决冲突和开放需求）将问答转化为查询范围的证据闭合过程；实验表明该方法能有效管理证据状态，提升回答准确性与可追踪性，为基于证据的推理决策提供了通用框架。",
+      "llm_tldr": "该论文针对多模态问答中证据分布稀疏难以跟踪的问题，提出Omni-Decision系统，通过维护结构化证据状态（包括已确认证据、未解决冲突和开放需求）将问答转化为查询范围的证据闭合过程；实验表明该方法能有效管理证据状态，提升回答准确性与可追踪性，为基于证据的推理决策提供了通用框架。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "evidential reasoning approach decision making",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

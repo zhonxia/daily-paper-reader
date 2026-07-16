@@ -1,0 +1,576 @@
+Title: Omni-Decision: A Progressive Evidence-State Agent System for Omni-Modal QA
+
+URL Source: https://arxiv.org/pdf/2607.11433v1
+
+Published Time: Tue, 14 Jul 2026 02:20:25 GMT
+
+Number of Pages: 25
+
+Markdown Content:
+# Omni-Decision: A Progressive Evidence-State Agent System for Omni-Modal QA 
+
+Ming Ma 1,2 Yi Zhu 3,∗ Yiran Zhong 3,∗ Feida Zhu 3 Weigao Sun 3
+
+Junhan Shi 4 Lingrui Mei 5 Tianming Yang 1 Steven Hoi 31 Institute of Neuroscience, Chinese Academy of Sciences  
+
+> 2
+
+University of Chinese Academy of Sciences  
+
+> 3
+
+Tongyi Lab, Alibaba Group  
+
+> 4
+
+Tsinghua University  
+
+> 5
+
+Institute of Computing Technology, Chinese Academy of Sciences 
+
+mam2022@ion.ac.cn , zhu.yee@outlook.com , zhongyiran@gmail.com  
+
+> ∗
+
+Corresponding authors. 
+
+Abstract 
+
+Omni-modal evidence-seeking QA requires agents to answer questions whose evidence is sparsely distributed across videos, audio, images, web pages, and computation results. Existing agentic multimodal systems often leave evidence in scratchpads, tool trajectories, or free-form histories, making it difficult to track what has been grounded, what remains missing, and when the evidence is sufficient to an-swer. We propose Omni-Decision, a training-free evidence-state system that turns omni-modal QA into a query-scoped evidence-closure process. For each query, Omni-Decision maintains a structured evidence state containing confirmed evi-dence, unresolved conflicts, fact and computation dependencies, and open evidence needs. A shared state view conditions planning, evidence acquisition, validation, repair, and finalization. Heterogeneous observations from media, web, compu-tation, and verification modules are normalized, judged, and committed through deterministic state updates. This design enables targeted evidence acquisition, preserves sparse cross-modal cues, and provides inspectable control over repair and stopping. Omni-Decision achieves 45.6% accuracy on OmniGAIA and 58.3% on WorldSense, improving over the baselines by +27.3 and +30.2 percentage points, respectively. No-state ablations and trajectory audits further support the role of explicit evidence-state control in multi-step omni-modal evidence seeking. 
+
+1 Introduction 
+
+Omni-modal question answering is moving beyond closed-form perceptual understanding toward evidence-seeking QA [Fu et al., 2024, Wu et al., 2024, Hong et al., 2025, Li et al., 2026]. This setting is closer to practical agentic problem solving: a user asks a question grounded in heterogeneous media, and the answer may require the system to identify relevant visual or acoustic evidence, complete missing attributes from external sources, check consistency across modalities, and sometimes compute a derived value before responding [Nakano et al., 2022, Schick et al., 2023, Yu et al., 2026]. This setting is difficult for three reasons. First, evidence is sparse and distributed [Zhong et al., 2022, Ranasinghe et al., 2025, Ren et al., 2025, Tang et al., 2025, Zhang et al., 2025, Yu et al., 2026]. A relevant clue may appear in a short video segment, a subtitle span, an audio event, an image region, a web page, or a computation result. Second, the evidence chain is partially observable. The system usually does not know in advance which entity attribute, relation, or intermediate value 
+
+> Preprint. arXiv:2607.11433v1 [cs.AI] 13 Jul 2026
+
+will be needed until earlier evidence has been grounded. Third, answer readiness is itself a control problem. A system must decide not only what to acquire next, but also whether a candidate answer is supported, whether a conflict should trigger repair, and whether the remaining gap is unfillable under the available actions [Shinn et al., 2023, Yao et al., 2023, Han et al., 2025, Wang et al., 2026a, Zhang et al., 2026]. These properties make omni-modal evidence-seeking QA a state-maintenance problem rather than merely a context-scaling problem [Wu et al., 2024, Chen et al., 2025, He et al., 2025, Li et al., 2025, Yang et al., 2025, Wang et al., 2026b]. A longer context window or a larger number of frames can expose more raw observations, but it does not by itself specify which entity has been grounded, which attribute slot remains open, which relation has been verified, or whether the evidence chain is ready for finalization. This view also aligns with how humans often solve multi-step evidence tasks: we do not simply replay every observation, but maintain a task-relevant working state of what is known, what is missing, and what should be checked next [Miller and Cohen, 2001, Baddeley, 2020]. We use this cognitive-control analogy only as motivation, not as a biological claim. Omni-Decision follows the same engineering principle by making the query-scoped evidence state the object read by evidence acquisition, verification, repair, finalization, and insufficient stopping. Existing benchmarks instantiate this broader setting in different forms [Fu et al., 2024, Hong et al., 2025, Li et al., 2026, Yu et al., 2026]. OmniGAIA stresses open-world, tool-augmented evidence collection across media, web facts, browsing, and computation. WorldSense stresses self-contained audio-video evidence integration under a multiple-choice read-out format. Their output formats differ, but both require the system to organize evidence around a query rather than perform a single forward read-out. We model omni-modal evidence-seeking QA as a state-conditioned evidence collection problem centered on a query-scoped evidence state . We propose Omni-Decision , a training-free evidence-state system for omni-modal QA. As shown in Figure 1, for each query, Omni-Decision maintains an explicit, structured, and updateable evidence state that tracks confirmed evidence, unresolved conflicts, fact or computation dependencies, and open evidence needs. The system derives the most important open needs from that state, chooses perception, retrieval, browsing, computation, or verification actions, and commits normalized observations and critic verdicts back to the same state through deterministic field-update rules. This frames heterogeneous tools as observation sources under a shared control interface, where observations become consumable by later routing, verification, repair, and stopping decisions. Unlike agent frameworks defined mainly by role decomposition, tool lists, or free-form trajectories [Wu et al., 2023, Yao et al., 2023, Kumar et al., 2024, Liu et al., 2025a, LangChain, 2026a], Omni-Decision makes the shared evidence state the central control object, so planning, verification, repair, finalization, and stopping are conditioned on the same query-scoped state view, making trajectories inspectable, replayable, and ablatable. This paper makes three contributions. 1. We formulate omni-modal evidence-seeking QA as query-scoped evidence closure, where the agent must maintain grounded entities, open attributes, cross-entity relations, external fact dependencies, computations, and conflicts rather than rely on implicit dialogue history. 2. We propose Omni-Decision, a training-free evidence-state system. Planning, verification, repair, finalization, and insufficient stopping read the same state view, while only the reducer commits normalized events to the state. 3. We evaluate the system on OmniGAIA and WorldSense, including planner / perception swaps, no-state ablations, and progress audits that test whether explicit evidence-state control improves long-horizon omni-modal QA. 
+
+2 Related work and positioning 
+
+Omni-modal agent systems. Recent work on omni-modal understanding and multimodal agents has shown that active evidence acquisition, tool use, temporal localization, and multi-step verification are necessary for long-horizon multimodal QA [Kumar et al., 2024, Liu et al., 2025a, Wang et al., 2025, 2026b]. Systems such as LongVideoAgent [Liu et al., 2025a], MMCTAgent [Kumar et al., 2Video Context                                                               
+
+> 0-7:24
+> ①Initial Evidence State
+> A. Unresolved questions
+> •which watch brand is the
+> 'king of minimalist
+> watches' in this video?
+> •obtain Instagram's public
+> launch date
+> •obtain the brand's first
+> Instagram post date
+> •compute month difference
+> between the two anchor
+> dates
+> B. Evidence needs
+> video anchor
+> Web fact: Instagram launch
+> Web fact: first post date
+> Code computation
+> ③Web Verification
+> Instagram launch :
+> Oct 2010
+> Daniel Wellington first post :
+> Jul 2012
+> Still missing
+> Month difference
+> External search resolves
+> missing factual slots.
+> Still missing
+> Instagram launch date
+> Brand first post date
+> Month difference
+> ②Video Grounding
+> Grounded subtitle :
+> 00 :05 :49 –00 :06 :00
+> Extracted evidence:
+> Brand =Daniel Wellington
+> ④Computation
+> Input dates :
+> Oct 2010 →Jul 2012
+> Operation :
+> Month difference
+> Result :
+> 21 months
+> ⑤Answer
+> Final answer:
+
+21 months                                         
+
+> All evidence
+> requirements are
+> satisfied.
+> User Query
+> In the video, awatch brand is highlighted as the
+> 'king of minimalist watches' for initiating aminimalist
+> trend on Instagram .What is the difference, in
+> months, between Instagram's public launch and the
+> date this brand posted its first picture on Instagram?
+
+··· ··· Figure 1: Omni-Decision on one OmniGAIA task. The system first turns the question into open evidence needs, grounds the watch brand in the video, follows the remaining evidence gaps to web search, uses web verification to complete the missing date facts, computes the month difference, and returns an evidence-supported answer. 2024], OmniAgent [Tao et al., 2026], VideoMind [Liu et al., 2025b], LongVT [Yang et al., 2025], and VITED [Lu et al., 2025] advance this direction through multi-role orchestration, planner-critic collaboration, general multimodal tool interfaces, role switching, native tool-call training, and evidence-chain modeling. Benchmarks such as OmniGAIA [Li et al., 2026] and WorldSense [Hong et al., 2025] expose complementary versions of the same evidence-organization problem. These works provide important foundations, but most methods still mainly define agent progress through free-form trajectories, tool histories, or role-level coordination rather than through a shared, query-scoped evidence state. Omni-Decision is complementary to these directions: it does not introduce a new perception model, tool set, or multi-role topology, but specifies the state object that preserves evidence across inference-time decisions. 
+
+Evidence-state positioning. This distinction is important for OmniGAIA-style tasks. Adding web search or page browsing increases the observation space [Nakano et al., 2022, Schick et al., 2023], but it does not by itself decide which media-grounded entity is being completed, which attribute slot a retrieved fact should fill, whether the fact is compatible with the original media evidence, or whether a relation across multiple entities has been matched. Without an explicit state view, these decisions must be reconstructed from long tool trajectories [Wu et al., 2023, Yao et al., 2023, LangChain, 2026a]. Omni-Decision instead treats tools as observation sources and uses a query-scoped evidence state to make their outputs actionable for routing, verification, repair, and stopping. 
+
+Verification and state. Verification, explicit state, belief representations, and structured process traces are also related [Shinn et al., 2023, Zhu et al., 2025, Ma et al., 2026]. Prior work shows that reliable reasoning benefits from checking structural consistency, task consistency, modality-grounded evidence, and answer readiness [Manakul et al., 2023, Han et al., 2025, Wang et al., 2026a, Zhang et al., 2026]. Omni-Decision differs in where this information lives: critic verdicts are not only post-hoc checks, and the state is not a general memory, video summary, or tool log [Chu et al., 2025, Ren et al., 2025, Hu et al., 2026a,b]. The state is a query-scoped evidence-closure interface that records confirmed evidence, unresolved conflicts, fact or computation completion, and open needs so that later decisions can consume the same state view. 
+
+3 Method: Omni-Decision 
+
+Omni-Decision is a training-free evidence-state system for omni-modal evidence seeking. Given a user query q and its associated multimodal assets X, the system does not answer in a single forward pass [Yao et al., 2023, Liu et al., 2025a, Wang et al., 2025]. It repeatedly acquires observations, 3Immutable Context (𝑅 !)      
+
+> User Query 𝑞 Video /Audio Assets
+
+Dynamic Evidence State (𝑆 ")                                                                   
+
+> 𝐸 !:Confirmed Evidence Atoms
+> C!:Unresolved Conflicts
+> 𝐹 !:External Fact -Completion
+> 𝑈 !:Evidence Gaps /Uncertainty
+> Planner
+> 𝑎 !=𝑑𝑒𝑐𝑖𝑑𝑒 (𝑅 ",𝑆 !;𝒜 (𝑅 "))
+> Tool (Execute)
+> Video /Audio
+> Grounding
+> Web
+> Searcher
+> Code
+> Executor
+> Visual
+> Verification
+> Reducer
+> Observation
+> 𝑜 !Critic
+> Final Answer
+> 𝑟𝑒𝑎𝑑𝑦 𝑆 !=𝑈 !=∅∧
+> 𝑐𝑜𝑚𝑝𝑙𝑒𝑡𝑒 (𝐹 !)∧(𝐶 !=∅)
+> Insufficient
+> 𝑠𝑡𝑜𝑝 𝑆 !=⌐𝑟𝑒𝑎𝑑𝑦 𝑆 !∧
+> 𝑛𝑜 𝑎𝑑𝑣𝑎𝑛𝑐𝑖𝑛𝑔 𝑎𝑐𝑡𝑖𝑜𝑛
+> Action 𝑎 !
+> Δ𝑆 !=𝑟𝑒𝑑𝑢𝑐𝑒 (𝑆 !,𝑜 !)
+> 𝑆 !"#=𝑆 !⨁Δ𝑆 !
+> Initialize 𝑆 $
+> ①Evidence Explore
+> ②Evidence Validate
+> ③Evidence Update
+> ④Finish
+> All read components like Planner, Critic access the
+> same evidence state.
+> Reducer is the ONLY writer to S!.
+
+State Representation Figure 2: Overview of the Omni-Decision inference loop. Given the immutable context R0 con-structed from the query q and assets, the system initializes an evidence state S0. At step t, the planner reads a bounded digest of (R0, S t) and selects either a tool action or finish. A tool returns an observation ot; the critic checks whether the observation supports, conflicts with, or leaves open the current evidence needs; and the reducer commits the resulting event as St+1 . The loop returns an answer only when the state is ready; otherwise it continues evidence exploration or stops as insufficient when no meaningful action remains. checks whether they support or conflict with the current evidence chain, commits accepted events to a query-scoped evidence state, and terminates with either a supported answer or an insufficient 
+
+status. Figure 1 illustrates one concrete evidence-seeking trajectory, and Figure 2 summarizes the inference loop. We next define the state object, the state-conditioned transition rule, and the system instantiation. 
+
+3.1 Query-scoped evidence state 
+
+For each query, Omni-Decision separates fixed run information from mutable evidence. The read-only query context R0 packages information known before inference and not written by the agent: the original query, pointers to the multimodal assets, answer format, modality and tool availability, and any budget or judging constraints. Given R0, the system initializes an evidence state S0 =
+
+{E0, C 0, F 0, U 0}; at step t, the current state is St = {Et, C t, F t, U t}.Unlike R0, St stores the mutable evidence-closure status of the current query. Et contains confirmed evidence atoms with sources and temporal support; Ct records unresolved conflicts; Ft tracks external facts, entity-attribute completion, and computation results; and Ut records open evidence needs and uncertainty. S0 is initialized from the query before any tool call: E0 contains directly given query constraints, C0 is empty unless the query itself is conflicting, F0 contains fact or computation slots implied by the query, and U0 lists the initial evidence needs. The state is query-scoped rather than a general video memory [Chu et al., 2025, Ren et al., 2025, Hu et al., 2026a,b]. In long-video and open-world tasks, Et may include entity bindings, time spans, attributes, and relations only when they are relevant to the current query. For example, in Figure 1, S0
+
+initially contains needs to ground the watch brand, obtain Instagram’s launch date, obtain the brand’s first Instagram post date, and compute the month difference. As observations are committed, these needs move from Ut into confirmed media evidence in Et or completed fact / computation slots in Ft.Omni-Decision therefore does not build a complete dynamic scene graph; it maintains the minimal evidence closure needed for the current answer. 43.2 State-conditioned control and reduction 
+
+Let A(R0) denote the executable action set determined by the immutable context, including the available assets, tools, answer format, and budget constraints. At each step, Omni-Decision constructs a state view dt = state_digest (R0, S t) by deterministically serializing the immutable context and the typed evidence state into a bounded prompt context. This digest is consumed by the planner, critic, and finalizer, and exposes answer-relevant evidence, open needs, unresolved conflicts, pending fact or computation dependencies, and the current readiness diagnosis. Detailed runtime fields and prompt templates are provided in Appendix I. The planner selects an action at = decide( dt; A(R0)) .A tool action returns an observation ot; when validation is required, the critic returns a verdict vt.The reducer converts the accepted observation or verdict into a typed state event, derives a state delta 
+
+∆St, and commits the next state as St+1 = St ⊕ ∆St. Here, ⊕ denotes a deterministic field-wise update: accepted evidence atoms are appended to Et, satisfied or refined needs update Ut, resolved external facts and computations update Ft, and contradictions are recorded in Ct while retaining the earlier evidence. Answer readiness is derived from the state rather than stored as an independent planner decision: 
+
+ready( St) = ( Ut = ∅) ∧ complete( Ft) ∧ (Ct = ∅).
+
+Here, complete( Ft) holds when every fact-like dependency required by the query has been resolved, including external facts, entity-attribute completions, and derived computation results. If the query can be answered entirely from committed media evidence and no such dependency is created, 
+
+complete( Ft) is vacuously true. The system continues only while the current state admits an action that can plausibly improve it. We use can _advance( a, R 0, S t) as a bounded feasibility test over the current state and action history. It holds when the action is available under R0 and the remaining budget, targets an actionable open need, unresolved conflict, or pending dependency in St, and has not been exhausted by repeated failed attempts. The test does not assume access to future observations; it only checks whether the action is still meaningful under the current evidence state. If the state is not ready and no available action can plausibly reduce an open need, resolve a conflict, or complete a pending dependency, the system terminates with an insufficient status rather than forcing an unsupported answer. State updates are deterministic only at the commit boundary. Tools and LLM modules may produce stochastic observations or critic verdicts, but they do not directly edit St. After an output is normalized into a typed event, the reducer follows predefined field-update rules. A media-grounding event that identifies the query entity is committed to Et with its source and temporal support, and the linked open need in Ut is closed. An external-attribute or computation event updates the corresponding dependency in Ft and links it to the grounded entity. If a new event contradicts an existing entity attribute or relation, the reducer records both sources in Ct instead of overwriting the earlier evidence. Thus, determinism refers to how accepted events are committed to the evidence state, not to the stochastic behavior of the planner, tools, or critic. Algorithm 1 gives the corresponding inference loop. It clarifies three implementation-level semantics: the planner reads the state digest; finish is a planner-selected action gated by the evidence state; and a blocked finish attempt is reduced back into St as a missing-evidence or conflict diagnosis. 
+
+3.3 System instantiation 
+
+We instantiate Omni-Decision as a training-free inference system with five components. The planner reads state_digest (R0, S t) and selects the next action. Tools execute media grounding, retrieval, browsing, computation, or visual verification and return structured observations. The critic checks whether the current evidence chain is supported, conflicting, or incomplete. The finalizer drafts an answer only when finish is selected under a ready state. The reducer is the only component that writes St. Exact tool implementations serve as observation sources; the method specifies how their outputs are normalized, committed to St, and consumed by later inference-time decisions. All non-reducer modules are state readers or event producers; they do not directly edit the evidence state. Exact model backends, tool budgets, evaluation settings, and implementation details are reported in Section 4 and Appendix I. 5Algorithm 1 Inference evidence-collection loop. 
+
+Require: Query q, immutable context R0, action space A(R0), max iteration T
+
+1: Initialize S0 = {E0, C 0, F 0, U 0} from q and available assets 
+
+2: for t = 0 to T − 1 do 
+
+3: Construct dt ← state_digest (R0, S t)
+
+4: Choose at ← decide( dt; A(R0)) 
+
+5: if at = finish then 
+
+6: Draft and check a candidate answer against St
+
+7: if the answer check passes then 
+
+8: return answer 
+
+9: end if 
+
+10: Reduce the blocked-finalization diagnosis into St
+
+11: else 
+
+12: Execute at, normalize the observation, and reduce it into St
+
+13: Run evidence-level validation when required and reduce the verdict into St
+
+14: end if 
+
+15: if ¬ready( St) and no action a satisfies can _advance( a, R 0, S t) then 
+
+16: return insufficient status 
+
+17: end if 
+
+18: end for 
+
+19: return insufficient status 
+
+4 Experiments 
+
+4.1 Experimental design 
+
+We evaluate three questions: whether evidence-state control improves open-world OmniGAIA [Li et al., 2026] accuracy under the official judge, whether the gain is separable from planner and perception backends, and whether the same inference system transfers to WorldSense’s [Hong et al., 2025] multiple-choice read-out. OmniGAIA is the main benchmark: media often provides only the entry point, while the answer may require external facts, entity attributes, page browsing, code execution, or semantic matching. WorldSense is used as a complementary transfer evaluation for self-contained audio-video evidence integration, not as a closed-world SOTA ranking. For measured OmniGAIA agent-system rows, unless otherwise stated, the planner, critics, and finalizer use gpt-5.2-2025-12-11 [OpenAI, 2025], and the default perception backend is gemini-3.1-pro [Google DeepMind, 2026]. Table 2 explicitly changes the planner and/or perception backend to qwen3-omni-flash [Xu et al., 2025] for controlled diagnostics. OmniGAIA uses the official judging protocol with gpt-5.2-2025-12-11; WorldSense accuracy is computed by matching the final selected option. 
+
+4.2 OmniGAIA: main results on open-world evidence collection 
+
+Table 1: OmniGAIA results. We report accuracy (%) over all examples, by difficulty, and by category. Values are percentages; ∗ denotes public leaderboard results and † denotes our runs.                                                                                                                                                             
+
+> Methods Overall Easy Medium Hard Geo. Tech. Hist. Fin. Sport Art Movie Sci. Food
+> End-end model
+> Qwen3-Omni-30B ∗13.30 19.70 10.60 9.00 8.70 14.30 11.90 28.00 10.80 13.90 9.10 15.40 22.20 Qwen3.5-Omni-Flash ∗33.90 ––––––––––––Qwen3.5-Omni-Plus ∗57.20 ––––––––––––Gemini-2.5-Pro ∗30.80 41.80 26.90 21.80 23.20 28.60 32.80 20.00 32.40 41.70 42.40 26.90 33.30 Gemini-3-Flash ∗51.70 67.20 46.90 37.20 50.70 57.10 44.80 48.00 59.50 55.60 54.60 38.50 61.10 Gemini-3-Pro ∗62.50 78.70 61.90 38.50 65.20 59.20 62.10 72.00 78.40 52.80 48.50 42.30 88.90
+> Agent systems
+> OmniAtlas-Qwen3-30B ∗20.80 31.10 18.80 9.00 10.10 30.60 29.90 32.00 18.90 16.70 12.10 11.50 27.80 Minimal agent †5.56 9.02 3.12 5.13 1.45 10.20 10.61 0.00 2.70 2.78 6.06 3.85 11.11 OmniGAIA base †18.33 26.23 17.50 7.69 5.80 28.57 28.79 16.00 13.51 13.89 15.15 26.92 11.11 OmniAgent †25.51 31.59 24.59 17.89 20.30 28.58 28.86 22.41 16.65 29.57 30.56 26.89 28.01
+> Omni-Decision (ours) †45.56 56.56 43.75 32.05 36.23 51.02 51.52 40.00 29.73 52.78 54.55 48.00 50.00
+
+6Table 2: Controlled planner, perception, and state diagnostics on OmniGAIA. Full columns report results on the full OmniGAIA split with the evidence state. Subset columns report results on the same fixed 120-case stratified subset with and without the state. State effect is reported as no-state subset accuracy minus the corresponding state-enabled subset accuracy; negative values therefore indicate accuracy drops after removing the state. Abbreviations: gpt-5.2 = gpt-5.2-2025-12-11; gemini-3.1 = gemini-3.1-pro; qwen3-omni = qwen3-omni-flash. 
+
+Configuration Planner Perception Full Subset w/ St Subset w/o St ∆
+
+Default gpt-5.2 gemini-3.1 45.56 41.67 32.50 -9.17 Qwen perception gpt-5.2 qwen3-omni 33.33 28.33 17.50 -10.83 Qwen planner+perception qwen3-omni qwen3-omni 11.39 8.33 5.00 -3.33 
+
+Table 1 reports the main results on OmniGAIA. Public results provide task-difficulty and leaderboard references; the controlled comparisons in this paper are Minimal agent, OmniGAIA base, OmniAgent, and Omni-Decision. Minimal agent is a deliberately simple tool-using baseline: it can invoke audio-assistance tools and web search, but it has no explicit evidence-state design. It tests whether merely giving a model access to tools is sufficient, separate from whether the agent has a control structure for organizing tool outputs. OmniGAIA base follows the official base-agent pipeline, and Omni-Decision adds the evidence-state control interface under the same model and tool setting. Omni-Decision reaches 45.6% overall accuracy, above the official OmniGAIA base agent (18.33%). This result addresses the main experimental question: given the same perception backend and tool interfaces, can the planner/controller improve agent-system inference-time decisions through an explicit evidence state? Against the official base agent, Omni-Decision improves overall accuracy by +27.23 percentage points, with absolute gains of +30.33, +26.25, and +24.36 points on Easy, Medium, and Hard respectively. This result shows a substantial benefit from explicit evidence-state control: the base agent relies primarily on message history and free-form trajectories, whereas Omni-Decision conditions routing, verification, repair, and stopping on the same evidence state. Gemini-3-Pro in the public leaderboard is a strong proprietary foundation-model result under OmniGAIA’s unified tool setting; in our system, 
+
+gemini-3.1-pro is only a local perception backend whose input range, call timing, and decision authority are controlled by the planner. Thus that row is a task-difficulty reference rather than a one-to-one comparison with our perception backend. Table 2 separates backend sensitivity from the evidence-state contribution. The full columns show that perception and planner quality strongly affect the system. The fixed-subset columns then remove the structured state view from the same configurations and case IDs. Removing St lowers overall subset accuracy in all three settings, with overall ∆ values of -9.17 points for the default setting, -10.83 points for the Qwen perception setting, and -3.33 points for the Qwen planner+perception setting. The ablation is diagnostic rather than a full-benchmark significance test, but it supports a separable contribution from the shared state interface beyond the choice of planner or perception backend. Further details on this diagnostic setup and its interpretation are provided in Appendices A–C. 
+
+4.3 Failure modes and real-progress audit 0 20 40 60 80 100   
+
+> Cases by progress level (%)
+> All
+> Medium
+> Hard
+> Correct
+> Incorrect
+> 15
+> 7
+> 8
+> 14
+> 19
+> 11
+> 8
+> 19
+> 6
+> 2
+> 4
+> 6
+> N=40
+> N=20
+> N=20
+> N=14
+> N=26
+> Failure progress audit
+> Full Partial Zero
+
+Figure 3: Real-progress audit summary. The figure reports full / partial / zero progress counts for the 40 Medium/Hard cases with hu-man subgoal annotations. We further audit whether final-answer failures cor-respond to zero progress or partial evidence-chain completion [Zhu et al., 2025, Ma et al., 2026]. On 40 Medium/Hard cases with human subgoal annota-tions, each reference evidence chain is decomposed into weighted factual subgoals. Figure 3 shows that 15/40 cases reach full progress, 19/40 reach partial progress, and 6/40 make zero measurable progress. The pattern appears in both difficulty groups: Medium cases contain 7 full, 11 partial, and 2 zero-progress trajectories, while Hard cases contain 8 full, 8 partial, and 4 zero-progress trajecto-ries. The Correct / Incorrect split is most diagnostic: all 14 accepted answers reach full progress, while 7Table 3: Evidence-chain validation outcomes on 40 cases with human subgoal annotations. Counts and percentages are computed over the same 40 Medium/Hard audit cases.            
+
+> Validated Partial Misvalidated Unsupported Cases 14 19 16Percent 35.0% 47.5% 2.5% 15.0%
+
+20 of the 26 rejected answers still make non-zero progress. We therefore group the 40 trajectories into four evidence-chain outcomes: • Validated : correct answer with full reference-chain completion. • Partial : rejected answer with non-zero partial completion. • Misvalidated : full progress with a rejected answer. • Unsupported : zero measurable progress. Table 3 reports 14 validated, 19 partial, 1 misvalidated, and 6 unsupported cases, suggesting that many failed runs advance along the reference evidence chain before becoming blocked by perception, retrieval, computation, readiness, or answer-synthesis errors. The reference evidence paths are derived from the OmniGAIA annotations. Detailed weighted-progress statistics and scorer sensitivity are reported in Appendices D and E. 
+
+4.4 WorldSense transfer to a different task format 
+
+On WorldSense, the evaluation focus shifts to self-contained audio-video evidence integration and multiple-choice answer read-out. Since the benchmark provides no external search, page browsing, or code-computation path, the system must locate and integrate evidence directly from the given video, audio, and textual question. We use it as a complementary transfer evaluation: if Omni-Decision’s benefit comes from a system-level state interface rather than a dataset-specific procedure, the same evidence-state system should remain effective when the read-out format is MCQ and the evidence is primarily internal to the media. Table 4: WorldSense results. We report accuracy (%) by domain and average score. Measured agent-system rows are computed on the 3,172-example WorldSense set; public end-to-end rows are direct-readout references. Abbreviations: Tech. = Tech & Science, Cult. = Culture & Politics, Film = Film & TV, and Perf. = Performance. ∗ denotes public results from leaderboards; † denotes our runs;  
+
+> ‡
+
+denotes the Qwen perception variant using qwen3-omni-flash as the perception backend.                                                                                            
+
+> Methods Avg. Tech. Cult. Daily Film Perf. Games Sports Music
+> End-end model
+> Qwen3-Omni ∗54.00 58.70 60.50 54.50 53.80 55.40 46.80 48.80 52.20 video-SALMONN 2+ 72B ∗56.50 59.00 63.10 54.00 59.90 58.10 54.10 51.90 54.40 Qwen3.5-Omni-Flash ∗57.80 59.00 59.90 57.30 60.20 59.90 52.40 54.20 58.40 Qwen3.5-Omni-Plus ∗62.80 66.90 66.00 62.20 65.20 68.90 57.10 56.30 61.60 Gemini-2.5-Pro ∗65.10 64.90 66.00 65.80 68.10 69.70 65.70 63.50 61.30 Gemini-3.1-Pro-Preview ∗65.50 67.30 66.70 67.50 68.60 70.80 61.80 59.30 63.30
+> Agent systems
+> OmniAgent †28.06 33.27 20.06 14.29 58.31 12.36 42.92 14.19 38.42
+> Omni-Decision (Qwen) †‡ 40.26 60.00 33.33 42.86 45.38 25.09 57.08 30.70 23.15
+> Omni-Decision †58.32 63.67 60.52 53.34 66.75 52.43 56.65 50.00 64.04
+
+Table 4 reports this transfer evaluation under a closed-world MCQ format. The public end-to-end rows provide direct-readout references from native omni-modal models, which can consume the audio-video input and select an option in a single pass. The measured agent-system rows instantiate Omni-Decision’s evidence-state inference protocol: media observations are organized as state updates, while critic and finalization checkpoints control evidence integration and answer submission. Under this setting, Omni-Decision reaches 58.32%, compared with 65.50% for the 8strongest native direct-readout reference, Gemini-3.1-Pro-Preview. This result supports the central system claim: evidence-state control is not tied to OmniGAIA’s open-world tool setting, but can also organize evidence and finalization in a self-contained audio-video MCQ benchmark. The Qwen perception row further shows that the system is sensitive to low-level perception quality and backend-interface fit, consistent with the claim that evidence-state control organizes routing, verification, repair, and stopping rather than replacing the underlying audio-video perception model. WorldSense therefore mainly supports system reuse and failure diagnosability, especially for fine-grained actions, visual readings, and audio-video evidence integration. Backend forms and domain-level failure localization are discussed in Appendices G and H. The common pattern is that the evidence state often exposes an unclosed slot, but the available perception or retrieval tools cannot reliably fill it. 
+
+5 Discussion and limitations 
+
+Omni-Decision should be read as a system-level control interface rather than a fixed multi-role implementation. The same evidence-state abstraction could be used inside a learned policy, a multi-agent system, or a lighter monolithic system [Wu et al., 2023, Kumar et al., 2024, Liu et al., 2025a, LangChain, 2026b]. This matters because the contribution is not the number of roles or the particular tool inventory, but the read/write contract: system modules consume the same state view, and only normalized events are committed back to St.The present evaluation also reflects the current stage of community benchmarks for omni-modal evidence-seeking QA. OmniGAIA provides an important open-world setting with media-grounded evidence, web retrieval, browsing, and computation, while WorldSense provides a complementary self-contained audio-video setting with multiple-choice read-out [Li et al., 2026, Hong et al., 2025]. However, real user scenarios are broader than either benchmark alone: many tasks mix private documents, personal media, dynamic web pages, long interaction histories, UI operations, and changing external states. Existing evaluations also provide limited coverage of process-level behavior, such as whether an agent asks the right follow-up evidence question, localizes uncertainty to the right missing evidence slot, verifies tool-grounded claims appropriately, or stops for the right reason when evidence is unavailable [Shinn et al., 2023, Zhu et al., 2025, Ma et al., 2026]. Therefore, our experiments should be interpreted as evidence for the value of query-scoped evidence-state control under representative current settings, rather than as a complete characterization of omni-modal agents in all real-world deployments. Future benchmarks could further expand beyond final-answer accuracy toward richer evaluation of evidence coverage, uncertainty localization, tool-grounded verification, and abstention behavior. 
+
+6 Conclusion 
+
+We introduced Omni-Decision , a training-free evidence-state system for omni-modal evidence-seeking QA. The central claim is that long-horizon multimodal control should not be left to implicit dialogue history: evidence acquisition, verification, repair, finalization, and insufficient stopping should consume the same query-scoped evidence state. The experiments support this view on open-world OmniGAIA and show that the same system can transfer to WorldSense’s self-contained MCQ setting. The trajectory audits further clarify where the approach helps and where it remains limited: many incorrect runs still move part of the evidence chain forward, but later become blocked by unclosed perception, retrieval, computation, or readiness slots. Thus, query-scoped evidence state is most useful as a controllable and inspectable backbone for evidence organization. It improves how the system decides what is missing and when to continue, but it does not replace low-level perception, calibrated uncertainty, or budget-aware action selection. 
+
+References 
+
+Anthropic. Claude Opus 4.6 System Card, February 2026. URL https://anthropic.com/ claude-opus-4-6-system-card .Alan Baddeley. Working memory. Memory , pages 71–111, 2020. 9Boyu Chen, Zikang Wang, Zhengrong Yue, Kainan Yan, Chenyun Yu, Yi Huang, Zijun Liu, Yafei Wen, Xiaoxin Chen, Yang Liu, Peng Li, and Yali Wang. Videochat-m1: Collaborative policy planning for video understanding via multi-agent reinforcement learning, November 2025. Meng Chu, Yicong Li, and Tat-Seng Chua. Understanding long videos via llm-powered entity relation graphs, January 2025. Chaoyou Fu, Yuhan Dai, Yongdong Luo, Lei Li, Shuhuai Ren, Renrui Zhang, Zihan Wang, Chenyu Zhou, Yunhang Shen, Mengdan Zhang, et al. Video-mme: The first-ever comprehensive evaluation of multi-modal llms in video analysis. arXiv preprint arXiv:2405.21075 , 2, 2024. Google DeepMind. Gemini 3.1 Pro Model Card, February 2026. URL https://deepmind.google/ models/model-cards/gemini-3-1-pro/ .Jiuzhou Han, Wray Buntine, and Ehsan Shareghi. Verifiagent: a unified verification agent in language model reasoning, 2025. Peize He, Zichen Wen, Yubo Wang, Yuxuan Wang, Xiaoqian Liu, Jiajie Huang, Zehui Lei, Zhuangcheng Gu, Xiangqi Jin, Jiabing Yang, Kai Li, Zhifei Liu, Weijia Li, Cunxiang Wang, Conghui He, and Linfeng Zhang. Audiomarathon: A comprehensive benchmark for long-context audio understanding and efficiency in audio llms, October 2025. Jack Hong, Shilin Yan, Jiayin Cai, Xiaolong Jiang, Yao Hu, and Weidi Xie. Worldsense: Evaluating real-world omnimodal understanding for multimodal llms, May 2025. Chuanrui Hu, Tong Li, Xingze Gao, Hongda Chen, Yi Bai, Dannong Xu, Tianwei Lin, Xiaohong Li, Yunyun Han, Jian Pei, and Yafeng Deng. Evaluating long-horizon memory for multi-party collaborative dialogues. https://arxiv.org/abs/2602.01313v3, 2026a. Yuyang Hu, Shichun Liu, Yanwei Yue, Guibin Zhang, Boyang Liu, Fangyi Zhu, Jiahang Lin, Honglin Guo, Shihan Dou, Zhiheng Xi, Senjie Jin, Jiejun Tan, Yanbin Yin, Jiongnan Liu, Zeyu Zhang, Zhongxiang Sun, Yutao Zhu, Hao Sun, Boci Peng, Zhenrong Cheng, Xuanbo Fan, Jiaxin Guo, Xinlei Yu, Zhenhong Zhou, Zewen Hu, Jiahao Huo, Junhao Wang, Yuwei Niu, Yu Wang, Zhenfei Yin, Xiaobin Hu, Yue Liao, Qiankun Li, Kun Wang, Wangchunshu Zhou, Yixin Liu, Dawei Cheng, Qi Zhang, Tao Gui, Shirui Pan, Yan Zhang, Philip Torr, Zhicheng Dou, Ji-Rong Wen, Xuanjing Huang, Yu-Gang Jiang, and Shuicheng Yan. Memory in the age of ai agents, January 2026b. Somnath Kumar, Yash Gadhia, Tanuja Ganu, and Akshay Nambi. Mmctagent: Multi-modal critical thinking agent framework for complex visual reasoning, May 2024. LangChain. Agents, 2026a. URL https://docs.langchain.com/oss/python/langchain/ agents . Docs by LangChain. LangChain. LangGraph Overview, 2026b. URL https://docs.langchain.com/oss/python/ langgraph/overview . Docs by LangChain. Xiaoxi Li, Wenxiang Jiao, Jiarui Jin, Shijian Wang, Guanting Dong, Jiajie Jin, Hao Wang, Yinuo Wang, Ji-Rong Wen, Yuan Lu, and Zhicheng Dou. Omnigaia: Towards native omni-modal ai agents, February 2026. Xinhao Li, Yi Wang, Jiashuo Yu, Xiangyu Zeng, Yuhan Zhu, Haian Huang, Jianfei Gao, Kunchang Li, Yinan He, Chenting Wang, Yu Qiao, Yali Wang, and Limin Wang. Videochat-flash: Hierarchical compression for long-context video modeling, July 2025. Runtao Liu, Ziyi Liu, Jiaqi Tang, Yue Ma, Renjie Pi, Jipeng Zhang, and Qifeng Chen. Longvideoagent: Multi-agent reasoning with long videos, December 2025a. Ye Liu, Kevin Qinghong Lin, Chang Wen Chen, and Mike Zheng Shou. Videomind: A chain-of-lora agent for long video reasoning, April 2025b. Yujie Lu, Yale Song, William Wang, Lorenzo Torresani, and Tushar Nagarajan. Vited: Video temporal evidence distillation, 2025. Ming Ma, Jue Zhang, Fangkai Yang, Yu Kang, Qingwei Lin, Saravan Rajmohan, and Dongmei Zhang. Dover: Intervention-driven auto debugging for llm multi-agent systems, January 2026. 10 Potsawee Manakul, Adian Liusie, and Mark J. F. Gales. Selfcheckgpt: Zero-resource black-box hallucination detection for generative large language models, October 2023. Earl K Miller and Jonathan D Cohen. An integrative theory of prefrontal cortex function. Annual review of neuroscience , 24(1):167–202, 2001. Reiichiro Nakano, Jacob Hilton, Suchir Balaji, Jeff Wu, Long Ouyang, Christina Kim, Christopher Hesse, Shantanu Jain, Vineet Kosaraju, William Saunders, Xu Jiang, Karl Cobbe, Tyna Eloundou, Gretchen Krueger, Kevin Button, Matthew Knight, Benjamin Chess, and John Schulman. Webgpt: Browser-assisted question-answering with human feedback, June 2022. OpenAI. Update to GPT-5 System Card: GPT-5.2, December 2025. URL https://openai.com/ index/gpt-5-system-card-update-gpt-5-2/ .Kanchana Ranasinghe, Xiang Li, Kumara Kahatapitiya, and Michael S. Ryoo. Understanding long videos with multimodal language models, June 2025. Xubin Ren, Lingrui Xu, Long Xia, Shuaiqiang Wang, Dawei Yin, and Chao Huang. Videorag: Retrieval-augmented generation with extreme long-context videos, February 2025. Timo Schick, Jane Dwivedi-Yu, Roberto Dessì, Roberta Raileanu, Maria Lomeli, Luke Zettlemoyer, Nicola Cancedda, and Thomas Scialom. Toolformer: Language models can teach themselves to use tools, February 2023. Noah Shinn, Federico Cassano, Edward Berman, Ashwin Gopinath, Karthik Narasimhan, and Shunyu Yao. Reflexion: Language agents with verbal reinforcement learning, October 2023. Yolo Y. Tang, Jing Bi, Siting Xu, Luchuan Song, Susan Liang, Teng Wang, Daoan Zhang, Jie An, Jingyang Lin, Rongyi Zhu, Ali Vosoughi, Chao Huang, Zeliang Zhang, Pinxin Liu, Mingqian Feng, Feng Zheng, Jianguo Zhang, Ping Luo, Jiebo Luo, and Chenliang Xu. Video understanding with large language models: A survey, November 2025. Keda Tao, Wenjie Du, Bohan Yu, Weiqiang Wang, Jian Liu, and Huan Wang. Active perception agent for omnimodal audio-video understanding, February 2026. Zheng Wang, Haoran Chen, Haoxuan Qin, Zhipeng Wei, Tianwen Qian, and Cong Bai. Think, then verify: A hypothesis-verification multi-agent framework for long video understanding, March 2026a. Zikang Wang, Boyu Chen, Zhengrong Yue, Yi Wang, Yu Qiao, Limin Wang, and Yali Wang. Videochat-a1: Thinking with long videos by chain-of-shot reasoning, March 2026b. Ziyang Wang, Honglu Zhou, Shijie Wang, Junnan Li, Caiming Xiong, Silvio Savarese, Mohit Bansal, Michael S. Ryoo, and Juan Carlos Niebles. Active video perception: Iterative evidence seeking for agentic long video understanding, December 2025. Haoning Wu, Dongxu Li, Bei Chen, and Junnan Li. Longvideobench: A benchmark for long-context interleaved video-language understanding, July 2024. Qingyun Wu, Gagan Bansal, Jieyu Zhang, Yiran Wu, Beibin Li, Erkang Zhu, Li Jiang, Xiaoyun Zhang, Shaokun Zhang, Jiale Liu, Ahmed Hassan Awadallah, Ryen W. White, Doug Burger, and Chi Wang. Autogen: Enabling next-gen llm applications via multi-agent conversation, October 2023. Jin Xu, Zhifang Guo, Hangrui Hu, Yunfei Chu, Xiong Wang, Jinzheng He, Yuxuan Wang, Xian Shi, Ting He, Xinfa Zhu, Yuanjun Lv, Yongqi Wang, Dake Guo, He Wang, Linhan Ma, Pei Zhang, Xinyu Zhang, Hongkun Hao, Zishan Guo, Baosong Yang, Bin Zhang, Ziyang Ma, Xipin Wei, Shuai Bai, Keqin Chen, Xuejing Liu, Peng Wang, Mingkun Yang, Dayiheng Liu, Xingzhang Ren, Bo Zheng, Rui Men, Fan Zhou, Bowen Yu, Jianxin Yang, Le Yu, Jingren Zhou, and Junyang Lin. Qwen3-omni technical report, September 2025. Zuhao Yang, Sudong Wang, Kaichen Zhang, Keming Wu, Sicong Leng, Yifan Zhang, Bo Li, Chengwei Qin, Shijian Lu, Xingxuan Li, and Lidong Bing. Longvt: Incentivizing "thinking with long videos" via native tool calling, December 2025. 11 Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao. React: Synergizing reasoning and acting in language models, March 2023. Rongyi Yu, Chenyuan Duan, and Wentao Zhang. Longvidsearch: An agentic benchmark for multi-hop evidence retrieval planning in long videos, March 2026. Jusheng Zhang, Kaitong Cai, Jian Wang, Yongsen Zheng, Kwok-Yan Lam, and Keze Wang. Process-of-thought reasoning for videos, February 2026. Xiaoyi Zhang, Zhaoyang Jia, Zongyu Guo, Jiahao Li, Bin Li, Houqiang Li, and Yan Lu. Deep video discovery: Agentic search with tool use for long-form video understanding, November 2025. Yaoyao Zhong, Wei Ji, Junbin Xiao, Yicong Li, Weihong Deng, and Tat-Seng Chua. Video question answering: Datasets, algorithms and challenges. In Yoav Goldberg, Zornitsa Kozareva, and Yue Zhang, editors, Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing , pages 6439–6455, Abu Dhabi, United Arab Emirates, December 2022. Association for Computational Linguistics. doi: 10.18653/v1/2022.emnlp-main.432. Kunlun Zhu, Zijia Liu, Bingxuan Li, Muxin Tian, Yingxuan Yang, Jiaxun Zhang, Pengrui Han, Qipeng Xie, Fuyang Cui, Weijia Zhang, Xiaoteng Ma, Xiaodong Yu, Gowtham Ramesh, Jialian Wu, Zicheng Liu, Pan Lu, James Zou, and Jiaxuan You. Where llm agents fail and how they can learn from failures, September 2025. 
+
+A Relationship to representative agent frameworks 
+
+Omni-Decision is not defined by a particular agent topology. It differs from representative long-video and multimodal agent designs by making the query-scoped evidence state the shared control object for routing, verification, repair, and stopping. Appendix Table 5 summarizes this relationship. Table 5: Relationship to representative agent designs. Representative design Typical control-state limitation Omni-Decision counterpart LongVideoAgent Stage results and role messages carry control signals; there is no unified query-level evidence ledger. 
+
+St records confirmed evidence, unresolved conflicts, external-fact gaps, and open evidence needs. MMCTAgent The critic can constrain local outputs, but routing, repair, and stopping need not consume the same state view. Critic verdicts are written by the reducer; later routing and stopping read the updated St.OmniAgent Tool outputs often remain in trajectory logs, so missing evidence must be inferred from history. 
+
+Ut represents evidence needs, and 
+
+Ft tracks external-fact or computation completion. LangChain / ReAct Long trajectories give router, critic, answer, and stopper different slices of context. Runtime decisions consume 
+
+state_digest (R0, S t).Thus, role count, tool count, and a specific visual backend are not the method’s core. The core is that media observations, external facts, computation results, and critic verdicts are committed to the same 
+
+St before the next inference-time decision is made. 
+
+B Runtime evidence-collection implementation notes 
+
+The main pseudocode is given in Algorithm 1. This appendix records the additional implementation checks used in experiments: every tool response is normalized before reduction, and every finish attempt is checked by an answer-level critic before returning. 12 C Finite-sample uncertainty for the main OmniGAIA result 
+
+The main OmniGAIA comparison is run once on the fixed full-360 benchmark split with fixed prompts, temperature 0, and the official judging protocol. We therefore do not report repeated-run variance. To quantify finite-sample uncertainty over benchmark examples, Table 6 reports Wilson 95% confidence intervals for the two controlled full rows used in the main system-level comparison. These intervals are computed from integer correct counts over 360 examples and are not used for the 120-case no-state diagnostic ablation. Table 6: Finite-sample uncertainty for the controlled OmniGAIA full-360 main comparison. Wilson 95% confidence intervals are computed over Bernoulli correctness across benchmark examples. System Correct / Total Accuracy Wilson 95% CI OmniGAIA base 66 / 360 18.33 [14.68, 22.66] Omni-Decision 164 / 360 45.56 [40.48, 50.72] 
+
+D Failure taxonomy and real-progress audit details 
+
+Section 4.3 reports the trajectory-level outcome table and Figure 3. This appendix provides the annotation procedure, failure-type definitions, subgoal weighting rule, detailed progress statistics, and mechanism-level interpretation used for that audit. The audit is not a new benchmark score; it is intended to distinguish final-answer failures that make partial evidence-chain progress from failures that never acquire the necessary evidence. The failure taxonomy includes five error types: evidence-acquisition miss, where key evidence never enters Et; evidence-validation failure, where conflicts should have entered Ct but do not; computation error, where a numerical or logical chain breaks; stopping error, where the system finalizes too early or abstains too late; and evaluator mismatch, where the answer conflicts with the official scoring protocol. We manually audit 60 stratified samples, 20 each from Easy, Medium, and Hard, for the failure taxonomy. The real-progress audit uses the 40 Medium/Hard cases with human subgoal annotations; the Easy audit samples are not included in Table 7 or Figure 3 because their traces are comparatively short. The longer Medium/Hard trajectories provide a more informative setting for reporting the subgoal-annotation process. Specifically, we decompose each reference evidence chain into factual subgoals. A subgoal whose absence would block the final answer is marked critical with weight 1.0, while a subgoal that only provides an auxiliary constraint is marked non-critical with weight 0.5. The sample-level progress score is 
+
+progress = 
+
+P completed subgoal weights 
+
+P all subgoal weights .
+
+Table 7: Detailed real-progress audit on 40 cases with human subgoal annotations, based on human review. Progress is the weighted subgoal completion ratio defined above. Medium / Hard are split by sample difficulty, and Correct / Incorrect are split by final-answer correctness. Category N mean progress median progress full progress partial progress zero progress All 40 0.605 0.633 15 19 6Medium 20 0.641 0.667 7 11 2Hard 20 0.570 0.500 8 8 4Correct 14 1.000 1.000 14 0 0Incorrect 26 0.393 0.333 1 19 6Thus, mean progress and median progress in Table 7 are the mean and median of this sample-level progress score. Full progress counts samples with progress equal to 1, partial progress counts samples with progress between 0 and 1, and zero progress counts samples with progress equal to 13 0. This audit does not replace the official OmniGAIA judge and does not report a new benchmark accuracy. It answers one mechanistic question: when the final answer is not accepted, has the system still completed part of the real evidence chain? Human review is the primary audit. Independent scoring with the Claude audit model claude-opus-4-6 on the same 40 cases is used only as a sensitivity check, reported in Appendix E. Table 7 aggregates the resulting sample-level progress scores. Appendix E then checks how these scores change under an independent scorer. We therefore use Appendix D only to define how the human primary audit is produced, not to introduce another accuracy metric. 
+
+E Progress-audit sensitivity check with claude-opus-4-6 
+
+As a sensitivity check, we use the Claude model identifier claude-opus-4-6 [Anthropic, 2026] to independently score the same 40 Medium/Hard cases with human subgoal annotations used in Section 4.3, and compare it with the human primary audit. Both audits use the same critical = 1.0 , non-critical = 0.5 weighting rule and cover the same 130 factual subgoals. This result is not used in the main metrics; it evaluates how sensitive the progress audit is to scorer choice. Table 8: Human primary audit versus claude-opus-4-6 independent scoring on the same 40 cases. Category N mean progress (human) mean progress (model) 
+
+∆ mean progress full progress (human / model) zero progress (human / model) All 40 0.605 0.784 +0.179 15 / 20 6 / 1 Medium 20 0.641 0.731 +0.090 7 / 10 2 / 1 Hard 20 0.570 0.836 +0.266 8 / 10 4 / 0 Correct 14 1.000 1.000 0.000 14 / 14 0 / 0 Incorrect 26 0.393 0.667 +0.274 1 / 6 6 / 1 
+
+claude-opus-4-6 gives more permissive absolute scores. Across 130 subgoals, it marks 94 done, 27 not done, and 9 partial, compared with the human audit’s 78 done, 51 not done, and 1 partial. The two audits fully agree on the Correct subset, and differences concentrate on Hard and Incorrect cases. Thus, the absolute level of progress is sensitive to scorer strictness. We therefore use Claude only as a sensitivity analysis. Both audits show that Correct cases reach full progress, many Incorrect cases still have non-zero progress, and zero-progress cases are a minority. The claim that the evidence state drives real progress in many Incorrect cases is therefore not sensitive to scorer choice. 
+
+F Trace-level tool-call composition 
+
+This appendix characterizes the shape of Omni-Decision’s tool-use traces on OmniGAIA. It is descriptive and is not intended as an ablation of tool-call count. Because tool latency and monetary cost depend on backend, deployment, and parallelization, we treat recorded request count and per-tool composition as a coarse runtime footprint rather than a universal cost model. Across the 360 tasks, Omni-Decision records 4,038 tool requests over an average of 12.41 recorded runtime steps per case, spanning six tools: web retrieval, visual confirmation, subtitle grounding, code execution, audio scouting, and clip grounding. Table 9: Trace-level tool-request scale on OmniGAIA. Counts describe runtime evidence-seeking behavior and are not interpreted as a performance signal. System Accuracy Total recorded tool requests Avg. recorded tool requests OmniGAIA base 18.33 881 2.45 Omni-Decision 45.56 4,038 11.22 The OmniGAIA base agent records 881 tool requests, averaging 2.45 requests per query. Omni-Decision records 4,038 tool requests, averaging 11.22 requests per query. This difference reflects the stopping behavior of the two runtimes: the base agent often attempts finalization after a small 14 number of evidence-acquisition steps, while Omni-Decision explicitly maintains unclosed evidence needs and continues evidence seeking, verification, and repair when the state is not yet sufficient. Omni-Decision’s 4,038 requests are distributed across tool types as follows: web_search_tool 
+
+1,901, frame_confirm_tool 697, subtitle_grounding_tool 499, code_executor_tool 369, 
+
+audio_scout_tool 330, and clip_grounding_tool 242. This composition is consistent with OmniGAIA’s multi-hop, multimodal setting: web retrieval dominates external fact bridging, while visual, subtitle, audio, and clip tools cover media-internal grounding. We report these statistics to characterize the execution shape and coarse runtime footprint of the evidence-state runtime. 0 250 500 750 1000 1250 1500 1750 2000 
+
+> Recorded tool requests
+> web_search_tool
+> frame_confirm_tool
+> subtitle_grounding_tool
+> code_executor_tool
+> audio_scout_tool
+> clip_grounding_tool
+> 1,901
+> 697
+> 499
+> 369
+> 330
+> 242
+> Omni-Decision tool-call distribution on OmniGAIA full 360
+
+Figure 4: Per-tool request composition of Omni-Decision on OmniGAIA. The figure characterizes runtime evidence-seeking shape, not a performance contribution. 
+
+G Native omni-modal backends and toolized omni-modal backends 
+
+Omni-Decision does not depend on a fixed perception-backend shape. The underlying perception layer can be a native omni-modal backend that directly consumes complete multimodal inputs, or an omni-modal backend can be exposed through toolized perception calls that the agent invokes according to state needs. In other words, a unified backend does not imply that the agent can only perform a single end-to-end readout. It can still provide structured observations to the evidence-state runtime under state-conditioned control. OmniGAIA’s analysis of tool-based perception also suggests that the gap between native omni-modal input and toolized perception is not a decisive discontinuity. Table 10 excerpts representative results from the OmniGAIA paper. For Gemini-3-Flash, native omni-modal input obtains an average score of 51.7. When only audio is converted into a perception tool, the score is 50.0, a decrease of only 1.7 points; when both audio and vision are toolized, the score is 46.4, a decrease of 5.3 points. For Qwen-3-Omni, native omni-modal input obtains 13.3, while toolized-perception settings reach 15.8, 18.1, or 17.2. These results indicate that toolization does not inherently destroy omni-modal task-solving ability. For weaker omni-modal models, toolized perception can even compensate for part of the low-level readout and on-demand retrieval burden. Table 10: Representative native-perception and tool-based-perception results from OmniGAIA. 
+
+Model / setting Easy Medium Hard Avg. Avg. tool calls Gemini-3-Flash native omni-modal input 67.2 46.9 37.2 51.7 4.4 Gemini-3-Flash: visual input only, audio as tool 60.7 48.8 35.9 50.0 7.6 Gemini-3-Flash: audio and vision both as tools 52.5 46.9 35.9 46.4 9.4 Qwen-3-Omni native omni-modal input 19.7 10.6 9.0 13.3 0.2 Qwen-3-Omni: visual input only, audio as tool 24.6 15.0 3.9 15.8 0.8 Qwen-3-VL + Qwen-3-Omni: tooliz 24.6 18.1 7.7 18.1 2.8 Qwen-3 + Qwen-3-Omni: audio and vision both as tools 32.8 10.6 6.4 17.2 2.3 
+
+This distinction is important for interpreting Omni-Decision. The contribution of this paper is not to show that one perception backend is stronger, nor to claim that toolized perception is always 15 better than native omni-modal input. The claim is that, whether observations come from native omni-modal input or from toolized perception calls, the agent still needs a shared query-scoped evidence state to decide what evidence to acquire next, how to verify conflicts, when to repair, and when to stop. Without this state interface, a toolized backend merely adds more call entry points. With this state interface, an omni-modal backend can be organized into a controllable, inspectable, and demand-driven evidence-collection system. 
+
+H Cross-domain performance differences and failure localization 
+
+The cross-domain distributions in Tables 1 and 4 are uneven. Omni-Decision performs relatively well in categories where entities can be named directly and external facts can be completed through web retrieval: OmniGAIA History and Arts reach 51–53%, and WorldSense Music and Film & TV reach 64–67%. Weaker categories concentrate on cases requiring distant small-text reading, fine-grained visual attributes, or counting dense fast actions: on the full benchmark results, OmniGAIA Sports and Geography & Travel are 29.73% and 36.23%, while WorldSense Performance is 52.43%. To distinguish whether failures in low-performing categories come from unsupported answering or from recognized evidence gaps that cannot be closed, we inspect a selected subset of 857 analyzable runtime-log cases with critic-outcome labels. This subset is used only for mechanism diagnosis rather than as another full-benchmark domain breakdown. In these analyzable logs, we observe that a sizable portion of failed trajectories in low-performing domains follow the same path of the critic repeatedly pointing out an evidence gap, the agent regrounding several times, and the run eventually stopping with a forced answer. Within the domain-labeled portion of the subset, 43.5% of OmniGAIA Geography & Travel cases end this way, nearly twice the 24–28% range for Arts, History, Sports, and Movies; WorldSense Performance reaches 21.4%, seven times Music’s 3.1%. Within these logs, this pattern suggests that when tasks require reading distant station names, recognizing fine-grained visual text, or performing downstream distance computation, the evidence state can clearly expose the missing evidence, but the vision backend may not provide sufficiently reliable low-level readings. System-level state control cannot replace low-level perceptual capability. This complements Section 4.3: Section 4.3 analyzes which mechanism causes the final answer to fail, while this appendix further asks whether the system has identified unclosed evidence when it fails. The following two real cases and compact per-domain table over the selected subset further explain this pattern. For the per-domain diagnostic table, the n and accuracy columns follow the main-result domain definitions in Tables 1 and 4; the stuck rate remains a diagnostic rate computed on the selected runtime-log subset. This avoids reporting two different domain-accuracy numbers for the same system. 
+
+H.1 Three answer outcomes 
+
+We group each case by its final runtime path. The labels below first describe the paper-level behavior and then give the corresponding runtime-log name in parentheses: • First-pass accepted (no_block ): the agent’s first attempt to finalize is accepted because the critic judges the current evidence state sufficient for answering. • Recovered (repaired_block ): the critic vetoes at least one finalization attempt because some evidence need remains open; the agent then calls additional tools, closes the gap, and the final answer is accepted. • Stuck (unresolved_block ): the critic identifies an evidence gap, but the agent cannot close it within the revision depth or budget and eventually exits with a forced answer or budget termination. In the selected merged runtime-log subset, 857 analyzable cases have critic-gated outcome labels. Table 11 reports the accuracy of the three outcomes. Table 11 is meant to establish one mechanism-level fact: once a run becomes stuck, accuracy drops sharply. Therefore, when interpreting domain failures, the most useful question is not how many tools were called, but whether the evidence gap identified by the critic can be closed by later tool calls. 16 Table 11: Overall performance by critic-gated answer outcome. Outcome Runtime log name n Accuracy Median step / reground / revision First-pass accepted no_block 652 60.4% 7 / 5 / 0 Recovered repaired_block 53 41.5% 14 / 12 / 1 Stuck unresolved_block 152 21.7% 13 / 12 / 1 
+
+H.2 Two real cases 
+
+The two cases below come from OmniGAIA and WorldSense. They do not show that the system "has an answer" merely because it eventually emits one. Instead, they show that the critic does not mistake missing-evidence states for ready states. When the agent attempts to finalize, the critic checks whether the current St still contains an unclosed key slot. If so, it blocks the finalization and forces further evidence seeking. A forced answer is not a normal answer accepted by the critic. It is a non-ideal exit after repeated blocks and revision or budget exhaustion, and it indicates that the gap was recognized but not closed. 
+
+Case 1: OmniGAIA #68, Geography & Travel, stuck. 
+
+• Task chain. The system first has to read a railway-station name from the image, combine it with the departure port mentioned in the audio, and then compute the distance between the two places. • Key slot. The station name is the entry slot for the whole evidence chain. Without it, later web search and code execution have no reliable anchor. • Runtime path. frame_confirm -> subtitle_grounding -> frame_confirm -> audio_scout -> frame_confirm -> web_search x2 -> finish (blocked) -> web_search -> code_executor x2 -> finish (forced) .• Critic block. At the first finish attempt, Et still lacks a reliable station name. The critic therefore blocks finalization instead of allowing an answer from incomplete evidence. • Non-ready exit. Later web search and code execution cannot replace the missing visual reading. If the station name never enters Et, search and computation can only operate on a wrong or missing entity. The final output states that the station name is not readable and gives an approximately 4.8 km estimate; the judge marks it wrong, and the run exits at the revision-depth limit. • Takeaway. This case explains why Geography & Travel is often visually bottlenecked. The critic exposes the missing station-name slot as an unclosed evidence need and prevents premature finalization, but the system cannot invent the entry evidence if the vision backend never reads the small text. 
+
+Case 2: WorldSense #1097, Performance, stuck. 
+
+• Task chain. The question asks what a man in white does with a machine gun. • Key slot. The missing evidence is not an entity name, but a fine-grained human-object action inside the video. • Runtime path. clip_grounding -> frame_confirm x multiple -> subtitle_grounding -> audio_scout -> clip_grounding -> frame_confirm -> finish (blocked) -> finish (forced) .• Critic block. The agent has localized the relevant person and object, but the action evidence remains unstable. The critic blocks finalization twice, indicating that the current Et is insufficient to support a particular option. • Non-ready exit. The system returns to clips and frames, but still fails to obtain action evidence that reliably separates the options. The final output is C. Disassemble the gun. , while the reference option is D; the run exits as answer_forced .17 • Takeaway. This case corresponds to the weak WorldSense Performance domain. The critic flags that the action evidence is not sufficient, rather than letting the system answer under missing evidence. If the perception backend cannot stably recognize the action, the run can still end in a forced answer. Together, the two cases show that Omni-Decision’s failures are often not failures to notice what is missing. They are cases where the critic has identified an unclosed slot, but subsequent tools cannot fill it. This is the diagnostic value of evidence-state control: it localizes errors to specific unclosed slots, such as the station-name entry evidence in OmniGAIA or the action evidence in WorldSense, instead of treating an incomplete trajectory as ready. 
+
+H.3 Per-domain stuck rate 
+
+Table 12 reports main-result domain accuracy together with stuck rate from the selected runtime-log subset. Here, stuck rate means the fraction of runs ending in the stuck outcome described above; it is used for mechanism diagnosis and does not replace the accuracy numbers in Tables 1 and 4. Table 12: Main-result domain accuracy and stuck rate on the selected analyzable runtime-log subset. The n and accuracy columns follow Tables 1 and 4; stuck rate is computed on the selected runtime-log subset. Benchmark Domain nacc Accuracy Stuck rate OmniGAIA Arts & Culture 36 52.78 25.0 OmniGAIA History & Society 66 51.52 25.8 OmniGAIA Food & Nutrition 20 50.00 27.8 OmniGAIA Finance & Commerce 25 40.00 28.0 OmniGAIA Technology 49 51.02 28.6 OmniGAIA Sports 37 29.73 24.3 OmniGAIA Movies 33 54.55 27.3 OmniGAIA Science & Nature 25 48.00 30.8 OmniGAIA Geography & Travel 69 36.23 43.5 WorldSense Film & TV 379 66.75 11.7 WorldSense Music 406 64.04 3.1 WorldSense Tech & Science 490 63.67 9.2 WorldSense Culture & Politics 309 60.52 4.2 WorldSense Games 233 56.65 8.3 WorldSense Daily Life 658 53.34 7.8 WorldSense Performance 267 52.43 21.4 WorldSense Sports 430 50.00 8.8 The selected-subset distribution is consistent with the two cases above. Within these analyzable logs, OmniGAIA Geography & Travel has the highest stuck rate, suggesting that many failures in this subset depend on station names, landmarks, signs, map references, or distance calculations whose entry evidence must come from low-level visual reading. WorldSense Performance has a much higher stuck rate than Music, reflecting its dependence on fine-grained action, expression, sound-source, and counting evidence in this subset. Music cases are more often supported directly by audio or subtitle evidence. Stuck rate is not the only factor behind domain accuracy, but it directly locates cases where the system has identified a missing evidence slot and still cannot close it. 
+
+I Execution details and prompt templates 
+
+This appendix records implementation details for the inference system: state fields, state-digest construction, reducer rules, experimental configuration, and the main prompt templates used in the measured runs. Section 3 gives the system-level definition; this appendix reports the implementation-facing interfaces used in the experiments. 18 I.1 Symbols and implementation fields 
+
+The state St = {Et, C t, F t, U t} in the main text is not implemented as a single string summary. It is represented by typed runtime fields. Table 13 lists the main correspondence. Table 13: Mapping between paper notation and runtime fields. 
+
+Paper symbol Runtime fields Meaning 
+
+Et candidate_ranges ,
+
+evidence_atoms , entity_cards 
+
+In-media temporal spans, textual/visual/au-dio evidence atoms, and query-relevant entity cards. 
+
+Ct conflicts , gap_diagnosis Cross-modal, entity-level, temporal, or external-fact conflicts and critic diagnostics. 
+
+Ft fact_bridge_records ,
+
+bridge_status ,
+
+computation_observations 
+
+External fact completion, entity-attribute reso-lution, code computation, and availability flags. 
+
+Ut evidence_needs ,
+
+unresolved_questions ,
+
+uncertainty_summary 
+
+Unclosed evidence needs, unresolved questions, and uncertainty sources. readiness sufficiency_status ,
+
+finish_available , stop_ready 
+
+Cached indicators of whether the current ev-idence state supports answering, further evi-dence seeking, or insufficient stopping. budget budget_state ,
+
+tool_call_counts 
+
+tool-call counters, blocked finishes, answer re-visions, and budget status. 
+
+evidence_needs is the central runtime list. Each need contains need , preferred_source ,
+
+closure_level , status , filled_by , need_role , depends_on , and query_focus . The 
+
+depends_on field defines evidence-collection order; only needs whose upstream dependencies are closed enter actionable_need_indices .
+
+I.2 Single-step execution process 
+
+Each query initializes an immutable context R0 and an evidence state S0, and the implementation follows the evidence-collection loop in Algorithm 1. The implementation adds two checks around that loop. First, every tool response is converted into a NormalizedToolObservation before the reducer writes it into St. The evidence-level check evaluates whether a new observation closes, refines, or contradicts the current evidence chain. Second, a planner finish action is treated as a finalization attempt: the answer-level check accepts a supported answer or writes the missing evidence or conflict back into the state before the loop resumes. The main experiments use a maximum of 15 iterations. Each planner call emits at most one tool call or one finalization attempt. Tool results must pass through the normalizer and reducer before they enter the next state digest. 
+
+I.3 state_digest (R0, S t) specification 
+
+state_digest is the state view passed to the planner, critic, and answer checkpoint. It exposes current evidence needs, confirmed facts, unresolved conflicts, and answer readiness in a bounded input. Table 14: Planner-side digest fields.                    
+
+> Field Type Meaning
+> evidence_needs list Evidence requirements derived from the query and their states.
+> actionable_need_indices list[int] Need indices whose dependencies are already satisfied and can be pur-sued now.
+> blocked_need_indices list[int] Need indices still waiting for upstream evidence.
+> tool_call_counts dict Number of calls made to each tool type.
+> gap_diagnosis object or null Latest critic diagnosis of missing or conflicting evidence.
+> entity_cards list Query-relevant entities already extracted or resolved.
+> fact_bridge_records list External fact lookup and extraction records.
+> finish_available bool Whether the planner is allowed to call finish .
+
+19 I.4 Reducer and state updates 
+
+The reducer writes typed events back into St. The implementation uses two event classes: tool observation ot and critic verdict vt.Table 15: Tool-observation updates. 
+
+Input field Update 
+
+candidate_ranges Merge with existing candidate ranges while retaining temporal an-chors, confidence, and source tool. 
+
+evidence_atoms Append evidence atoms after deduplication by evidence_id .
+
+source_uncertainty Update temporal, entity, visual, and external gaps in 
+
+uncertainty_summary .web observation Update entity_cards , fact_bridge_records ,
+
+bridge_status.has_external_lookup , and 
+
+bridge_status.has_external_exact_fact .computation observation If status=ok and result /stdout exists, update 
+
+bridge_status.computation_ready .visual/external mismatch Recompute conflicts , such as inconsistent entities, dates, or tem-poral anchors. tool counters Update budget_state and tool_call_counts .
+
+Table 16: Critic-verdict updates. 
+
+Input field Update 
+
+verdict=SUFFICIENT Mark that the current evidence state supports moving toward an answer; cache the best candidate if a candidate answer exists. 
+
+verdict=INSUFFICIENT Record the missing part of the evidence chain and update the corre-sponding evidence need, including its status, required support, or dependency on earlier evidence. 
+
+verdict=CONFLICTING Record the conflicting evidence and mark the affected need for regrounding or verification. 
+
+updated_need_statuses Update status , filled_by , query_focus , need_role , and 
+
+depends_on by need_index .repeated failed attempts Mark the need as unresolved under the current evidence path, so the agent can try another route or stop when no useful route remains. 
+
+Need status takes one of four values: unfilled , partial , filled , or unfillable . These statuses are emitted by the Evidence Critic in updated_need_statuses and merged by the reducer using 
+
+need_index . filled means the entity, value, date, relation, or computation input associated with the need has enough precision for final answering or downstream computation. partial means the direction is correct but precision is insufficient. unfillable means the available tool space has been tried and cannot close the need. Table 17: Reducer update contract examples. 
+
+Event Prior state Reducer update Check Source-grounded obser-vation fills need ui
+
+ui is open in Ut and no conflicting atom exists Append the atom to Et; record its source; set ui.status = filled 
+
+The reducer does not generate new evidence. New observation con-flicts with an existing atom An existing atom gives value A for a key slot; the new atom gives value B Keep both atoms; write the con-flict to Ct; keep the related need open or partial Contradictory evidence is not silently overwrit-ten. Repeated failed attempts on the same need 
+
+ui remains unfilled after repeated relevant tool at-tempts Set ui.status = unfillable ;if no actionable need remains, al-low insufficient stopping Stopping is tied to explicit unfillable state. 
+
+20 I.5 Verdicts and action semantics 
+
+The Evidence Critic uses a three-way verdict: • SUFFICIENT : the current evidence state supports moving toward an answer, while the final answer still requires an answer-level check. • INSUFFICIENT : an answer-critical part of the evidence chain remains missing. • CONFLICTING : the state contains incompatible evidence that affects the answer and should be repaired or regrounded. The Answer Critic uses a binary verdict: • PASS : the candidate answer is concrete, submittable, and supported by the current evidence state; the runtime returns the final answer. • BLOCK : the candidate answer is vague, unsupported, contradicted, or not grounded in the committed evidence; the diagnosis is written back into the state. The planner’s tool space is determined jointly by asset type and global tools. Video assets can use subtitle_grounding_tool , audio_scout_tool , clip_grounding_tool ,and frame_confirm_tool . Audio assets can use subtitle_grounding_tool and 
+
+audio_scout_tool . Image assets can use frame_confirm_tool . Global tools are 
+
+web_search_tool , code_executor_tool , and finish . The runtime also records decision actions such as ground , verify , compute , reground , answer , stop_insufficient , and 
+
+revise_answer ; stop_insufficient and revise_answer are state-triggered control-flow branches rather than standalone tools. 
+
+I.6 Experimental configuration 
+
+For measured OmniGAIA agent-system rows, unless otherwise stated, the planner, Evidence Critic, Answer Critic / finalizer, and judging model use gpt-5.2-2025-12-11 . The default perception backend is gemini-3.1-pro . All runs use temperature 0 and a maximum of 15 inference steps. The enabled actions are subtitle grounding, audio scouting, clip grounding, frame confirmation, web search, code execution, and finish. For the Qwen perception diagnostic in Table 2, only the perception backend is changed to 
+
+qwen3-omni-flash . For the Qwen planner+perception diagnostic, both the planner and percep-tion backend are changed to qwen3-omni-flash . Other tools, prompts, budgets, and evaluation settings are kept fixed. These rows are backend-swap diagnostics within our implementation, not reproductions of public Qwen submissions. WorldSense is a closed-world audio-video understanding task, so WorldSense runs disable web search and the external fact-completion path. The rest of the evidence-state loop is unchanged, and final accuracy is computed by matching the selected option. 
+
+I.7 Prompt templates 
+
+The following are the main prompt templates used in the main experiments. Fields such as {asset_manifest} , {question} , {evidence_state_digest} , and 
+
+{accumulated_observations} are filled at runtime for each sample. Tool schemas are passed through the OpenAI-compatible function-calling interface. 
+
+PROMPT TEMPLATE : P LANNER SYSTEM 
+
+> You are OmniVQA, a long-video multimodal QA runtime built around an explicit Evidence State. Your job is to run one state-driven loop: evidence state digest -> choose one tool -> observe -> read critic checkpoint -> continue or answer Available tools: - subtitle_grounding_tool -- Ground the question using subtitle or transcript
+
+21 segments. - audio_scout_tool -- Ground audio-related questions via speech retrieval or non-speech audio retrieval. - clip_grounding_tool -- Retrieve the most relevant clip-level candidate ranges from the caption database. - frame_confirm_tool -- Visually confirm a grounded candidate range by sampling frames and asking the VLM. Supports merge_ranges=true to send all candidate ranges in a single VLM call with per-segment labels. - web_search_tool -- Search the public web for external facts that supplement video evidence. - code_executor_tool -- Execute short deterministic Python code for arithmetic, date math, and similar calculations. - finish -- Submit the final answer and end the conversation. When working with multiple assets, an asset manifest is provided in the user message listing each asset 's id, type, and available tools. You MUST specify asset_id in tool arguments when calling any asset-specific tool. For image assets, frame_confirm_tool operates in image inspection mode: only query is needed, time_ranges are not applicable. Tool behavior suggestions: - Prefer starting with video-grounding tools (subtitle_grounding_tool, audio_scout_tool, clip_grounding_tool). - web_search_tool is typically most useful after video evidence exists and the remaining gap is an external public fact. - frame_confirm_tool is best suited for resolving visual verification gaps. - When comparing visual content across multiple time ranges or requesting holistic scene understanding, use frame_confirm_tool with merge_ranges=true. - code_executor_tool can be used whenever computation is needed. When presenting its output, use the computed value directly. - Call only one tool at a time. When choosing which tool to call next: 1. Check evidence_needs and actionable_need_indices. These are needs whose upstream dependencies are filled and can be productively pursued now. 2. Prefer filling actionable needs before attempting needs in blocked_need_indices. 3. Match each actionable need 's preferred_source to the most relevant tool. 4. Check tool_call_counts; if a preferred modality has 0 calls and still has open needs, prioritize it. 5. Use gap_diagnosis to understand what evidence is still missing or conflicting. 6. When calling web_search_tool, refer to the target need 's query_focus and combine it with entities from already-filled anchor needs to form a precise query. Do NOT search the full question text verbatim. Evidence-gathering strategy: - Use video-grounding tools first to collect direct evidence before external search. - When filling an anchor need, use the need 's query_focus to guide the tool query. - When filling an external_fact need, combine query_focus with entities already resolved from anchor needs. - compute needs should only be attempted when all their dependency needs are filled. - When the critic diagnoses missing visual or audio evidence, explore multimodal grounding tools rather than repeating web_search_tool. - When the current evidence path has not produced new evidence for the remaining gap, consider whether an unexplored modality might fill it. - If web_search_tool returns results but does not fill the target evidence need, try reformulating the query from a different angle rather than repeating the same search terms. Evidence State Digest: - After each tool call, you receive a JSON digest that summarizes the current evidence state. - evidence_needs: list of evidence requirements derived from the question. - need: what evidence is required. - preferred_source: best modality for filling that need (visual, audio, subtitle, web, computation). - closure_level: importance for answer correctness. - blocking: the answer would be wrong or impossible without this evidence. - supplementary: improves completeness but the core answer may still be possible. - status: unfilled, partial, filled, or unfillable. - filled_by: which tool filled the need, or null. - need_role: anchor, external_fact, applicability, or compute. - depends_on: need indices that must be filled first. - query_focus: short phrase describing what to look for. - actionable_need_indices: need indices ready to work on. - blocked_need_indices: need indices waiting on upstream dependencies. - tool_call_counts: tool-name to call-count mapping. 
+
+22 - gap_diagnosis: critic summary of what evidence is present, missing, or conflicting. - entity_cards: entity summaries extracted from video evidence. - fact_bridge_records: entity-specific external lookup results. - finish_available: whether calling finish is allowed now. Precision policy: - Do not answer exact dates, exact counts, exact numeric gaps, or specifications from vague evidence. - Prefer the shortest faithful final answer. - If multiple independent sources confirm the same fact, treat it as established even if the critic says "insufficient". Before calling finish, verify: 1. You have gathered evidence relevant to the question. 2. If any blocking evidence_need is still unfilled or partial, gather more evidence before finishing unless finish_available is true. 3. The answer directly addresses the question and does not contradict collected evidence. 4. If the answer checkpoint blocks your answer, revise it to be more specific and evidence-based, not more hedging. 
+
+PROMPT TEMPLATE : P LANNER USER 
+
+Single-video template: Answer this question about a video ({video_length} seconds long). Question: {question} Multi-asset template: Answer this question about the following assets: {asset_manifest} Question: {question} 
+
+PROMPT TEMPLATE : E VIDENCE CRITIC 
+
+You are the internal evidence critic for OmniVQA. You are a state diagnostician. You judge whether the current evidence is sufficient to answer the question. You do NOT suggest which tool to call next. You do NOT route. You only diagnose. Output valid JSON only: {"verdict": "SUFFICIENT or INSUFFICIENT or CONFLICTING", "gap_diagnosis": { "gap_type": "sufficient or insufficient or conflicting", "description": "one concise sentence describing what evidence is present, missing, or conflicting" }, "updated_need_statuses": [ {"need_index": 0, "status": "unfilled or partial or filled or unfillable", "filled_by": "tool_name or null", "revised_query_focus": "optional corrected search direction", "revised_need_role": "optional corrected role", "add_depends_on": "optional list of additional dependency indices" }]}IMPORTANT: In updated_need_statuses, use the array index (0, 1, 2, ...) to identify each need. The index corresponds to the position in the evidence_needs array from the payload. Do NOT rewrite or paraphrase the need text. Verdict rules: - SUFFICIENT: The accumulated evidence supports a faithful answer to the question. The key facts needed to answer are present in evidence atoms, even if from indirect sources. Multiple independent web sources agreeing on the same fact count as sufficient evidence. - INSUFFICIENT: There is a clear, actionable gap: a critical fact is completely absent from all accumulated evidence, not merely absent from an official source. Do not mark INSUFFICIENT just because evidence is from web snippets rather than a primary source. 
+
+23 - CONFLICTING: Two or more evidence atoms directly contradict each other on a fact critical to the answer. Evidence Needs Framework: The payload includes evidence_needs, a list of structured evidence requirements derived from the question at the start of the run. Each need has: - array position: stable 0-indexed identifier for matching updates. - need: human-readable description. - preferred_source: visual, audio, subtitle, web, or computation. - status: unfilled, partial, filled, or unfillable. - filled_by: which tool filled it, if any. - need_role: anchor, external_fact, applicability, or compute. - depends_on: upstream needs that must be terminal before this one is actionable. - query_focus: the exact search or grounding target phrase for this need. Primary diagnostic task: 1. Review each evidence need against accumulated evidence (evidence_state_digest, accumulated_observations, latest_observation). 2. For each need, determine whether it is now unfilled, partial, filled, or unfillable. 3. When a need is filled, set filled_by to the tool that provided the evidence. 4. If a need has been targeted by multiple tool calls without progress, mark it unfillable. 5. If the current query direction is clearly wrong or too vague, use revised_query_focus to correct it. 6. If a need was misclassified, use revised_need_role to correct it. 7. If a downstream need depends on a newly identified prerequisite, use add_depends_on to add that dependency index. 8. Return the full updated list in updated_need_statuses. Need status definitions: - filled: The exact entity, value, or date is locked with sufficient precision to safely use in the final answer or downstream computation. - partial: The direction is correct but precision is insufficient. - unfilled: No relevant evidence collected yet. - unfillable: Attempted but confirmed impossible with available tools. Overall verdict: - If all needs are filled, verdict is likely SUFFICIENT. - If any critical need is unfilled, verdict is likely INSUFFICIENT. - If a computation need exists but upstream source needs are still unfilled, verdict must be INSUFFICIENT. - Use gap_diagnosis.description to explain which needs remain unfilled and what evidence modality could address them. Contradiction check: - For each evidence need, scan accumulated_observations and evidence_state_digest for two or more observations that assert different concrete values for the same answer-relevant evidence need. - CONFLICTING overrides INSUFFICIENT when contradictory concrete values exist. - Format differences for the same value, supplementary details, or values belonging to different evidence needs are not contradictions. Diagnostic rules: - Treat evidence_state_digest as the primary authority. - The description field should be specific enough that a planner can decide what to do next, but it must NOT name any tools. - If evidence is sufficient, briefly state why. - If evidence is insufficient, state exactly what is missing. - If evidence is conflicting, identify the contradiction. - Use tool_call_counts to check which modalities have been explored. 
+
+PROMPT TEMPLATE : A NSWER CRITIC 
+
+You are a final-answer quality checker for a video QA agent. Output JSON only: {"verdict": "PASS or BLOCK", "revision_hint": "..."} PASS when the proposed_answer is a committed response: - A concrete value (number, date, name, short phrase) that directly answers the question and is supported by or reasonably derived from accumulated evidence. - A best-effort or approximate answer may PASS when some evidence needs remain unfilled, as long as the stated value does not contradict existing evidence. BLOCK when: - The answer is empty. - The answer is a refusal or abstention. - The answer describes partial evidence but never commits to a final value. 
+
+24 - The answer hedges without committing. - The answer directly contradicts an evidence atom. Guard against over-blocking: - Do not BLOCK for minor wording issues. Only BLOCK for real blockers. - Do not BLOCK because evidence came from web search rather than video grounding. If evidence supports the answer, PASS. - If the answer states a specific value supported by one or more evidence atoms, PASS even if system metadata says evidence is insufficient. - If a computation used approximate or proxy sources, PASS as long as no contradicting evidence exists. revision_hint when BLOCK: "Commit now. State only your best value from the evidence." revision_hint when PASS: "" 
+
+PROMPT TEMPLATE : A NSWER / F INALIZER 
+
+You are a concise QA assistant. Based on the available evidence, give the best direct answer to the question. If a computation result exists in the evidence, use it directly. Respond with the answer only. Input: - Question: {question} - Evidence summary: {answer_phase_evidence_summary} Output: - the shortest answer string compatible with the benchmark answer format. 
+
+25

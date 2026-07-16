@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-16",
+  "date": "2026-07-16",
+  "generated_at": "2026-07-16T20:31:34",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/16/2607.11433v1-omni-decision-a-progressive-evidence-state-agent-system-for-omni-modal-qa",
+      "section": "quick",
+      "title_en": "Omni-Decision: A Progressive Evidence-State Agent System for Omni-Modal QA",
+      "authors": "Ming Ma, Yi Zhu, Yiran Zhong, Feida Zhu, Weigao Sun, Junhan Shi, Lingrui Mei, Tianming Yang, Steven Hoi",
+      "date": "2026-07-13",
+      "pdf": "https://arxiv.org/pdf/2607.11433v1",
+      "score": "6.0",
+      "evidence": "用于决策的证据状态系统",
+      "tldr": "全模态证据寻求问答任务中，证据稀疏分布于视频、音频、图像、网页和计算结果，现有系统难以追踪证据状态。本文提出Omni-Decision，一种无训练的证据状态系统，将问答转化为查询范围的证据闭合过程，通过维护结构化证据状态（包括已确认证据、未解决冲突、事实和计算依赖等）指导规划、获取和验证。在OmniGAIA和WorldSense基准上分别达到45.6%和58.3%准确率，比基线提升27.3和30.2个百分点。消融实验和轨迹审计证实了显式证据状态控制对于多步全模态证据寻求的有效性。",
+      "tags": "query:brb-er",
+      "abstract_en": "Omni-modal evidence-seeking QA requires agents to answer questions whose evidence is sparsely distributed across videos, audio, images, web pages, and computation results. Existing agentic multimodal systems often leave evidence in scratchpads, tool trajectories, or free-form histories, making it difficult to track what has been grounded, what remains missing, and when the evidence is sufficient to answer. We propose Omni-Decision, a training-free evidence-state system that turns omni-modal QA into a query-scoped evidence-closure process. For each query, Omni-Decision maintains a structured evidence state containing confirmed evidence, unresolved conflicts, fact and computation dependencies, and open evidence needs. A shared state view conditions planning, evidence acquisition, validation, repair, and finalization. Heterogeneous observations from media, web, computation, and verification modules are normalized, judged, and committed through deterministic state updates. This design enables targeted evidence acquisition, preserves sparse cross-modal cues, and provides inspectable control over repair and stopping. Omni-Decision achieves 45.6% accuracy on OmniGAIA and 58.3% on WorldSense, improving over the baselines by +27.3 and +30.2 percentage points, respectively. No-state ablations and trajectory audits further support the role of explicit evidence-state control in multi-step omni-modal evidence seeking.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
