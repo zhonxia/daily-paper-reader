@@ -1,0 +1,69 @@
+{
+  "label": "2026-07-17",
+  "date": "2026-07-17",
+  "generated_at": "2026-07-17T20:27:01",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202607/17/2607.14606v1-an-evidential-reasoning-approach-for-aerial-target-classification-and-intent-prediction",
+      "section": "deep",
+      "title_en": "An Evidential Reasoning Approach for Aerial Target Classification and Intent Prediction",
+      "authors": "Tenzing Thiley Bhutia, Subash Kumaraguru, Devaprakash Muniraj",
+      "date": "2026-07-16",
+      "pdf": "https://arxiv.org/pdf/2607.14606v1",
+      "score": "9.0",
+      "evidence": "使用证据推理方法进行目标分类和预测",
+      "tldr": "针对空中目标分类和意图预测依赖长时序数据难以应对快速威胁的问题，本文提出一种基于短序列子样本的集成方法。通过证据推理框架融合分类器输出并管理不确定性，利用规则和距离组合推断目标意图。在八目标案例中，分类准确率达88%，意图预测达93%。该方法支持从部分数据快速决策，降低了高风险环境下的错误预测风险。",
+      "tags": "query:brb-er",
+      "abstract_en": "Timely classification and intent prediction of aerial targets is crucial for a combat aircraft to make informed tactical decisions. The prevailing approach for aerial target classification relies on data-driven models using time-series data. These models perform well with long-duration data; however, this is impractical in combat situations involving rapidly evolving threats that demand quick decisions. Minimizing false predictions is essential, as uncertainty is preferable to incorrect assessments in high-risk environments. Here, we propose an integrated approach to target classification and intent prediction that enables decisions from partial data in settings where threats require rapid response. In the proposed method, predictions are generated from short sequential sub-samples instead of the entire time series, and the results are refined by propagating beliefs across sub-samples. Outputs from classifiers are combined through an evidential reasoning framework to manage uncertainty. Target intent is inferred using rule-based techniques and a distance-based combination method to fuse information over time. Due to lack of publicly available datasets, a dataset for aerial target classification was generated for evaluation. A case study involving eight targets is used to demonstrate the effectiveness of the approach, whereby accuracies of 88% and 93% are achieved for target type classification and intent prediction, respectively.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/17/2607.08019v1-from-bayes-rule-to-bayes-rules-optimal-information-processing-and-axiomatic-foundations-beyond-probability",
+      "section": "quick",
+      "title_en": "From Bayes' Rule to Bayes Rules: Optimal Information Processing and Axiomatic Foundations Beyond Probability",
+      "authors": "Jeremie Houssineau, Badr-Eddine Chérief-Abdellatif",
+      "date": "2026-07-09",
+      "pdf": "https://arxiv.org/pdf/2607.08019v1",
+      "score": "7.0",
+      "evidence": "可能性推理规则类似证据推理",
+      "tldr": "传统贝叶斯更新依赖概率，但可能性推理需要新规则。本文从信息守恒和公理两个视角，为可能性函数表示的不确定性推导出相同的规范更新：先验与似然乘积后取上确界归一化。两种推导仅学习率参数位置不同，该参数控制认知强度但无法由归一化证据识别。这一工作为可能性推断奠定基础，并解释了广义贝叶斯更新中学习率参数的作用。",
+      "tags": "query:brb-er",
+      "abstract_en": "This paper develops principled updating rules for possibilistic inference, where uncertainty about a fixed parameter is represented by a possibility function, the maxitive analogue of a probability distribution, and comparisons are made pointwise via a partial order. From two complementary foundations, an information-conservation viewpoint and an axiomatic viewpoint, we derive the same canonical update: the posterior is the prior-likelihood product followed by supremum normalisation. The two derivations agree for an arbitrary loss, differing only in where the learning-rate parameter enters. This parameter controls epistemic strength and is not identifiable from the normalising evidence alone, clarifying the role of analogous learning-rate parameters in generalised Bayesian updating.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/17/2607.14407v1-decision-making-needs-uncertainty-quantification-lecture-notes",
+      "section": "quick",
+      "title_en": "Decision Making Needs Uncertainty Quantification [Lecture Notes]",
+      "authors": "Osvaldo Simeone",
+      "date": "2026-07-15",
+      "pdf": "https://arxiv.org/pdf/2607.14407v1",
+      "score": "7.0",
+      "evidence": "决策中的不确定性量化",
+      "tldr": "决策系统依赖不确定性量化来指导行动。本文从决策理论出发，阐述不同风险偏好下最优决策所需的不确定性表示：风险中性需要后验分布，风险规避可用预测集与最坏情况决策。针对环境未知的情形，提出三种方法：校准固定预测器、利用credal集进行分布鲁棒优化、以及贝叶斯推断模型参数。核心贡献在于建立决策目标、知识水平与不确定性表示之间的严格对应，并强调需要可证明的效用保证。",
+      "tags": "query:brb-er",
+      "abstract_en": "Many signal processing systems ultimately exist to {act}. Whenever the state variable that determines the action to be taken by a decision maker, or agent, is uncertain, the way that uncertainty is represented decides how well the agent performs and how much its performance can be trusted. This lecture note develops, from first principles and within a single decision-theoretic setting, the link between the {objective} and the knowledge of an agent and the form of uncertainty representation that is sufficient to act optimally. To start, assuming a known environment distribution, we show that a risk-neutral agent needs the posterior distribution over the state, whereas a risk-averse agent can rely without loss of optimality on a {prediction set} and a worst-case decision rule. We then turn to the case in which the environment is unknown, and identify three complementary approaches to address the resulting epistemic uncertainty: calibration of a fixed predictor, credal (ambiguity) sets with distributionally robust optimization, and Bayesian inference over model parameters. The common thread is that reliable decisions require an uncertainty representation matched to the decision objective and to the knowledge profile of the agent, together with a guarantee that certifies the utility the agent will actually obtain.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/17/2607.11347v1-from-neural-network-decisions-to-training-cases-an-exact-account-via-case-based-decision-theory",
+      "section": "quick",
+      "title_en": "From Neural Network Decisions to Training Cases: An Exact Account via Case-Based Decision Theory",
+      "authors": "Manli Yan, Yuebin Lin, Yaowen Yu, Yong Zhao",
+      "date": "2026-07-13",
+      "pdf": "https://arxiv.org/pdf/2607.11347v1",
+      "score": "6.0",
+      "evidence": "基于案例的决策理论提供了一种替代推理框架；与基于规则的推理方法论相关",
+      "tldr": "在高风险决策中，神经网络需要案例级解释。本文基于案例基础决策理论，证明OLS动作读取器在固定神经表示上可实现精确案例分解：每个动作分数为训练案例回报的加权和，系数由Gram几何决定。在合成、PJM、Adult Income等任务上，该方法恢复了案例级偏好结构，Top-30一致性最高且支持重建有竞争力。仅需拟合线性探头，无需重新训练或访问原始轨迹，通过分数重建测量保真度。",
+      "tags": "query:brb-er",
+      "abstract_en": "Neural networks increasingly guide decisions in high-stakes domains such as medical diagnosis, credit approval, and energy bidding. Audit in these settings requires case-level evidence: which training cases support an action and what outcomes they carried. Case-based decision theory (CBDT) formalizes this reasoning by aggregating outcome support from remembered cases. We show that an OLS action readout fitted on a fixed neural representation admits an exact case-based decomposition. Each action score is a weighted sum of training-case returns, with coefficients determined by empirical Gram geometry. We identify a sufficient regime for CBDT similarity semantics; outside it, the coefficients should generally be treated as signed Gram-geometric influence. The decomposition yields audit signals that trace scores to training cases, measure action coherence, and identify weak support. Across synthetic CBDT, PJM, Adult Income, and Default Credit tasks, the method recovers case-level preference structure and achieves the highest mean Top-30 consistency among compared attribution baselines, while remaining competitive on support reconstruction. The audit requires only fitting an OLS top-layer probe, without retraining the representation or accessing the original optimization trajectory; probe fidelity is measured by score reconstruction.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

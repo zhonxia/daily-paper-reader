@@ -1,0 +1,592 @@
+Title: Decision Making Needs Uncertainty Quantification [Lecture Notes]
+
+URL Source: https://arxiv.org/pdf/2607.14407v1
+
+Published Time: Fri, 17 Jul 2026 00:30:26 GMT
+
+Number of Pages: 7
+
+Markdown Content:
+> 1
+
+# Decision Making Needs Uncertainty Quantification [Lecture Notes] 
+
+Osvaldo Simeone 
+
+Abstract —Many signal processing systems ultimately exist to act. Whenever the state variable that determines the action to be taken by a decision maker, or agent, is uncertain, the way that uncertainty is represented decides how well the agent performs and how much its performance can be trusted. This lecture note develops, from first principles and within a single decision-theoretic setting, the link between the objective and the knowledge of an agent and the form of uncertainty representation that is sufficient to act optimally. To start, assuming a known environment distribution, we show that a risk-neutral agent needs the posterior distribution over the state, whereas a risk-averse agent can rely without loss of optimality on a prediction set and a worst-case decision rule. We then turn to the case in which the environment is unknown, and identify three complemen-tary approaches to address the resulting epistemic uncertainty: calibration of a fixed predictor, credal (ambiguity) sets with distributionally robust optimization, and Bayesian inference over model parameters. The common thread is that reliable decisions require an uncertainty representation matched to the decision objective and to the knowledge profile of the agent, together with a guarantee that certifies the utility the agent will actually obtain. 
+
+I. R ELEVANCE 
+
+Point predictions are rarely the end goal of a signal pro-cessing pipeline, which ultimately needs to produce an action or a decision. For example, based on a prediction, a detector triggers an alarm, a scheduler assigns power or bandwidth, a controller selects a gain, a diagnostic system recommends a test. This lecture note explains, at a level accessible to a first-year graduate student, why good decisions require uncer-tainty quantification and which representation of uncertainty is appropriate for a given decision objective and state of knowledge. The material connects three topics that are usually taught separately, namely Bayesian decision theory, calibration of machine-learning predictors, and robust optimization, by placing them inside one decision problem and asking, for each, what statistic of the data is sufficient to act optimally. II. P REREQUISITES 
+
+The reader is assumed to be comfortable with elemen-tary probability (conditional distributions, expectation, Bayes’ rule), with the notion of an optimization problem and its optimal value, and with basic estimation. No prior exposure to conformal prediction, imprecise probability, or distributionally 
+
+O. Simeone is with the Institute for Intelligent Networked Systems, Northeastern University London, One Portsoken Street, London, E1 8PH, UK (email: o.simeone@nulondon.ac.uk). The work of O. Simeone was supported by the European Research Council (ERC) under the European Union’s Horizon Europe Programme (grant agreement No. 101198347), by an Open Fellowship of the EPSRC (EP/W024101/1), and by the EPSRC project (EP/X011852/1). 
+
+s o a
+
+u(s, a )
+
+Fig. 1. Bayesian network for the decision problem under study in these notes: The state s is hidden, and the only information available on it is through the observation o; the agent’s policy maps the observation o to an action a; and the utility u(s, a ) depends on the state s and the action a.
+
+robust optimization is required. Familiarity with Bayesian inference at the level of an introductory machine-learning course [1] is helpful for the final section. III. P ROBLEM STATEMENT 
+
+We consider an agent that acts once in a given environment. The problem is described by the following random variables:  
+
+> •
+
+a state s ∈ S with distribution s ∼ p(s); 
+
+> •
+
+an observation o ∈ O with conditional distribution 
+
+p(o|s); 
+
+> •
+
+an action a ∈ A drawn from a policy π(a|o) as a ∼
+
+π(a|o); 
+
+> •
+
+and a scalar utility , or reward, u(s, a ), depending on state 
+
+s and action a.The joint distribution of the random variables (s, o, a ), taking values in sets S, O, and A, respectively, factorizes as 
+
+p(s, o, a ) = p(s) p(o|s)
+
+| {z } 
+
+> environment p(s,o )
+
+π(a|o)
+
+| {z } 
+
+> policy
+
+, (1) with utility u(s, a ). A graphical representation of the joint distribution, known as Bayesian network, is shown in Fig. 1. The agent controls the policy π(a|o), while the environment is described by the joint distribution p(s, o ) = p(s) p(o|s), which dictates the state distribution p(s) and the observation model 
+
+p(o|s). We assume throughout that the agent cannot modify the environment p(s, o ) and has access only to the observation 
+
+o, and not to the underlying state s, when selecting an action 
+
+a ∼ π(a|o).The central question of this lecture note is: what must the agent know about the uncertain state s, and in what form, in order to act optimally? As we will see, the answer depends both on the agent’s attitude toward risk and on whether the environment is known. 
+
+Remark 1 (Goal-oriented decision making) . The setting ex-tends to a goal-oriented decision maker by introducing a 
+
+goal variable g ∼ p(g). This only changes the policy to 
+
+a ∼ π(a|g, o ) and the utility to u(g, s, a ). Accordingly, all the results below extend directly by conditioning on the goal. arXiv:2607.14407v1 [cs.IT] 15 Jul 2026 2
+
+IV. S OLUTION 
+
+We build the answer in stages. Sections IV-A and IV-B treat a known environment and show how the decision objective (risk-neutral vs. risk-averse) dictates the form of uncertainty representation. Section IV-C then confronts an unknown envi-ronment and introduces three complementary tools to address the resulting epistemic uncertainty. The five resulting settings are summarized in Fig. 2. Throughout the text, we denote the distribution of a random variable x ∈ X with support given by set X as p(x), not differentiating between the value p(x) for a given numerical realization x and the entire function {p(x)}x∈X . We also do not differentiate between random variable x and its realization, which is also denoted as x. We use Ex∼p(x)[·] and Pr x∼p(x)[·]
+
+for expectation and probability evaluated with respect to distribution p(x).
+
+A. Known Environment, Risk-Neutral Agent: The Posterior as Interface 
+
+A risk-neutral agent optimizes the average utility, solving the problem 
+
+max  
+
+> π(a|o)
+
+E(s,o,a )∼p(s,o )π(a|o)[u(s, a )] , (2) where the utility u(s, a ) is averaged over both the environment distribution p(s, o ) and the policy π(a|o). By the law of iterated expectations, the optimization (2) decouples across observations, yielding the equivalent form 
+
+Eo∼p(o)
+
+
+
+max  
+
+> π(a|o)
+
+Ea∼π(a|o)[U (a|o)] 
+
+
+
+, (3) where 
+
+U (a|o) = Es∼p(s|o)[u(s, a )] (4) is the average utility of action a conditioned on the environ-ment producing observation o. The conditional state distribu-tion used in the averaged utility (4) follows from Bayes’ rule as 
+
+p(s|o) ∝ p(s) p(o|s). (5) By the equivalent form (3), the agent can optimize its action separately for each observation o based on the conditional state distribution p(s|o). Furthermore, because the objective in the inner optimization in (3) is linear in the policy, the problem is solved by a deterministic policy choosing the action 
+
+a∗(o) = arg max 
+
+> a∈A
+
+U (a|o). (6) An example of utility u(s, a ), posterior p(s|o), and average utility U (a|o) is shown in Fig. 3. The key result of this section is that the posterior distri-bution p(s|o) is a sufficient statistic of the observation o for the decision problem: an optimal agent need retain nothing about o or the environment beyond p(s|o). Equivalently, as summarized in Fig. 2(a), the map o 7 → p(s|o) is the optimal 
+
+interface between the agent and its environment. 
+
+o posterior   
+
+> p(s|o)
+> expectation
+> arg max aEp(s|o)[u]
+
+a(a) 
+
+o prediction set     
+
+> Cα(o)⊆ S
+> max–min
+> arg max amin s∈C α(o)u
+
+a(b) 
+
+o calibrated pred.   
+
+> ˆp(s|o)
+> expectation
+> arg max aEˆp(s|o)[u]
+
+a(c) 
+
+o credal set     
+
+> P(Do)
+> DRO
+> arg max amin q∈P (Do)Eq[u]
+
+a(d) 
+
+o param. posterior   
+
+> p(θ|D )
+> predictive exp.
+> arg max aEp(s|o, D)[u]
+
+a(e)                                      
+
+> Fig. 2. The optimal interface between the agent and its environment across the five settings studied in the text: Each row maps the observation o(with the dataset Dor dataset Dowhere available) to a sufficient statistic and then to a decision rule selecting the action a.(a) Risk-neutral agent in a known environment (Sec. IV-A): The statistic is the exact state posterior p(s|o)and the rule is maximization of the expectation as in (6). (b) Risk-averse agent in a known environment (Sec. IV-B): The statistic is a prediction set Cα(o)with guaranteed miscoverage probability α, and the rule is the max–min policy (10). (c) Unknown environment and fixed predictor (Sec. IV-D): The statistic is the fixed predictor ˆp(s|o)and maximization of the expectation in (20) is optimal on average (among all policies dependent on the fixed predictor) provided the predictor is calibrated. (d) Unknown environment and data-driven non-parametric predictor (Sec. IV-E): The statistic is the credal set P(Do)of plausible posteriors given the observation-specific dataset Doand the action follows the distributionally robust rule (32). (e) Unknown environment and data-driven parametric predictor (Sec. IV-F): The statistic is the parameter posterior p(θ|D ), which induces the predictive distribution p(s|o, D), and the action maximizes the corresponding average utility as in (39).
+
+B. Risk-Averse Agent: Prediction Sets as Interface 
+
+Instead of the mean, an agent may value the utility it can guarantee with high probability over the unknown state s ∼
+
+p(s|o). Fix a risk level α ∈ (0 , 1) . For an observation o and action a, the value-at-risk at level α is 
+
+Vα(a|o) = sup 
+
+n
+
+ν ∈ R : Pr 
+
+> s∼p(s|o)
+
+[ u(s, a ) ≥ ν ] ≥ 1 − α
+
+o
+
+.
+
+(7) This is the largest utility attained with probability at least 1 −
+
+α under the posterior, or, equivalently, the lower α-quantile of the utility u(s, a ). The risk-averse agent maximizes it by addressing the problem 
+
+a∗
+
+> α
+
+(o) = arg max 
+
+> a∈A
+
+Vα(a|o). (8) As α → 0 the objective concentrates on the worst outcomes, trading expected utility for protection against low-utility states. As shown next, this quantile objective can be recast as a worst-case optimization over a prediction set, motivating a different interface between decision maker and environment – from a probability distribution to a set. To elaborate, let a 3u(s, a )                                  
+
+> Cα(o)1−α
+> a
+> s
+> p(s|o)
+> Vα(a|o)
+> U(a|o)
+> a∗
+> α(o)a∗(o)
+> Fig. 3. Risk-neutral versus risk-averse decision making for a fixed obser-vation o. The blue curves are level sets of the utility u(s, a )over the state
+> s(vertical axis) and the action a(horizontal axis). The posterior p(s|o)is shown against the state axis (left); the level-αprediction set Cα(o)collects states carrying posterior mass 1−α(hatched). The average utility U(a|o)
+> (solid) and the value-at-risk Vα(a|o)(dashed) yield the optimal action a∗(o)
+> in (6) and a∗
+> α(o)in (8), respectively.
+
+level-α prediction set be a map o 7 → C α(o) ⊆ S satisfying the coverage guarantee 
+
+Pr 
+
+> s∼p(s|o)
+
+[ s ∈ C α(o) ] ≥ 1 − α. (9) By (9), the set Cα(o) is guaranteed to contain the true state s
+
+with probability no smaller than 1 − α given the observation 
+
+o. An example of a level-α prediction set is shown in Fig. 3. Given such a set, as also illustrated in Fig. 3, the max– min policy selects the action maximizing the worst-case utility within the set, 
+
+amm (Cα(o)) = arg max 
+
+> a∈A
+
+min  
+
+> s∈C α(o)
+
+u(s, a ), (10) with corresponding worst-case value 
+
+Umm (Cα(o)) = max  
+
+> a∈A
+
+min  
+
+> s∈C α(o)
+
+u(s, a ). (11) As shown next, this worst-case value is an achievable value-at-risk for the max–min action. 
+
+Lemma 1 (Coverage yields a value-at-risk guarantee) . For any prediction set Cα(o) satisfying the coverage condition (9) ,the associated max–min action amm (Cα(o)) achieves a value-at-risk no smaller than Umm (Cα(o)) , i.e., 
+
+Vα(amm (Cα(o)) |o) ≥ Umm (Cα(o)) . (12) 
+
+Proof. The claim is equivalent to the inequality 
+
+Pr 
+
+> s∼p(s|o)
+
+[ u(s, a mm (Cα(o))) ≥ Umm (Cα(o)) ] ≥ 1 − α. (13) Write amm = amm (Cα(o)) to simplify the notation. Every state s ∈ C α(o) satisfies the inequality 
+
+u(s, a mm ) ≥ min  
+
+> s′∈C α(o)
+
+u(s′, a mm ) = Umm (Cα(o)) , (14) so the event {s ∈ Cα(o)} is contained in the event 
+
+{u(s, a mm ) ≥ Umm (Cα(o)) }. Hence, by (9), we have the inequality Pr s∼p(s|o)[u(s, a mm ) ≥ Umm (Cα(o))] ≥
+
+Pr s∼p(s|o)[s ∈ C α(o)] ≥ 1 − α. This coincides with (13), thus concluding the proof. Lemma 1 shows that any prediction set with a coverage guarantee yields, through the max–min rule, an action with a certified value-at-risk. The next proposition shows that the value-at-risk optimal action (8) is recovered by choosing the coverage set optimally, so that a max–min decision based on a suitably designed prediction set incurs no loss of optimality. 
+
+Proposition 1 (Prediction sets are the optimal interface for risk-averse decisions) . The optimal risk-averse action (8) is the max–min action of an optimally chosen level-α prediction set, i.e., 
+
+a∗
+
+> α
+
+(o) = amm (C∗
+
+> α
+
+(o)) , (15) 
+
+where the optimized prediction set is given by 
+
+C∗
+
+> α
+
+(o) ∈ arg max 
+
+> C⊆S :Pr s∼p(s|o)[s∈C ]≥1−α
+
+Umm (C). (16) 
+
+Proof. We first establish, for a fixed action a, the identity 
+
+Vα(a|o) = max 
+
+> C⊆S :Pr s∼p(s|o)[s∈C ]≥1−α
+
+min  
+
+> s∈C
+
+u(s, a ), (17) which states that the value-at-risk equals the best worst-case utility achievable over a covering set. Given this result, optimizing the value-at-risk over the action a yields the max-min action amm (C∗
+
+> α
+
+(o)) , as claimed in the proposition. For the “ ≥” direction in (17), take any feasible set C,satisfying the coverage condition (9), and let m(C) =min s∈C u(s, a ). Then, we have the inclusion relationship 
+
+{s ∈ C} ⊆ { u(s, a ) ≥ m(C)}, which implies the inequality 
+
+Pr s∼p(s|o)[u(s, a ) ≥ m(C)] ≥ Pr s∼p(s|o)[s ∈ C ] ≥ 1 − α. In turn, by the definition (7) of the value-at-risk, this gives the inequality m(C) ≤ Vα(a|o), which holds also when optimizing over the set. This proves the desired ≥ inequality in (17). For the reverse direction, consider the set C0 = {s :
+
+u(s, a ) ≥ Vα(a|o)}. By definition of value-at-risk, the set 
+
+C0 is feasible for problem (17), and satisfies the inequality 
+
+min s∈C0 u(s, a ) ≥ Vα(a|o), proving the desired ≤ inequality in (17). The results developed in this section show that a risk-averse agent can operate without loss of optimality on the basis of a prediction set Cα(o) ⊆ S with coverage guarantees, acting by targeting the worst case over that set (10). This is illustrated in Fig. 2(b). In this regard, by Lemma 1, any set satisfying the coverage condition (9) yields a max–min action with the value-at-risk guarantee (13). Moreover, an optimized set – namely 
+
+C∗
+
+> α
+
+(o) in (16) – yields the largest value-at-risk certificate, recovering the value-at-risk optimal action a∗
+
+> α
+
+(o).4
+
+So far coverage (9) has been imposed conditionally , i.e., for each observation o. One may instead require coverage on average over observations, 
+
+Pr 
+
+> (s,o )∼p(s,o )
+
+[ s ∈ C α(o) ] ≥ 1 − α, (18) which is weaker than (9). Prediction sets with the marginal guarantee (18) can be constructed by conformal prediction 
+
+using only data, without knowledge of the environment [2], [3]. Reference [4] shows that results analogous to Lemma 1 and Proposition 1 hold when the value-at-risk objective (7) is replaced by a suitable average, placing conformal prediction on a decision-theoretic footing. The next sections address the setting with an unknown environment. 
+
+C. Unknown Environment: Three Routes to Uncertainty Quan-tification 
+
+Suppose now that the environment distributions p(s) and 
+
+p(o|s) are unknown. We treat this setting in three ways, each highlighting a different approach to uncertainty quantification. For a preview of the main results, Fig. 2(c)–(e) summarizes the resulting interfaces. 
+
+• Fixed predictor. A predictor ˆp(s|o) is supplied to the agent. Under what conditions can the agent act on it, and trust that the resulting performance is as good as it can be given that the policy can be based solely on the predictor? The answer motivates calibration as a key property of predictors (Sec. IV-D). 
+
+• Data-driven non-parametric predictor. No predictor is given, but a dataset 
+
+D = {(oi, s i)}ni=1 
+
+> i.i.d.
+
+∼ p(s, o ) = p(s) p(o|s) (19) of n observation–state pairs is available. Because the dataset size n is finite, plugging a naive estimate into the known-environment solution is generally suboptimal, and the agent must account for the epistemic uncertainty caused by the availability of limited data. A non-parametric treatment of this uncertainty leads to credal sets and distributionally robust optimization (Sec. IV-E). 
+
+• Data-driven parametric predictor. Under parametric as-sumptions, the same epistemic uncertainty can be optimally accounted for by Bayesian inference over model parameters (Sec. IV-F). 
+
+D. Unknown Environment I: Fixed Predictor and Calibration 
+
+Assume a fixed predictor ˆp(s|o), generally not equal to the true posterior p(s|o). Treating the predictor ˆp(s|o) as if it were the true posterior, the agent takes, in place of (6), the action 
+
+a∗(ˆ p(s|o)) = arg max 
+
+> a∈A
+
+ˆU (a|o), (20) where the estimated utility under the predictor is 
+
+ˆU (a|o) = Es∼ ˆp(s|o)[u(s, a )] . (21) When does this action guarantee some notion of optimality? As seen in this section, this is the case when the predictor is 
+
+calibrated .A predictor is distribution calibrated if, among all obser-vations o that yield a given predictive distribution q(s), i.e. 
+
+ˆp(s|o) = q(s), the true fraction of states equal to s equals the predicted value q(s). Formally, with 
+
+Oq(s) = {o ∈ O : ˆ p(s′|o) = q(s′) for all s′ ∈ S} (22) denoting the set of observations mapped to the predictive distribution q(s), a distribution-calibrated predictor satisfies 
+
+p(s′|o ∈ O q(s)) = q(s′) for all s′ ∈ S . (23) In words, a distribution-calibrated model provides predictive probabilities that reflect the true conditional state frequencies. 
+
+Example 1 (Calibration is not accuracy) . Two very different predictors are both distribution calibrated. As expected, the true posterior ˆp(s|o) = p(s|o) is distribution calibrated, since each observation o in set Op(s|o) has true conditional distribution p(s|o), implying the condition (23). However, a completely uninformative predictor such as the marginal 
+
+ˆp(s|o) = p(s), which ignores the observation o, is also distribution calibrated. In fact, here every observation maps to the same predictive distribution q(s) = p(s), so the set 
+
+Oq(s) coincides with the entire observation domain O, and 
+
+p(s′|o ∈ O q(s)) = p(s′|o ∈ O ) = p(s′) (24) for all s′ ∈ S , recovering the condition (23). Both predictors are calibrated, yet only the posterior is informative, showing that calibration is distinct from informativeness and accuracy. 
+
+Proposition 2 (Calibration supports optimal decisions [5, Prop. 1]) . If ˆp(s|o) is distribution calibrated, then the plug-in policy that selects a∗(ˆ p(s|o)) in (20) is optimal among all policies that depend on the observation o only through the predictor, i.e., 
+
+a∗(ˆ p) ∈ arg max 
+
+> a( ˆ p)
+
+Eo∼p(o)[U (a(ˆ p)|o)] , (25) 
+
+where ˆp stands for the predictor ˆp(s|o).Proof. Write ˆpo = ˆ p(s|o) for the random predictive vector obtained from o ∼ p(o), with distribution p(ˆ po) and joint 
+
+p(ˆ po, s ) = p(ˆ po) p(s|ˆpo), where p(s|ˆpo) = p(s|o ∈ O ˆpo ). The conditional distribution p(s|ˆpo) is thus the true state distri-bution across all observations mapped to the same predictive vector ˆpo. By calibration (23), it is given by p(s|ˆpo) = ˆ p(s|o).For any policy a(ˆ po), conditioning on ˆpo and using calibration, we have 
+
+E(s,o )∼p(s,o )[u(s, a (ˆ po))] = Eˆpo∼p( ˆ po)
+
+h
+
+Es∼p(s| ˆpo)[u(s, a (ˆ po))] 
+
+i
+
+= Eˆpo∼p( ˆ po)
+
+h
+
+Es∼ ˆp(s|o)[u(s, a (ˆ po))] 
+
+i
+
+= Eˆpo∼p( ˆ po)
+
+h ˆU (a(ˆ po)|o)
+
+i
+
+≤ Eˆpo∼p( ˆ po)
+
+ ˆU (a∗(ˆ po)|o), (26) where the inequality follows from the definition (20). Unlike (6), the optimality condition (25) involves an ex-pectation over observations o. The price of acting through a predictor, even a calibrated one, is that optimality is generally 5
+
+guaranteed only on average , not per observation. As Exam-ple 1 shows, this price can be steep: a calibrated predictor may be completely uninformative, so its action cannot adapt to the observation o.In practice, given a predictor, the level of miscalibration must be estimated from a finite validation set. Checking full distribution calibration (23) would require binning the space of predictive distributions, which is impractical beyond a few dimensions. The most common metric, namely the expected calibration error (ECE) [6], therefore restricts attention to the predicted probability of the most likely class. While intuitive, the ECE is a biased and inconsistent estimator: its value depends on the arbitrary number and width of the bins, and no binning scheme can simultaneously average away sampling noise and retain the resolution needed to localize miscalibra-tion [7]. Binning-free alternatives instead plot the cumulative 
+
+difference between predicted and observed outcomes, ordered by predicted probability, and come with rigorous p-values for the null hypothesis of perfect calibration, giving a consistent and reproducible assessment [7]. When a predictor is found miscalibrated, calibration can be partially restored by post-hoc methods such as temperature or Platt scaling, which fit a few parameters on held-out data to align predicted probabilities with observed frequencies [5], [6]. 
+
+E. Unknown Environment II: Credal Sets and Robust Opti-mization 
+
+Consider now the case with no predictor given but a dataset (19) available. In this section, we take both variables s and o
+
+discrete, with finite cardinalities |S| and |O| . A natural first step is to evaluate the histogram , the simplest non-parametric estimator of p(s|o). Define the sub-dataset 
+
+Do = {(oi, s i) ∈ D : oi = o} (27) of the no = |D o| pairs with observation o. The histogram is the vector of state frequencies 
+
+ˆphist (s|o) = 1
+
+no
+
+X 
+
+> i:oi=o
+
+1{si = s}, (28) where 1{·} is the indicator function. The corresponding esti-mated utility (21) for a fixed action a is the empirical mean 
+
+ˆU (a|D o) = 1
+
+no
+
+X
+
+> (oi,s i)∈D o
+
+u(si, a ). (29) This quantity is not a reliable performance certificate. To see why, conditioned on the dataset size no, consider the out-of-sample disappointment [8] 
+
+Pr 
+
+> Do∼p(s|o)⊗no
+
+ U (a|o) < ˆU (a|D o) , (30) the probability that the true utility falls short of its data-driven estimate, over draws of the training data. The notation 
+
+p(s|o)⊗no represents the product distribution of the i.i.d. dataset Do. By the central limit theorem, this probability tends to 1/2 as no grows: the plug-in estimate is optimistic about half the time. Quantifying the uncertainty of ˆp(s|o) is therefore essential. A principled remedy uses credal sets and distributionally robust optimization (DRO). Define a set of conditional distri-butions in a neighborhood of the empirical distribution as 
+
+P(Do) =  q(s) : D q(s), ˆphist (s|o) ≤ r , (31) where D( ·, ·) is a divergence between distributions and r > 0
+
+controls the set size. When the divergence measure D is convex in its first argument – as for every f -divergence, including the Kullback–Leibler (KL) divergence and total variation (TV) distance – the set (31) is a credal set : a closed, convex set of probability distributions [9]. The agent then optimizes the 
+
+worst-case utility over the set, solving the DRO problem 
+
+amm (Do) = arg max  
+
+> a∈A
+
+min  
+
+> q(s)∈P (Do)
+
+Es∼q(s)[u(s, a )] 
+
+| {z }
+
+> Umm (Do)
+
+. (32) Suppose the divergence and radius are chosen so that the set covers the true posterior with probability at least 1 − δ,
+
+Pr 
+
+> Do∼p(s|o)⊗no
+
+ p(s|o) ∈ P (Do)  ≥ 1 − δ. (33) For example, with the TV distance TV( q(s), q ′(s)) =
+
+> 12
+
+P 
+
+> s∈S
+
+|q(s) − q′(s)| and radius 
+
+r =
+
+s
+
+|S| log 2 + log(1 /δ )2 no
+
+, (34) a finite-sample deviation bound for the empirical distribution [10] guarantees TV(ˆ phist (s|o), p (s|o)) ≤ r with probability at least 1 − δ, so that the condition (33) holds. 
+
+Proposition 3 (Coverage implies controlled disappointment) .
+
+If the credal set P(Do) satisfies the coverage condition (33) ,then the certificate Umm (Do) in (32) controls the out-of-sample disappointment of the max–min action, in the sense that we have the inequality 
+
+Pr 
+
+> Do∼p(s|o)⊗no
+
+ U (amm (Do)|o) < U mm (Do)  ≤ δ. (35) 
+
+Proof. Let E = {p(s|o) ∈ P (Do)} be the event that the true posterior is included in the credal set, which by (33) satisfies 
+
+Pr Do∼p(s|o)⊗no [E] ≥ 1 − δ. On the event E, the true posterior is feasible in the inner minimization of (32), yielding 
+
+Umm (Do) = min  
+
+> q(s)∈P (Do)
+
+Es∼q(s)[u(s, a mm )] 
+
+≤ Es∼p(s|o)[u(s, a mm )] = U (amm |o). (36) Hence disappointment cannot occur on event E, i.e., 
+
+{U (amm |o) < Umm (Do)} ⊆ Ec, and therefore we have Pr Do∼p(s|o)⊗no [U (amm |o) < Umm (Do)] ≤
+
+Pr Do∼p(s|o)⊗no [Ec] ≤ δ.The certificate Umm (Do) is thus a reliable high-confidence lower bound on the utility the data-driven action will actually achieve. With probability at least 1−δ, the realized utility is no worse than the certified value, so the agent may safely plan against Umm (Do) rather than the optimistic empirical mean (29). This DRO-based approach corresponds to the interface illustrated in Fig. 2(d). Credal sets satisfying (33) trade off conservatism against tightness: a larger set gives stronger coverage but a smaller, 6
+
+less useful certificate. Asking for the least conservative such rule – the pointwise largest certificate among all rules with controlled disappointment – singles out a specific design. Ref-erence [11] shows that, in the large-sample regime, choosing the metric D to be the KL divergence is optimal in this sense, yielding actions whose certificate exhibits disappointment de-caying exponentially, as exp( −nor), where r is the radius in (31). 
+
+F. Unknown Environment III: Bayesian Inference 
+
+Under parametric assumptions, the state–observation rela-tionship is modeled by a family p(s|o, θ ) indexed by parame-ters θ ∈ Θ, equipped with a prior p(θ). Epistemic uncertainty now resides in the lack of knowledge about θ. Given the dataset (19), Bayes’ rule yields the parameter posterior 
+
+p(θ|D ) ∝ p(θ)
+
+> n
+
+Y
+
+> i=1
+
+p(si|oi, θ ), (37) and the posterior predictive distribution of the state is obtained by marginalizing over it, 
+
+p(s|o, D) = Eθ∼p(θ|D )
+
+p(s|o, θ ). (38) Repeating the risk-neutral argument of Sec. IV-A with the conditional distribution p(s|o) replaced by the predictive (38), the optimal action is 
+
+ˆa(o) = arg max 
+
+> a
+
+Es∼p(s|o, D)[u(s, a )] = arg max 
+
+> a
+
+Eθ∼p(θ|D )Es∼p(s|o,θ )[u(s, a )] . (39) Hence, optimal risk-neutral decision making requires the parameter posterior p(θ|D ), and the predictive posterior (38) plays exactly the role of the known-environment interface 
+
+o 7 → p(s|o), as illustrated in Fig. 2(e). In this regard, it is worth noting that a plug-in estimate that replaces the posterior 
+
+p(θ|D ) by a point estimate such as maximum-likelihood, and acts on the distribution p(s|o, ˆθ) would discard this epistemic uncertainty and is again prone to out-of-sample disappoint-ment. Since the normalizing constant in (37) is rarely tractable, one in practice resorts to approximate inference – the Laplace approximation, variational inference, or Markov chain Monte Carlo; see [1], [12]. V. W HAT WE HAVE LEARNED 
+
+The recurring lesson in these notes is that a reliable decision needs an uncertainty representation matched to its objective, and a guarantee that certifies the value actually obtained.  
+
+> •
+
+In a known environment, a risk-neutral agent needs only the posterior p(s|o) and maximizes expected utility; a risk-averse agent needs a prediction set and maximizes worst-case utility. Coverage of the set certifies a value-at-risk (Lemma 1), and the optimally chosen set comes with no loss of optimality (Proposition 1).  
+
+> •
+
+With a fixed predictor , distribution calibration makes the plug-in action optimal – but only on average over observations (Proposition 2). Calibration is neither ac-curacy nor informativeness (Example 1), and measuring it reliably calls for binning-free, statistically consistent metrics.  
+
+> •
+
+With finite data , the empirical mean is an optimistic, and hence untrustworthy, criterion causing out-of-sample disappointment. A credal set that covers the truth with high probability turns the max–min value into a high-confidence certificate (Proposition 3); and the KL-based rule is asymptotically the least conservative such choice.  
+
+> •
+
+Under parametric models, the parameter posterior is the sufficient statistic, and the posterior predictive plays the role of the known-environment interface. Point estimates discard this uncertainty and reintroduce disappointment. Calibration, conformal prediction, credal sets and DRO, as well as Bayesian inference are usually presented as separate topics. Seen through a single decision problem, they are complementary answers to one question – what is a sufficient, trustworthy summary of uncertainty for the decision at hand? 
+
+– and together they make the case that decision making needs uncertainty quantification. AUTHOR 
+
+Osvaldo Simeone (o.simeone@nulondon.ac.uk) is the Pro-fessor of Information Engineering at Northeastern University London, where he co-directs the Institute for Intelligent Net-worked Systems (INSI), and a visiting Professor at Aalborg University. Prof. Simeone is the author of the textbooks ”Machine Learning for Engineers” and ”Classical and Quan-tum Information Theory” published by Cambridge University Press, four monographs, two edited books, and more than 250 research journal and magazine papers. He is a Fellow of the IET and IEEE. REFERENCES [1] O. Simeone, Machine Learning for Engineers . Cambridge University Press, 2022. [2] V. Vovk, A. Gammerman, and G. Shafer, Algorithmic Learning in a Random World . Springer, 2005. [3] A. N. Angelopoulos and S. Bates, “Conformal prediction: A gentle introduction,” Foundations and Trends in Machine Learning , vol. 16, no. 4, pp. 494–591, 2023. [4] S. Kiyani, G. J. Pappas, A. Roth, and H. Hassani, “Decision theoretic foundations for conformal prediction: Optimal uncertainty quantification for risk-averse agents,” in Proc. Int. Conf. Machine Learning (ICML) ,ser. PMLR, vol. 267, 2025, pp. 30 943–30 965, arXiv:2502.02561. [5] S. Zhao, M. Kim, R. Sahoo, T. Ma, and S. Ermon, “Calibrating predictions to decisions: A novel approach to multi-class calibration,”                     
+
+> Advances in Neural Information Processing Systems ,vol. 34, pp. 22 313–22 324, 2021. [6] C. Guo, G. Pleiss, Y. Sun, and K. Q. Weinberger, “On calibration of modern neural networks,” in Proc. Int. Conf. Machine Learning (ICML) ,2017, pp. 1321–1330. [7] I. Arrieta-Ibarra, P. Gujral, J. Tannen, M. Tygert, and C. Xu, “Metrics of calibration for probabilistic predictions,” Journal of Machine Learning Research , vol. 23, no. 351, pp. 1–54, 2022. [8] A. Ben-Tal, D. den Hertog, A. De Waegenaere, B. Melenberg, and G. Rennen, “Robust solutions of optimization problems affected by uncertain probabilities,” Management Science , vol. 59, no. 2, pp. 341– 357, 2013. [9] P. Walley, Statistical Reasoning with Imprecise Probabilities .Chapman and Hall, 1991. [10] T. Weissman, E. Ordentlich, G. Seroussi, S. Verdu, and M. J. Weinberger, “Inequalities for the L1deviation of the empirical distribution,” Hewlett-Packard Laboratories, Tech. Rep. HPL-2003-97R1, 2003. 7
+
+[11] B. P. G. Van Parys, P. Mohajerin Esfahani, and D. Kuhn, “From data to decisions: Distributionally robust optimization is optimal,” Management Science , vol. 67, no. 6, pp. 3387–3402, 2021. [12] J. O. Berger, Statistical Decision Theory and Bayesian Analysis , 2nd ed. Springer, 1985.
