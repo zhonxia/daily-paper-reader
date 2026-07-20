@@ -1,0 +1,133 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-20T21:11:34.513444+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2607.15532v1",
+      "source": "arxiv",
+      "title": "Logic, Optimization, and Artificial Intelligence",
+      "abstract": "Logic and optimization can, in combination, make valuable contributions to rule-based AI. Logic is the obvious medium for encoding a rule base and drawing inferences from it, while optimization provides a powerful technology for computing inferences. Their combination has taken on new relevance amid a growing concern for transparency in AI. which is important for reproducibility, explainability, trustworthiness, and fairness. Rule-based AI provides a natural solution to transparency that is becoming increasingly practical due to today's highly advanced optimization methods. This article surveys several areas of logic-optimization partnership, including probabilistic logic, Bayesian logic, belief logics and Dempster-Shafer theory, nonmonotonic (default) logic, many-valued logics, and inference of logical formulas from noisy data based on Boolean regression. It shows how to compute projections, the fundamental problem of both logic and optimization, using decision diagrams and logic-based Benders decomposition. It describes the use of postoptimality analysis to explain how conclusions are reached, further enhancing transparency, as well as the role of optimization in answer set programming modulo theories. The paper concludes by suggesting possible future research directions.",
+      "authors": [
+        "J. N. Hooker"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "math.OC"
+      ],
+      "published": "2026-07-17T00:46:08+00:00",
+      "link": "https://arxiv.org/pdf/2607.15532v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "survey on logic-optimization partnership including belief logics and Dempster-Shafer theory",
+      "llm_evidence_cn": "关于逻辑与优化结合的综述，涵盖信念逻辑和Dempster-Shafer理论",
+      "llm_evidence": "关于逻辑与优化结合的综述，涵盖信念逻辑和Dempster-Shafer理论",
+      "canonical_evidence": "关于逻辑与优化结合的综述，涵盖信念逻辑和Dempster-Shafer理论",
+      "llm_tldr_en": "Surveys how logic and optimization jointly contribute to rule-based AI, covering probabilistic logic, Dempster-Shafer theory, and belief logics for transparent inference.",
+      "llm_tldr_cn": "本文综述逻辑与优化在规则基人工智能中的协同作用。逻辑为规则库编码和推理提供媒介，优化为推理计算提供高效技术。文章重点讨论了概率逻辑、贝叶斯逻辑、信念逻辑与Dempster-Shafer理论、非单调逻辑和多值逻辑等领域，展示逻辑-优化结合如何推动透明、可解释的AI系统发展，尤其适用于专家系统和不确定性推理。",
+      "llm_tldr": "本文综述逻辑与优化在规则基人工智能中的协同作用。逻辑为规则库编码和推理提供媒介，优化为推理计算提供高效技术。文章重点讨论了概率逻辑、贝叶斯逻辑、信念逻辑与Dempster-Shafer理论、非单调逻辑和多值逻辑等领域，展示逻辑-优化结合如何推动透明、可解释的AI系统发展，尤其适用于专家系统和不确定性推理。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "Evidence reasoning theory applications in expert systems",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.10795v1",
+      "source": "arxiv",
+      "title": "STEC: Evidence Compression for Deep Search in Open-domain Multi-Hop QA",
+      "abstract": "In open-domain multi-hop question answering (QA), LLM-based search agents offer a promising approach to knowledge-intensive QA by combining retrieval with reasoning. Existing methods mainly improve open-domain multi-hop QA through reasoning paradigms, retrieval interaction, and search strategy optimization. However, using multiple search trajectories introduces a challenging final answer selection problem. Different trajectories may support different candidates, and the retrieved information can be heterogeneous, redundant, incomplete, or conflicting. Directly comparing raw trajectories exposes the verifier to noisy and unaligned content, while comparing answer strings ignores the evidence supporting each candidate, making reliable final selection difficult. To address this challenge, we propose STEC, an evidence compression framework for final answer selection in multi-hop QA. STEC selects the final answer from the existing candidate set through two mechanisms: (1) Answer-Level Evidence Compression, which groups trajectories by normalized answer identity and converts each answer group into a candidate-specific evidence representation; and (2) Evidence-Guided Answer Verification, which compares these representations and selects the final answer from the candidate set. The design shifts final selection from raw trajectory comparison to candidate-level evidence comparison. We evaluate STEC on four open-domain multi-hop QA benchmarks against representative baselines. Experimental results show that STEC performs best overall among the compared methods, and ablation results provide evidence that answer-level evidence compression contributes to final answer selection.",
+      "authors": [
+        "Xinkang Li",
+        "Rong Jiang",
+        "Xin Song",
+        "Ye Wang",
+        "Yue Han",
+        "Changjian Li"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-07-12T15:06:11+00:00",
+      "link": "https://arxiv.org/pdf/2607.10795v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "evidence compression for deep search in multi-hop QA",
+      "llm_evidence_cn": "多跳问答中的证据压缩用于深度搜索",
+      "llm_evidence": "多跳问答中的证据压缩用于深度搜索",
+      "canonical_evidence": "多跳问答中的证据压缩用于深度搜索",
+      "llm_tldr_en": "Proposes STEC, an evidence compression method to aggregate heterogeneous retrieval trajectories for final answer selection in multi-hop QA.",
+      "llm_tldr_cn": "本文针对开放域多跳问答中多条搜索轨迹导致最终答案选择困难的问题，提出STEC（证据压缩）方法，通过压缩冗余、冲突的证据，将非均匀轨迹对齐到统一空间，提升验证器对候选答案支持的判断准确性。实验表明该方法显著优于直接比较原始轨迹或答案字符串的基线。",
+      "llm_tldr": "本文针对开放域多跳问答中多条搜索轨迹导致最终答案选择困难的问题，提出STEC（证据压缩）方法，通过压缩冗余、冲突的证据，将非均匀轨迹对齐到统一空间，提升验证器对候选答案支持的判断准确性。实验表明该方法显著优于直接比较原始轨迹或答案字符串的基线。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "rule based inference methodology using evidential reasoning",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.14817v1",
+      "source": "arxiv",
+      "title": "Evaluating Epistemic Uncertainty: Beyond OOD Detection and Active Learning",
+      "abstract": "Current evaluation of epistemic uncertainty relies on tasks such as out-ofdistribution detection and active learning. However, the Bayes-optimal decision strategies for these tasks do not coincide with the scores commonly used to quantify epistemic uncertainty. Building on the epistemic reject-option framework, we evaluate epistemic uncertainty using its ability to identify regret, the reducible error. Formulating selective prediction as a constrained optimization over coverage, expected risk, and regret, we prove the optimal selector is a thresholded convex combination of the ground-truth aleatoric and epistemic uncertainties. This theoretical unification exposes a weakness in recent uncertainty disentanglement literature: we demonstrate that standard correlation metrics between learned components do not necessarily predict their actual operational utility. We instead propose to evaluate the achievable risk, regret, coverage surface of the decomposition as a diagnostic for joint disentanglement and utility. Benchmarking standard methods on datasets with dense human annotations reveals that decision-theoretic rankings can disagree substantially with proxy-task rankings, including pairwise rank inversions between methods that are top-ranked on one criterion and bottom-ranked on other.",
+      "authors": [
+        "Jakub Paplhám",
+        "Willem Waegeman",
+        "Eyke Hüllermeier",
+        "Vojtěch Franc"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-16T10:35:56+00:00",
+      "link": "https://arxiv.org/pdf/2607.14817v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "epistemic uncertainty evaluation framework for reducible error",
+      "llm_evidence_cn": "认知不确定性评估框架，可识别可减少误差",
+      "llm_evidence": "认知不确定性评估框架，可识别可减少误差",
+      "canonical_evidence": "认知不确定性评估框架，可识别可减少误差",
+      "llm_tldr_en": "Proposes a selective prediction framework that uses regret to evaluate epistemic uncertainty, theoretically unifying aleatoric and epistemic uncertainties.",
+      "llm_tldr_cn": "本文针对当前认知不确定性评估依赖OOD检测和主动学习等任务的问题，提出基于后悔（regret）的选择性预测框架，证明最优选择器是真实偶然不确定性和认知不确定性的阈值凸组合，从而理论统一了两类不确定性。该工作暴露出当前不确定性解耦文献的弱点，为不确定性建模提供了新视角。",
+      "llm_tldr": "本文针对当前认知不确定性评估依赖OOD检测和主动学习等任务的问题，提出基于后悔（regret）的选择性预测框架，证明最优选择器是真实偶然不确定性和认知不确定性的阈值凸组合，从而理论统一了两类不确定性。该工作暴露出当前不确定性解耦文献的弱点，为不确定性建模提供了新视角。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "uncertainty modeling in belief rule base",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
