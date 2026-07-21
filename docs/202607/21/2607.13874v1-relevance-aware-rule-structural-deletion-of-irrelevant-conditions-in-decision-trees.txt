@@ -1,0 +1,910 @@
+Title: Relevance-Aware Rule: Structural Deletion of Irrelevant Conditions in Decision Trees
+
+URL Source: https://arxiv.org/pdf/2607.13874v1
+
+Published Time: Thu, 16 Jul 2026 01:27:33 GMT
+
+Number of Pages: 31
+
+Markdown Content:
+# Relevance-Aware Rule: Structural Deletion of Irrelevant Conditions in Decision Trees 
+
+Jung-Sik Hong, Jeongeon Lee, Min Kyu Sim, and Sangheum Hwang ∗
+
+Department of Data Science, Seoul National University of Science and Technology 
+
+{hong; jelee; mksim; shwang}@seoultech.ac.kr 
+
+Abstract 
+
+Decision trees generate interpretable if–then rules, yet they contain irrelevant conditions (IRCs). These IRCs arise from the structural mechanism of tree splitting and persist even in modern optimal sparse tree induction algorithms. Existing IRC deletion methods overlook this structural mechanism; therefore, they either preserve the original tree too loosely to remain reliable, or too strictly to achieve meaningful simplification. This study provides theoretical foundations for reliable IRC deletion by establishing theorems and propositions related to the underlying IRC mechanism. The key finding is that a binary split shifts class proportions in opposite directions relative to the parent. Specifically, an increase in the class-1 proportion along one branch necessitates an increase in the class-0 proportion along its sibling, thereby generating a C1-link and a C0-link. Based on this structural fact, we propose a structural IRC deletion framework. Relative to each leaf, links that increase the leaf-class proportion are matched, whereas links that increase the proportion of the opposite leaf-class are mismatched. These mismatched links are flagged as structurally suspicious IRC candidates. Rather than deleting them outright, the framework rigorously diagnoses their relevance by assessing prediction reliability. It selectively deletes conditions that are structurally and empirically irrelevant, while strictly protecting those whose deletion would reduce the rule’s reliability. Experimental results confirm that the proposed framework achieves substantial rule simplification without sacrificing the reliability of the original tree. 
+
+Keywords: decision tree; interpretability; irrelevant condition; relevance-aware rule; pruning 
+
+1. Introduction 
+
+Decision trees translate model decisions into explicit root-to-leaf rules. A terminal leaf defines a rule of the form 
+
+C1 ∧ C2 ∧ · · · ∧ Cr ⇒ y = c, 
+
+where C1, . . . , C r are the conditions on the root-to-leaf path and c is the leaf class. Root-to-leaf rules support local interpretation, but recursive tree induction forces each descendant leaf to inherit every upstream condition. As a result, the root-to-leaf path rule is often over-specified, accumulating irrelevant conditions (IRCs) that do not contribute to its decision. Because these IRCs hinder interpretability, their deletion is necessary to ensure clear and concise explanations. 
+
+> ∗Corresponding author.
+
+1arXiv:2607.13874v1 [cs.LG] 15 Jul 2026 IRC deletion addresses a distinct problem from global tree simplification , which encompasses both tree pruning and optimal tree induction. While tree pruning removes or replaces leaves and subtrees to reduce the overall tree size, IRC deletion removes an internal antecedent from a surviving path. A globally simplified tree may therefore still contain IRCs. In addition, IRCs frequently remain even in optimal sparse tree induction algorithms that generate small-sized trees (Izza et al., 2022). To perform the path-level IRC deletion, existing literature has largely explored two prominent directions. Empirical rule post-pruning deletes antecedents using statistical test or certainty criteria and may convert a partitioning tree into an overlapping rule-set classifier that requires conflict resolution (Quinlan, 1987, 1993). Logical path-redundancy testing instead certifies whether antecedent deletion preserves the decision tree’s class consequence (Izza et al., 2022). They do not provide a structural explanation for why certain conditions become irrelevant in certain paths of trees. We propose a structural IRC deletion method that uncovers the underlying mechanics of why a condition of a path becomes irrelevant. Our starting point is an elementary but useful structural fact : in a binary split, the parent class proportion is a weighted average of the two child proportions. Hence, if one child increases the class-1 proportion, the other child necessarily increases the class-0 proportion. We call the corresponding outgoing links class-1-increasing links (C1-links) and class-0-increasing links (C0-links). This C1/C 0 link annotation serves as the primary structural signal used in this paper. The C1/C 0 annotation itself is merely a local diagnostic signal, not a judgment of relevance. To formulate such a judgment, we evaluate this signal relative to a specific leaf node of class c. A link in the path is matched when its orientation aligns with the leaf class c, and mismatched when it points toward the opposite class. This leaf-relative diagnosis provides a structural warning, yet it remains inconclusive; a mismatched link is structurally suspicious but not inherently irrelevant. To rigorously assess whether a condition should be deleted, we define relevance-aware rules —rules that preserve conditions essential for class support or reliability refinement, while removing only those that are structurally and empirically redundant. To this end, we distinguish three analytical layers: (i) Local annotation : where a link is tagged as C1, C0, or neutral; (ii) Leaf-relative diagnosis : where a link is classified as matched or mismatched; (iii) Path-level effect : where deleting the condition is evaluated by its impact on the rule. At the third layer, we identify a positive-relevance effect (where a condition preserves path reliability), a negative-relevance effect (where a condition identifies a lower-reliability subregion), or a probabilistic IRC effect (where the condition is redundant). By explicitly separating these layers, we avoid the false assumption that every mismatched link is inherently irrelevant, ensuring that our final relevance-aware rules are both compact and structurally faithful. Analytical-layer application depends on how each procedure certifies reliable deletion within a rule domain. Structural candidate generation is domain-independent. The acceptance criterion that converts a candidate into an accepted deletion, however, must be specialized by domain to remain reliable. Two complementary procedures implement this separation. Method 1, the broader mismatch-guided procedure, generates candidates from leaf-relative C1/C0 mismatches. Its acceptance 2criterion is domain-specific: for deterministic rules, a candidate set is accepted only through a joint hard-implication certificate , guaranteeing R ⇒ y = c; for class-probability rules, mismatches within label-homogeneous ancestor subtrees are preserved by default, while mismatches elsewhere are deleted only after verifying path-level reliability preservation within a two-sided tolerance. Method 2, the narrower sibling-certified procedure, certifies deletion directly from same-class sibling-leaf topology: whenever one child of a split is a same-class leaf and the opposite subtree contains a descendant leaf of that class, the link into that subtree is removable regardless of orientation. This certificate requires no domain-specific criterion, and guarantees exact preservation of the fitted tree’s predictions, full coverage, and zero opposite-class rule conflict in either domain. Method 1 thus prioritizes broader relevance-aware compression, whereas Method 2 offers conservative simplification with exact source-tree preservation. The study makes three contributions: 
+
+• Find the structural mechanics of IRC in decision trees. 
+
+• Formalize path-level relevance semantics to diagnose the functional role of path conditions across three distinct analytical layers. 
+
+• Develop a structural IRC deletion framework that efficiently identifies and removes IRCs, achieving scalability linear in the number of leaf rules. The remainder of the paper is organized as follows. Section 2 positions the study relative to tree pruning, rule post-pruning, and logical path-redundancy testing. Section 3 defines the problem and notation. Section 4 presents the proposed methods, Section 5 reports the experiments, Section 6 discusses, and Section 7 concludes the paper. 
+
+2. Related Work 
+
+Structural IRC deletion differs from global tree simplification, empirical rule post-pruning, and logical path-redundancy testing in both the object simplified and the behavior preserved. 
+
+2.1. Global tree simplification 
+
+Subtree pruning reduces global tree complexity but does not directly shorten a surviving leaf rule. Cost-complexity, reduced-error, and pessimistic pruning replace subtrees with leaves or select a smaller tree according to predictive and complexity criteria (Bohanec and Bratko, 1994; Breiman et al., 1984). Subtree-pruning methods can reduce the number of nodes and leaves, but every retained leaf still inherits all conditions on its retained root-to-leaf path. A globally smaller tree may therefore still produce a locally over-specified rule. Optimization-based tree induction reduces dependence on greedy split selection but does not directly address path-internal condition deletion. Optimization-based tree-induction methods optimize tree-level objectives under structural constraints rather than relying only on greedy top-down growth (Bertsimas and Dunn, 2017; Hu et al., 2019). Global tree optimization, however, does not preclude path-internal IRCs (Izza et al., 2022). The proposed IRC-deletion methods can therefore post-process both greedy and optimization-based fitted trees. 32.2. Empirical rule post-pruning 
+
+Rule post-pruning directly shortens antecedents, but its primary objective is the predictive performance of the resulting rule-set classifier. Quinlan (1987) extracts rules from a decision tree and deletes antecedents using statistical relevance and certainty criteria. C4.5rules further combines antecedent deletion with estimated-error evaluation, subset selection, and rule ordering (Quinlan, 1993). Related rule-learning methods, including PRISM, RIPPER, and PART, construct or select rule sets outside the original tree partition through modular or separate-and-conquer procedures (Cendrowska, 1987; Cohen, 1995; Frank and Witten, 1998). Independent rule simplification may create overlapping rules with different class predictions. The resulting classifier behavior therefore depends on rule ordering, conflict resolution, coverage, and fallback policies. Empirical antecedent deletion can improve aggregate rule quality while changing the population represented by an individual leaf rule. Removing an antecedent expands the descendant rule beyond the original leaf region, and the expanded rule may cover cases from sibling or ancestor regions with different structural meanings. A higher empirical class probability can therefore reflect broader coverage rather than faithful simplification of the original leaf. Section 4.2 defines expansion that absorbs a descendant rule into a broader ancestor region as ancestor-rule assimilation and evaluates ancestor-rule assimilation separately from predictive accuracy. Rule compactness alone does not establish explanation quality. Work on comprehensible and interpretable rule models emphasizes that a short rule may omit conditions that identify scientifically or operationally meaningful subgroups (Freitas, 2014; Rudin et al., 2022). For decision-tree path rules, a condition may be unnecessary for preserving the final class label but still distinguish leaf regions with different class reliability. The distinction between label preservation and reliability preservation motivates evaluating the resulting rule rather than judging deletion only by antecedent count or one-sided reliability improvement. 
+
+2.3. Logical path-redundancy testing 
+
+Logical path-redundancy methods provide exact preservation guarantees for individual path decisions. Izza et al. (2022) test whether deleting a path condition preserves the class consequence under the fitted tree. The path condition is the unit of analysis, and the acceptance criterion prohibits changes to the fitted tree’s class decision. Exact fitted-tree preservation is stronger than an empirical tolerance criterion but may be more conservative when limited behavioral change is acceptable. Logical path-redundancy testing certifies deletion safety after tree fitting but does not identify structurally suspicious conditions before evaluation. 
+
+2.4. Position of Relevance-Aware Structural IRC Deletion 
+
+Our structural IRC deletion procedure closes the methodological gap that global tree simplifi-cation, empirical rule post-pruning, and logical path-redundancy testing leave open between aggressive antecedent deletion and exact fitted-tree preservation. It does so by using split-induced tree structure to identify suspicious inherited conditions and by associating each accepted deletion with an explicit preservation target. The resulting procedure removes path conditions from a fixed fitted tree while retaining one output rule for every source leaf. The proposed framework uses two complementary forms of structural evidence. Method 1 4uses leaf-relative C1/C0 mismatch together with setting-specific deterministic or reliability-based acceptance criteria, whereas Method 2 uses same-class sibling-leaf topology as a sample-independent certificate for exact source-tree preservation. 
+
+3. Problem Setting and Notation 
+
+Relevance-aware structural IRC deletion requires explicit definitions of tree links, rule regions, deletion sets, and training-rule reliability. Let 
+
+S = {(xi, y i)}Mi=1 
+
+be the training sample, where M is the number of training instances and yi ∈ { 0, 1}, and let 
+
+T be the fitted binary source tree. For node N , n(N ) is its training count, nc(N ) is its class-c
+
+count, pc(N ) = nc(N )/n (N ) is its class-c proportion, and Re( N ) is its predicted class. Table 1 summarizes the notation; quantities indexed by S are computed on the training sample. 
+
+Table 1: Core notation for the tree, rule regions, structural diagnostics, and relevance-aware structural IRC deletion. 
+
+Notation Meaning 
+
+S = {(xi, y i)}Mi=1 Training sample of M labeled instances. 
+
+Np, N c, e = ( Np, N c) Parent, child, and their directed tree link. 
+
+C(e) Path condition associated with link e.
+
+n(N ), n c(N ), p c(N ) Node count, class-c count, and class-c proportion. 
+
+Re( N ) Predicted class of node N .
+
+P(L), GR( L) Root-to-leaf link sequence and generated rule for leaf L.
+
+R−Q Rule obtained from R by deleting links in Q.
+
+DS (R) Indices of training cases satisfying rule R.
+
+supp S (R) Rule support |D S (R)|.
+
+ˆpc, S (R) Rule reliability: class-c fraction among cases satisfying R.
+
+Dc(Q; R) Change in rule reliability after deleting set Q.
+
+ϵ Operational tolerance for the set-level training-reliability change in M1-P. 
+
+rf_tol Numerical tolerance for C1/C0 orientation ties. 
+
+Leaves( N ), Λ( N ) Descendant leaves and their set of predicted labels below N .
+
+SIB( L) Sibling-leaf-certified candidate links for leaf L.
+
+Hc(L) Largest class-c label-homogeneous ancestor subtree containing L.
+
+I, J, Q Ordered candidate list, accepted deletion set, and trial deletion set. 
+
+CGR 1,D , CGR 1,P Deterministic and class-probability outputs of the mismatch-guided mechanism. 
+
+CGR 2,D , CGR 2,P Deterministic and class-probability outputs of the sibling-certified mechanism. 
+
+Each link e has an associated path condition C(e). Let P(L) = ( e1, . . . , e r) denote the ordered root-to-leaf link sequence for leaf L. The generated rule is 
+
+GR( L) = 
+
+> r
+
+∧
+
+> j=1
+
+C(ej ).
+
+For a deletion set Q ⊆ { e1, . . . , e r}, define 
+
+R−Q = ∧ 
+
+> ej/∈Q
+
+C(ej ).
+
+For a singleton, R−e = R−{ e}. The sequence order is used when candidates are evaluated; Q
+
+and the accepted deletion set are sets of links. Deleting a link means deleting its associated 5path condition; links and conditions remain distinct objects. Each structural deletion variant produces exactly one output rule per input leaf and performs neither cross-rule deduplication nor redundant-rule elimination. The training-sample rule region, support, and rule reliability are 
+
+DS (R) = {i : xi |= R}, supp S (R) = |D S (R)|,
+
+ˆpc, S (R) = |{ i ∈ D S (R) : yi = c}| 
+
+supp S (R) .
+
+We call ˆpc, S (R) rule reliability throughout and omit S when the training sample is unambiguous. 
+
+Definition 1 (Deterministic rule and class-probability rule settings) . In a deterministic rule setting, a generated rule is a hard implication R ⇒ y = c, and Q consists of IRCs when 
+
+R−Q ⇒ y = c remains valid. In a class-probability rule setting, 
+
+R ⇒ (c, ˆpc(R)),
+
+so preserving only the predicted label need not preserve the rule’s empirical meaning. 
+
+3.1. C1/C0 link orientation Definition 2 (C1 and C0 links) . For e = ( Np, N c), let 
+
+∆1(e) = p1(Nc) − p1(Np).
+
+The link is a C1 link if ∆1(e) > 0 and a C0 link if ∆1(e) < 0. Values with |∆1(e)| ≤ rf_tol are treated as neutral and do not supply mismatch candidates. 
+
+Lemma 1 (Class-ratio complementarity) . Let parent Np be split into two nonempty children 
+
+Nl, N r. If p1(Nl) > p 1(Np), then p1(Nr) < p 1(Np), equivalently p0(Nr) > p 0(Np). The symmetric statement holds with l, r interchanged. Proof. Let wl = n(Nl)/n (Np) and wr = n(Nr)/n (Np). Then wl, w r > 0, wl + wr = 1 , and 
+
+p1(Np) = wlp1(Nl) + wrp1(Nr).
+
+If p1(Nl) > p 1(Np), then 
+
+wr{p1(Np) − p1(Nr)} = wl{p1(Nl) − p1(Np)} > 0,
+
+so p1(Nr) < p 1(Np). The class-0 claim follows from p0 = 1 − p1. ■
+
+Lemma 1 justifies complementary C1/C0 link orientation for proportion-changing binary splits. Figure 1 uses both line style and text labels, so its two orientations do not depend on color. 
+
+Definition 3 (Matched and mismatched status) . Let L predict class c. A C1 or C0 link in 
+
+P(L) is matched when it is a C c link and mismatched when it is a C (1 − c) link. These are leaf-relative structural diagnostics, not relevance labels. 6Parent Np
+
+p1 = 0 .70 
+
+Child Nl
+
+p1 = 0 .40 
+
+Child Nr
+
+p1 = 0 .90   
+
+> C0 link C1 link
+> class 0 increases class 1 increases
+
+Figure 1: C1/C0 link orientation. A proportion increase toward class 1 on one branch entails a movement toward class 0 on the sibling branch. Red and dashed denote C0; blue and solid denote C1. The labels preserve the distinction in grayscale, and the orientation makes no relevance claim for a descendant rule. 
+
+3.2. Entropy is not link-level relevance 
+
+Define the scalar binary-entropy function 
+
+h(t) = −t log t − (1 − t) log(1 − t)
+
+and node entropy Ent (N ) = h(p1(N )) . This notation separates the scalar function from a node quantity. 
+
+Lemma 2 (Entropy asymmetry) . Assume p = p1(Np) > 1/2. If child N + has q = p1(N +) > p ,then h(q) < h (p). Let N − be its sibling and s = p0(N −). Then 
+
+Ent( N −) < Ent( Np) ⇐⇒ s > p, 
+
+with equality when s = p, and 
+
+Ent( N −) > Ent( Np) ⇐⇒ 1 − p < s < p. 
+
+Proof. The function h is symmetric and strictly decreasing on (1 /2, 1) , so q > p > 1/2 gives 
+
+h(q) < h (p). For the sibling, h(p1(N −)) = h(s), whereas Ent (Np) = h(p) = h(1 − p). The cases follow by comparing the distances of s and 1 − p from 1/2. ■
+
+Table 2 shows the scientific distinction: complementary C1/C0 orientation is fixed by the proportion change, whereas the sibling entropy can be either higher or lower than the parent’s. 
+
+Table 2: Entropy asymmetry for parent counts (70 , 30) , with a C1 child whose class-1 proportion is 0.90. C1-child counts C0-sibling counts Sibling p0 Sibling entropy vs. parent 
+
+(9 , 1) (61 , 29) 0.322 higher 
+
+(36 , 4) (34 , 26) 0.433 higher 
+
+(54 , 6) (16 , 24) 0.600 higher 
+
+(63 , 7) (7 , 23) 0.767 lower 
+
+Entropy explains split selection but does not define link-level relevance; the path-level deletion effect on a complete generated rule defines condition relevance. 74. Relevance-Aware Structural IRC Deletion 
+
+Relevance-aware structural IRC deletion separates structural candidate generation from setting-specific deletion acceptance. Strict mismatch provides a broader diagnostic candidate source, whereas same-class sibling topology provides a narrower exact-preservation certificate independent of link orientation. The implementation names the mismatch-guided branch Method 1 and the sibling-certified branch Method 2; the D/P suffix identifies the deterministic or class-probability setting. Table 3 summarizes the candidate sources, acceptance rules, and preservation targets. 
+
+Table 3: Structural evidence, setting-specific acceptance, and preservation targets.                    
+
+> Variant Candidate source Acceptance Guarantee M1-D Strict-mismatch structural candidates Complete set passes a joint de-terministic certificate Exact hard implication on the certified deterministic domain. M1-P IRC-presumed strict mis-matches outside Hc(L)
+> ReliabilitySelect Final training-rule reliability differs from its original value by at most ϵ.M2-D SIB( L)only Delete the complete certified set Exact source-tree predictions, full coverage, and zero opposite-class rule conflict. M2-P SIB( L)only Delete the complete certified set Exact source-tree predictions and accuracy, full coverage, and zero opposite-class rule conflict.
+
+4.1. Deterministic structural certificates 
+
+In the deterministic rule setting, an accepted deletion must preserve the hard class implication. C1/C0 mismatch is a candidate signal rather than a certificate, so the complete proposed deletion set is evaluated jointly. Same-class sibling topology instead supplies exact local evidence independently of link orientation. When a finite deterministic domain X0 is explicitly listed, the joint M1-D certificate can be evaluated directly: a deletion set Q is accepted only if every x ∈ X 0 satisfying R−Q has class 
+
+c. This establishes the weakened implication on X0, without extending it to unlisted attribute combinations. When a class-oriented order is available, the following theorem supplies an analytic sufficient certificate on the stated feasible domain. 
+
+Definition 4 (Class-oriented monotonicity) . For class c, let ⪯c be a partial order on the feasible domain X . A deterministic response f is class-c monotone when x′ ⪯c x and f (x′) = c imply 
+
+f (x) = c.
+
+Theorem 1 (Joint monotone weakening) . Let a valid class-c rule be 
+
+R = A ∧ BQ ⇒ f (x) = c, 
+
+where BQ is the conjunction of all conditions selected for simultaneous deletion. Suppose f is class-c monotone and, for every feasible x |= A, there exists a feasible witness x′ |= A ∧ BQ such that x′ ⪯c x. Then the jointly weakened rule A ⇒ f (x) = c is valid. Proof. For any feasible x |= A, the premise supplies x′ |= A ∧ BQ. The original rule gives 
+
+f (x′) = c. Because x′ ⪯c x, class-oriented monotonicity gives f (x) = c. The argument applies to the complete deletion set Q, not to its members one at a time. ■
+
+8Corollary 1 (Product Boolean domain) . On {0, 1}d, suppose f is monotone in known class-favorable coordinate directions. If every condition in BQ restricts a coordinate in the class-unfavorable direction and, for every x |= A, the retained conjunction permits all deleted coordi-nates to be replaced simultaneously by values satisfying BQ, then Q can be deleted jointly. Proof. Replace all coordinates constrained by BQ simultaneously while retaining A. The assumed feasibility supplies the witness required by Theorem 1. ■
+
+Repeated predicates on the same feature are intersected before the feasibility test. Failure of the complete-set certificate preserves the original rule. Individually plausible conditions are not accumulated as though singleton certificates implied joint soundness. Formally, e = ( Np, N b) ∈ SIB (L) when e ∈ P (L), Nb is the internal child of Np containing L,and the other child of Np is a leaf with predicted class Re( L).
+
+Proposition 1 (Sibling-leaf IRC) . Let internal node Np have a leaf child Na predicted as class 
+
+c and an internal child Nb. For every descendant leaf L ∈ Leaves (Nb) also predicted as class c,the link from Np to Nb is an IRC with respect to the fitted classifier T .Proof. Write the descendant rule as PL ∧ C(Np, N b) ∧ QL ⇒ c. After deleting the link condition, a point satisfying the retained conjunction either continues through Nb to L, which predicts c, or takes the opposite branch to Na, which also predicts c. Thus the class implication is preserved with respect to T . ■
+
+Figure 2 illustrates the same-class sibling certificate for a class-1 descendant.    
+
+> Np
+> sibling leaf class 1
+> Nb
+> internal child
+> L1leaf class 1
+> L2leaf class 0
+> same-class leaf candidate
+
+Figure 2: Sibling-leaf certificate for class 1. The dashed link is removable for the same-class descendant L1, independently of its C1/C0 orientation. 
+
+Theorem 2 (Joint sibling deletion by rootmost divergence) . For a leaf L predicted as class c,let Q ⊆ P (L) contain links whose opposite child is a leaf predicted as c. Deleting every link in Q
+
+simultaneously preserves the class-c implication of the rule with respect to T .Proof. Take a point satisfying all retained conditions. If it follows the source path at every deleted link, it reaches L. Otherwise, consider the deleted link closest to the root at which it leaves the source path. The opposite branch terminates immediately at a class-c sibling leaf. Thus every admitted point is classified as c, regardless of lower deleted links. ■
+
+9Corollary 2 (Fitted-tree rule-set preservation) . Apply Theorem 2 to every leaf rule while retaining one output rule per source leaf. For every input x, at least one output rule covers x,and every covering rule predicts T (x). Hence the output rules preserve fitted-tree predictions and accuracy under any conflict resolver, retain full coverage, and have zero opposite-class rule conflict. Proof. The generalized rule originating from the source leaf of x still covers x, establishing coverage. Theorem 2 implies that any other generalized rule covering x has consequent T (x), so all covering rules agree. ■
+
+The sibling certificate is independent of C1/C0 orientation. Consequently, SIB (L) may include a matched link or a link inside Hc(L); neither property changes sibling-certified candidacy. 
+
+4.2. Class-probability relevance 
+
+For a class-c generated rule R and a deletion set Q, define 
+
+Dc(Q; R) = ˆ pc(R−Q) − ˆpc(R).
+
+The single-condition effect is Dc({e}; R), abbreviated Dc(e; R). The set-level definition covers both joint and cumulative greedy trials. For tolerance ϵ ≥ 0, a deletion set is reliability-decreasing when Dc(Q; R) < −ϵ, reliability-increasing when Dc(Q; R) > ϵ , and reliability-preserving when |Dc(Q; R)| ≤ ϵ.
+
+Definition 5 (Path-level relevance effects) . For a single condition e in a class-c rule R:(i) A positive-relevance effect occurs when Dc(e; R) < −ϵ; deleting e lowers class-c rule reliability beyond tolerance. (ii) A negative-relevance effect occurs when Dc(e; R) > ϵ ; deleting e raises class-c rule reliability beyond tolerance, although e may encode a lower-reliability same-label refinement. (iii) A probabilistic IRC effect occurs when |Dc(e; R)| ≤ ϵ; deleting e preserves class-c rule reliability within tolerance. The three effects are relative to R, class c, the training sample, and ϵ; the effects are not intrinsic labels of individual links. When |Q| > 1, only the set-level terms are used because condition effects may interact or offset one another. Table 4 summarizes the set-level terminology and the corresponding singleton interpretation. For node N , define 
+
+Λ( N ) = {Re( L′) : L′ ∈ Leaves( N )}.
+
+For a leaf L with c = Re (L), let S be the highest ancestor of L such that Λ( S) = {c}. The subtree rooted at S is denoted Hc(L) and is the largest c-label-homogeneous ancestor subtree containing L. If no nonleaf ancestor satisfies the condition, set Hc(L) = L. A link lies inside 
+
+Hc(L) when both its parent and child belong to the rooted subtree; otherwise the link lies outside. The mismatch-guided mechanism preserves matched links by construction; matched status alone does not establish positive relevance. Mismatched links inside Hc(L) are treated as 10 Table 4: Set-level deletion effects and their singleton relevance interpretations.                       
+
+> Effect Definition Interpretation Reliability-decreasing deletion
+> Dc(Q;R)<−ϵJoint deletion lowers class-ctraining-rule reliability beyond tolerance; for Q={e}, deleting the condition produces a positive-relevance effect. Reliability-increasing deletion
+> Dc(Q;R)> ϵ Joint deletion raises class-ctraining-rule reliability beyond tolerance; for Q={e}, deleting the condition produces a negative-relevance effect. Reliability-preserving deletion
+> |Dc(Q;R)| ≤ ϵThe complete deletion set preserves net training-rule reliability within tolerance; for
+> Q={e}, deleting the condition produces a probabilistic IRC effect.
+
+negative-relevance-presumed and protected because the links may encode same-label reliability refinement. Mismatched links outside Hc(L) are treated as IRC-presumed structural candidates and become accepted deletions only after the two-sided reliability criterion is satisfied. The three presumptions govern mismatch-guided deletion only; sibling-certified candidacy is independent of C1/C0 orientation and does not use Hc(L).
+
+Definition 6 (Relevance-aware rule) . Within this study, a relevance-aware rule is a path rule simplified under explicit setting-specific deletion semantics rather than a globally shortest antecedent set. The mismatch-guided class-probability output retains matched links by construc-tion, protects negative-relevance-presumed mismatches inside Hc(L), and deletes IRC-presumed candidates outside Hc(L) only after the two-sided reliability criterion is satisfied. Within the broader relevance-aware framework, a sibling-certified output is identified specifically as an exact source-tree-preserving compact rule because the sibling certificate is independent of Dc(Q; R).
+
+Ancestor-rule assimilation. Ancestor-rule assimilation occurs when condition deletion reduces a descendant generated rule to a strict root-to-ancestor prefix and thereby expands the rule region: 
+
+DS (RL) ⊊ DS (RA).
+
+The operational diagnostic records a strict-prefix output only when the retained predicates equal a proper root-to-ancestor prefix and the corresponding training region expands strictly. A zero or low strict-prefix rate therefore means that few resulting rules satisfy this exact structural criterion; it does not exclude other forms of overlap with ancestor or sibling regions. Figure 3 illustrates the distinction between the descendant rule, the retained ancestor prefix, and the additional sibling-region support. The two-sided criterion controls this set-level reliability change for M1-P. It is not an acceptance condition for M2-P. 
+
+4.3. Executable procedure 
+
+Tree-level annotations and candidate structures are computed once and reused across leaf rules. The mismatch-guided branch uses C1/C0 orientation and, in class-probability mode, 
+
+ReliabilitySelect . The sibling-certified branch uses only the sibling sets SIB (L). Appendix A summarizes the shared preprocessing steps. 11 root-side retained prefix          
+
+> Nm
+> p1= 0 .90
+> Nr
+> p1= 0 .70
+> N3leaf
+> p1= 0 .95
+> N1leaf
+> p1= 0 .40
+> N2leaf
+> p1= 0 .80
+> strict prefix path
+> C0 C1
+> conceptual ancestor region
+
+Figure 3: Ancestor-rule assimilation. Deleting descendant conditions reduces the N2 rule to a strict prefix ending at Nm, thereby expanding coverage into the sibling region represented by 
+
+N3. The operational diagnostic records only this exact root-to-ancestor collapse. 
+
+4.3.1. Mismatch-Guided Relevance-Aware Deletion (Method 1) 
+
+Algorithms 1 and 2 specify the deterministic and class-probability variants of mismatch-guided deletion. M1-D submits the complete strict-mismatch set to either direct finite-domain verification or the joint certificate in Theorem 1. M1-P treats mismatches inside Hc(L) as negative-relevance-presumed and protects them; Algorithm 5 evaluates the IRC-presumed candidates outside 
+
+Hc(L).
+
+Algorithm 1 M1-D: relevance-aware deterministic deletion from strict mismatches 
+
+Require: Fitted tree T , deterministic response f , certified domain and joint-certificate routine 
+
+Ensure: One rule CGR 1,D (L) per source leaf  
+
+> 1:
+
+Annotate C1/C0 orientation from class-proportion changes.  
+
+> 2:
+
+for each leaf L in source order do  
+
+> 3:
+
+R ← GR( L); let I be all strict-mismatch structural candidates on P(L), leaf to root.  
+
+> 4:
+
+if the complete set I satisfies the joint hard-implication certificate then  
+
+> 5:
+
+J ← I. 
+
+> 6:
+
+else  
+
+> 7:
+
+J ← ∅ . 
+
+> 8:
+
+end if  
+
+> 9:
+
+Output CGR 1,D (L) ← R−J . 
+
+> 10:
+
+end for 
+
+4.3.2. Sibling-Leaf-Certified Exact-Preservation Deletion (Method 2) 
+
+Algorithms 3 and 4 specify the deterministic and class-probability variants of sibling-certified deletion. Both variants delete the complete set SIB (L) certified by Theorem 2. The sample-12 Algorithm 2 M1-P: relevance-aware class-probability deletion with two-sided reliability control 
+
+Require: Fitted tree T , training sample S, tolerance ϵ
+
+Ensure: One rule CGR 1,P (L) per source leaf  
+
+> 1:
+
+Annotate links and compute Λ( N ) once.  
+
+> 2:
+
+for each leaf L in source order do  
+
+> 3:
+
+R ← GR( L), c ← Re( L); compute Hc(L). 
+
+> 4:
+
+I ← IRC-presumed strict mismatches outside Hc(L), ordered leaf to root.  
+
+> 5:
+
+J ← ReliabilitySelect (R, c, I, S, ϵ ). 
+
+> 6:
+
+Output CGR 1,P (L) ← R−J . 
+
+> 7:
+
+end for 
+
+independent structural operation is identical in both settings, and every sibling-certified link is deleted jointly. 
+
+Algorithm 3 M2-D: sibling-certified deterministic IRC deletion 
+
+Require: Fitted tree T
+
+Ensure: One rule CGR 2,D (L) per source leaf  
+
+> 1:
+
+Compute SIB( L) for every source leaf.  
+
+> 2:
+
+for each leaf L in source order do  
+
+> 3:
+
+R ← GR( L); J ← SIB( L), ordered leaf to root.  
+
+> 4:
+
+Output CGR 2,D (L) ← R−J by Theorem 2.  
+
+> 5:
+
+end for Algorithm 4 M2-P: sibling-certified exact source-tree-preserving deletion 
+
+Require: Fitted tree T
+
+Ensure: One rule CGR 2,P (L) per source leaf  
+
+> 1:
+
+Compute SIB( L) for every source leaf.  
+
+> 2:
+
+for each leaf L in source order do  
+
+> 3:
+
+R ← GR( L); J ← SIB( L), ordered leaf to root.  
+
+> 4:
+
+Output CGR 2,P (L) ← R−J by Theorem 2.  
+
+> 5:
+
+end for Two-sided relevance-aware acceptance for M1-P. ReliabilitySelect implements the two-sided relevance-aware acceptance criterion for class-probability mismatch candidates. The subroutine receives the original rule R, class c, ordered candidates I, training sample S, and operational tolerance ϵ, and returns an accepted set J ⊆ I. The helper Evaluate returns the reliability and acceptance decision for a trial set Q. The subroutine evaluates set-level reliability preservation and does not assign intrinsic relevance labels to individual links. The tolerance ϵ is operational rather than a sampling-confidence guarantee. Antecedent deletion broadens a nonempty leaf region, so the resulting rule cannot have lower training support than its original leaf rule. 13 Algorithm 5 ReliabilitySelect : two-sided relevance-aware acceptance for M1-P 
+
+Require: Rule R, class c, ordered candidates I, S, ϵ, cached condition masks 
+
+Ensure: Accepted deletion set J ⊆ I 
+
+> 1:
+
+Compute pbase ← ˆpc, S (R); initialize trial cache CR. 
+
+> 2:
+
+function Evaluate (Q)  
+
+> 3:
+
+if Q / ∈ C R then  
+
+> 4:
+
+Form the mask for R−Q by intersecting retained-condition masks.  
+
+> 5:
+
+pQ ← ˆpc, S (R−Q). 
+
+> 6:
+
+aQ ← [|pQ − pbase | ≤ ϵ]. 
+
+> 7:
+
+Cache (pQ, a Q) in CR. 
+
+> 8:
+
+end if  
+
+> 9:
+
+return CR[Q]. 
+
+> 10:
+
+end function  
+
+> 11:
+
+(pI , a I ) ← Evaluate (I). 
+
+> 12:
+
+if aI then  
+
+> 13:
+
+return I. 
+
+> 14:
+
+end if  
+
+> 15:
+
+J ← ∅ . 
+
+> 16:
+
+for each e in the ordered candidate list I do  
+
+> 17:
+
+Q ← J ∪ { e}. 
+
+> 18:
+
+(pQ, a Q) ← Evaluate (Q). 
+
+> 19:
+
+if aQ then  
+
+> 20:
+
+J ← Q. 
+
+> 21:
+
+end if  
+
+> 22:
+
+end for  
+
+> 23:
+
+return J.
+
+4.3.3. Procedure Flow Charts 
+
+Figures 4 and 5 summarize the setting-specific procedures. The mismatch-guided flow sends C1/C0 candidates to either the joint deterministic certificate or the Hc(L)-protected reliability selector, according to the rule setting. The sibling-certified flow applies the sample-independent sibling certificate in both settings and then assigns the corresponding output notation. 14 Leaf rule GR( L)         
+
+> C1/C0 link annotation
+> rule setting?
+> M1-D: collect all strict mismatches
+> M1-P: compute Hc(L)
+> complete set passes joint certificate?
+> collect IRC-presumed mismatches outside Hc(L)
+> delete complete mismatch set
+> retain source rule
+> apply ReliabilitySelect
+> output CGR 1,D (L)
+> output CGR 1,P (L)
+> deterministic class probability
+> yes no
+
+Figure 4: Mismatch-guided procedure (Method 1). C1/C0 annotation supplies structural candidates; M1-D deletes the complete mismatch set only when it passes a joint hard-implication certificate, whereas M1-P protects negative-relevance-presumed mismatches inside Hc(L) and applies set-level reliability selection outside the protected subtree. 
+
+Leaf rule GR( L), c = Re( L)
+
+compute the sibling-certified set SIB( L)
+
+delete the complete set SIB( L) jointly by the rootmost-divergence certificate 
+
+rule setting? 
+
+output CGR 2,D (L) output CGR 2,P (L) 
+
+> deterministic class probability
+
+Figure 5: Sibling-certified procedure (Method 2). The complete sibling-certified set is deleted by the same sample-independent exact-preservation transformation before the deterministic or class-probability output is identified. 
+
+4.4. Complexity 
+
+Let V be the number of tree nodes, nL the number of leaf rules, D the maximum path length, 
+
+M the number of training instances, and ki ≤ di ≤ D the M1-P candidate count and original length of rule i. Shared preprocessing for link orientation, descendant-label sets, and sibling candidates requires O(V + nLD) time. M1-P additionally constructs cached link masks in O(M V ) time. For rule i, one baseline trial, one joint-deletion trial, and at most ki fallback trials each intersect at most di masks over M
+
+15 instances. Therefore, 
+
+TM1 −P = O
+
+> (
+
+V + nLD + M V + M
+
+> nL∑
+> i=1
+
+di(2 + ki)
+
+> )
+
+⊆ O
+
+> (
+
+V + nLD + M V + M n LD2)
+
+,
+
+with O(M V + nLD + M ) auxiliary space. M2-P uses only tree topology and path entries, giving TM2 −P = O(V +nLD) time and O(V +nLD)
+
+auxiliary space, independent of M . The deterministic variants have corresponding bounds: 
+
+TM2 −D = O(V + nLD), while TM1 −D = O(V + nLD + Ccert ), where Ccert is the joint-certificate cost. Precomputed monotone feature bounds give Ccert = O(nLD); direct verification on a finite table of M0 rows instead requires O(M0 
+
+> ∑nL
+> i=1
+
+di) ⊆ O(M0nLD).For the implementations considered here, repeated condition rescoring in the Quinlan procedure (Quinlan, 1987) gives TQuinlan = O(M ∑nL 
+
+> i=1
+
+d3 
+
+> i
+
+) ⊆ O(M n LD3), whereas opposite-class path comparisons in the Izza procedure (Izza et al., 2022) give TIzza = O(n2
+
+> L
+
+D2).One output rule is retained for each source leaf, and the full binary source trees considered here satisfy V = 2 nL − 1. With M fixed and lower-order preprocessing terms suppressed, M2 and M1-P scale as O(nLD) and O(nLD2), respectively, whereas the Izza and Quinlan procedures scale as O(n2
+
+> L
+
+D2) and O(nLD3). Thus, the proposed methods retain linear dependence on the number of rules; M2 is linear and M1-P is quadratic in path length. For fixed nL and D, M2 and the Izza procedure are O(1) in M , whereas M1-P and the Quinlan procedure are O(M ). These bounds isolate the principal sources of growth but do not impose a strict runtime ordering for every combination of M , nL, and D.
+
+5. Experiments 
+
+The experiments compare the broader mismatch-guided and narrower sibling-certified structural deletion mechanisms with established IRC-deletion procedures. The deterministic variants M1-D and M2-D are first evaluated on decision tables that permit exhaustive case-wise checking. The class-probability evaluation then examines simplification and fidelity: simplification measures how frequently and how strongly source rules are shortened, whereas fidelity measures how closely the resulting rule sets retain the predictive and class-wise behavior of the fitted tree. A runtime study evaluates scalability with respect to the training-sample size and the number of leaf rules. 
+
+5.1. Experimental Setting 
+
+The experiments use two deterministic decision tables and eight class-probability datasets. The Weather data contain 14 cases described by Outlook, Temperature, Humidity, and Windy, with Play as the binary decision (Liu and Cocea, 2018). The Human Identification (human-id) data contain eight cases described by Height, Hair, and Eyes, with a binary +/− class (Pham and Aksoy, 1995). The remaining eight binary-classification datasets are drawn from the UCI Machine Learning Repository and OpenML (Dua and Graff, 2017; Vanschoren et al., 2013). Table 5 summarizes the inputs used for tree induction. For the deterministic evaluation, all nominal levels, including both Windy values, are represented by full one-hot indicator columns. An unpruned Gini CART with deterministic best-split 16 Table 5: Datasets used in the deterministic and class-probability evaluations. Dataset Setting Instances Input features Weather Deterministic 14 10 human-id Deterministic 8 7adult Class-probability 30,162 104 backache Class-probability 310 12 cancer Class-probability 683 9EEG Class-probability 14,980 14 german Class-probability 1,000 61 heart-h Class-probability 294 286 ionosphere Class-probability 351 34 spambase Class-probability 4,601 57 
+
+selection is fitted to each listed decision table and is required to reproduce every supplied class label. M1-D accepts a complete strict-mismatch set only when direct enumeration validates the weakened rule on all supplied cases; M2-D applies the sibling-leaf certificate; and the Izza procedure (Izza et al., 2022) applies exact fitted-tree path-redundancy testing. The post-deletion audit checks rule validity, cumulative coverage, agreement with source-tree predictions, and opposite-class conflict on every listed case. For each class-probability dataset, the evaluation reuses 30 stratified 70/30 train–test splits and the corresponding depth-6 CART trees using Gini impurity and saved depth-6 IAI trees representing optimization-based induction (Bertsimas and Dunn, 2017; Breiman et al., 1984). M1-P, M2-P, and the procedures of Quinlan (1987) and Izza et al. (2022) receive the same source tree and leaf-rule set for every learner, dataset, and split. For M1-P, ϵ ∈ { 0, 0.01 , 0.03 , 0.05 , 0.10 , 0.20 }
+
+is selected separately for each dataset by descriptive grid optimization and shared by CART and IAI. The selection maximizes mean condition deletion subject to nonnegative mean accuracy change and a 5% mean-conflict ceiling for each learner. M2-P uses only the fitted-tree topology. Where multiple rules cover the same instance, M1-P and the Quinlan procedure rank them by decreasing training reliability, decreasing training support, increasing rule length, and source-leaf order. M2-P and the Izza procedure have zero opposite-class rule conflict, so their predictions are invariant to this ranking. Results are averaged first across the 30 paired splits within each dataset and then equally across the eight dataset means. 
+
+5.2. Deterministic Rule Setting 
+
+Table 6 compares M1-D, M2-D, and the Izza procedure on Weather and human-id. Each source CART fits its listed decision table exactly. The audit enumerates every supplied case and verifies class-valid simplified rules, complete cumulative coverage, unchanged source-tree predictions, and zero opposite-class rule conflict. M1-D matches the Izza procedure on both deterministic tables and removes more conditions than M2-D on Weather. The Weather source contains 23 conditions across seven rules: M1-D and the Izza procedure each remove seven conditions (30.43%) from five rules, whereas M2-D removes five conditions (21.74%) from four rules. Thus, M1-D removes two additional conditions, or 8.69 percentage points more, because finite-domain verification accepts two conditions without a same-class sibling-leaf certificate. On human-id, all three procedures remove the same one of five conditions (20.00%) from one of three rules. Every simplified rule set preserves complete 17 Table 6: Three-method validation on the observed deterministic decision tables. RF=1 is the number of simplified rules with empirical reliability one on every covered case. Coverage and conflict are evaluated on all supplied cases. Categorical attributes are represented by full one-hot indicators before fitting the unpruned CART source.                                                        
+
+> Dataset Method GR Removed (%) Rules mod. (%) ∆length RF=1 Coverage Conflict Weather M1-D 730.43 71.43 1.00 7/7 100.0 0.0 Weather M2-D 721.74 57.14 0.71 7/7 100.0 0.0 Weather Izza et al. (2022) 730.43 71.43 1.00 7/7 100.0 0.0 human-id M1-D 320.00 33.33 0.33 3/3 100.0 0.0 human-id M2-D 320.00 33.33 0.33 3/3 100.0 0.0 human-id Izza et al. (2022) 320.00 33.33 0.33 3/3 100.0 0.0
+
+listed-case coverage, source-tree predictions, and zero opposite-class rule conflict. 
+
+5.3. Class-Probability Rule Setting 
+
+The class-probability evaluation compares the relevance-aware mismatch-guided variant M1-P and the sibling-certified exact-preservation variant M2-P with the Quinlan procedure (Quinlan, 1987) and the Izza procedure (Izza et al., 2022) on the eight datasets in Table 5. Table 7 defines the three evaluation dimensions: simplification, fidelity, and scalability. 
+
+Table 7: Evaluation criteria for the class-probability experiments. Criterion Metric Interpretation Simplification RuleIRC (%) Percentage of source leaf rules from which at least one antecedent condition is deleted. IRC/rule (%) Average within-rule percentage of deleted antecedents, calculated only over rules containing at least one deletion. Fidelity ∆Accuracy (pp) Test-accuracy change of the simplified rule set relative to the fitted source tree. 
+
+|∆Pc|, |∆Rc| (pp) Absolute class-c precision and recall changes relative to the fitted source tree. MacroDev (pp) Mean absolute deviation of P0, R 0, P 1, R 1 from their source-tree values. Rule conflict (%) Percentage of test instances covered by rules that predict different classes. Scalability Runtime (s) Simplification time as the number of leaf rules or the sample size increases. 
+
+5.3.1. Simplification 
+
+Table 8 reports the percentage of source rules containing at least one deleted condition and the average within-rule deletion percentage among affected rules. The relevance-aware mismatch-guided variant M1-P shortens 72.66% of IAI rules and 70.98% of CART rules, approximately 2.22 and 2.35 times the corresponding M2-P rates. Relative to the Izza procedure, the M1-P RuleIRC rate is higher by 40.00 percentage points for IAI and 30.63 percentage points for CART. Within affected rules, M1-P deletes 34.88% and 37.13% of antecedents, exceeding M2-P by 11.63 and 12.97 percentage points and the Izza procedure by 11.13 and 13.16 percentage points. The Quinlan procedure remains the most aggressive, shortening 96.32%/98.05% of 18 rules and deleting 63.43%/64.49% of antecedents within affected rules. The results place broader reliability-controlled structural deletion between the empirical Quinlan procedure and the source-prediction-preserving M2-P and Izza procedures.                                                              
+
+> Table 8: Rule simplification on the same saved source trees. RuleIRC is the percentage of source rules from which at least one condition is deleted. IRC/rule is the mean percentage of antecedents deleted within those affected rules. Values are dataset-balanced mean ±SD across eight dataset means. Learner Method RuleIRC (%) IRC/rule (%) IAI M1-P 72.66 ±21.57 34.88 ±8.71 IAI M2-P 32.70 ±10.99 23.25 ±3.77 IAI Quinlan (1987) 96.32 ±3.19 63.43 ±14.06 IAI Izza et al. (2022) 32.66 ±10.84 23.75 ±3.84 CART M1-P 70.98 ±17.25 37.13 ±8.86 CART M2-P 30.15 ±15.46 24.16 ±5.94 CART Quinlan (1987) 98.05 ±1.84 64.49 ±11.63 CART Izza et al. (2022) 40.35 ±7.44 23.97 ±5.47
+
+5.3.2. Fidelity 
+
+Greater condition deletion does not by itself establish better fidelity. Deleting an antecedent ex-pands the covered rule region and can trade compactness for class-wise deviation or opposite-class overlap. Tables 9 and 10 quantify this trade-off through accuracy change, rule conflict, absolute class-wise changes, and MacroDev; absolute accuracy is omitted because every comparison uses the same fitted source tree.                                                               
+
+> Table 9: Prediction preservation after rule simplification. ∆Accuracy is simplified-rule-set accuracy minus source-tree accuracy; conflict is the percentage of test instances covered by rules predicting different classes. Values are dataset-balanced mean ±SD across eight dataset means. Learner Method ∆Accuracy (pp) Conflict (%) IAI M1-P +0.51 ±0.44 2.82 ±1.77 IAI M2-P 0.00 ±0.00 0.00 ±0.00 IAI Quinlan (1987) +0.75 ±1.33 50.59 ±41.18 IAI Izza et al. (2022) 0.00 ±0.00 0.00 ±0.00 CART M1-P +0.63 ±0.48 2.31 ±1.49 CART M2-P 0.00 ±0.00 0.00 ±0.00 CART Quinlan (1987) +1.04 ±1.28 55.44 ±37.43 CART Izza et al. (2022) 0.00 ±0.00 0.00 ±0.00
+
+The broader reliability-controlled variant M1-P removes 27.19% of IAI conditions and 27.30% of CART conditions, exceeding M2-P by 18.84 and 18.71 percentage points and the Izza procedure by 18.89 and 16.53 percentage points. The broader deletion is accompanied by conflict rates of 2.82%/2.31%, MacroDev values of 0.98/0.99 percentage points, and mean accuracy changes of 
+
++0 .51 /+0 .63 percentage points. The sibling-certified exact-preservation variant M2-P and the Izza procedure produce zero accuracy change, zero class-wise deviation, and zero opposite-class rule conflict. The M2-P outcomes agree with the structural preservation result for the fitted source tree. The Quinlan procedure removes 62.21%/63.60% of all conditions, 35.02/36.30 percentage points more than M1-P, but its dataset-balanced conflict rates reach 50.59%/55.44% and its MacroDev 19 Table 10: Class-wise prediction deviations relative to the fitted source tree. MacroDev is the mean of the four absolute precision and recall deviations. Values are dataset-balanced mean ± SD across eight dataset means.                                                                                                                                           
+
+> Learner Method |∆P0|(pp) |∆R0|(pp) |∆P1|(pp) |∆R1|(pp) MacroDev (pp) IAI M1-P 0.78 ±0.76 0.90 ±0.79 1.02 ±0.64 1.20 ±1.07 0.98 ±0.66 IAI M2-P 0.00 ±0.00 0.00 ±0.00 0.00 ±0.00 0.00 ±0.00 0.00 ±0.00 IAI Quinlan (1987) 4.22 ±3.84 6.94 ±6.23 5.36 ±5.25 7.59 ±10.00 6.03 ±5.29 IAI Izza et al. (2022) 0.00 ±0.00 0.00 ±0.00 0.00 ±0.00 0.00 ±0.00 0.00 ±0.00 CART M1-P 0.88 ±1.00 0.80 ±0.63 1.02 ±0.69 1.25 ±1.03 0.99 ±0.66 CART M2-P 0.00 ±0.00 0.00 ±0.00 0.00 ±0.00 0.00 ±0.00 0.00 ±0.00 CART Quinlan (1987) 3.55 ±3.04 5.90 ±4.65 5.19 ±5.23 6.82 ±8.07 5.36 ±4.47 CART Izza et al. (2022) 0.00 ±0.00 0.00 ±0.00 0.00 ±0.00 0.00 ±0.00 0.00 ±0.00
+
+reaches 6.03/5.36 percentage points. The positive mean accuracy changes of +0 .75 /+1 .04 
+
+percentage points therefore do not establish preservation of source-tree class-wise or rule-set behavior. 
+
+5.3.3. Scalability 
+
+The two-panel runtime analysis in Figure 6 examines the scaling dimensions identified in Section 4.4. Figure 6a fixes the training-sample size at M = 2 ,048 and varies the leaf-rule target over 4, 8, 16 , 32 , 64 , 128 . Figure 6b holds a 32-leaf fitted tree and source-rule signature fixed and evaluates five training-sample sizes from M = 4 ,096 to M = 1 ,048 ,576 . All four procedures receive the same fitted CART and source rules. Three tree seeds, one warm-up, three timed repetitions, and rotating method order are used; the curves show the median and interquartile range. 
+
+(a) Fixed sample size ( M = 2 ,048 ) (b) Fixed tree size (32 leaves) 
+
+Figure 6: Simplification-only runtime on identical CART sources for M1-P, M2-P, the Quinlan procedure, and the Izza procedure. Panel (a) varies the leaf-rule target at a fixed training-sample size. Panel (b) fixes one CART per seed and varies the training-sample size through nested subsets that retain every source leaf. Points are medians and bands are interquartile ranges over 3 calls on each of 3 independently generated trees. M2-P and the Izza procedure do not scan the training sample during simplification, and their runtime curves remain nearly flat as M increases. At 128 leaves, M2-P requires 0.0073 s, compared with 0.166 s for the Izza procedure, making M2-P approximately 23 times faster in this 20 setting. M1-P evaluates instance-level reliability and therefore increases with M , consistently with its linear sample-size term. Cached condition masks nevertheless keep the leaf-scaling cost low: at 128 leaves, M1-P requires 0.0193 s, compared with 18.223 s for the Quinlan procedure, making M1-P approximately 944 times faster in this setting. At M = 1 ,048 ,576 with the 32-leaf tree fixed, M1-P requires 0.271 s versus 64.722 s for the Quinlan procedure, and M2-P requires 0.0017 s versus 0.0084 s for the Izza procedure. The corresponding measured speedups are approximately 239-fold and 4.9-fold. 
+
+Summary. The mismatch-guided class-probability variant M1-P occupies an intermediate simplification regime between the conservative Izza procedure and the aggressive Quinlan procedure. Protection of negative-relevance-presumed mismatches inside Hc(L) and two-sided reliability selection outside the protected subtree retain low rule conflict and small class-wise deviation while providing substantially faster processing than the Quinlan procedure. The sibling-certified variant M2-P follows a conservative simplification pattern close to exact path-redundancy deletion, exactly preserves the fitted source-tree predictions, and produces zero rule conflict. Within the measured runtime ranges, M2-P is also faster than the Izza procedure, yielding the fastest topology-only simplification among the four procedures. 
+
+6. Discussion 
+
+Why are shorter rules not necessarily relevance-aware? Condition relevance is a path-level effect of deletion rather than a local property of a split or link. For a single condition e,
+
+Dc(e; R) < −ϵ denotes a positive-relevance effect because deletion lowers leaf-class reliability; 
+
+Dc(e; R) > ϵ denotes a negative-relevance effect because deletion raises reliability but may erase a lower-reliability same-label refinement; and |Dc(e; R)| ≤ ϵ denotes a probabilistic IRC effect. For multiple conditions, only reliability-decreasing, reliability-increasing, or reliability-preserving set-level terminology applies because individual effects may interact. Rule length and condition deletion must therefore be interpreted together with reliability change, coverage, rule conflict, accuracy, and class-wise deviation. 
+
+What does mismatch evidence reveal? C1/C0 orientation records the local class-proportion change induced by a split. Relative to a class-c leaf, a C c link is matched and a C (1 − c)
+
+link is mismatched, but neither status alone determines condition relevance. The mismatch-guided mechanism preserves matched links by construction, treats mismatches inside Hc(L) as negative-relevance-presumed refinements, and treats mismatches outside Hc(L) as IRC-presumed candidates. Deterministic deletion requires a joint hard-implication certificate, whereas class-probability deletion applies the two-sided effect Dc(Q; R). The resulting M1-D and M1-P variants therefore provide broader structural deletion under explicit setting-specific control. 
+
+What does sibling evidence certify? Same-class sibling-leaf topology supplies an exact local certificate independently of C1/C0 orientation and Dc(Q; R). A sibling-certified link may be matched or located inside Hc(L), so the sibling and mismatch candidate sets are non-nested. The rootmost-divergence result guarantees source-tree predictions, full coverage, and zero opposite-class rule conflict for the M2-D and M2-P outputs. The narrower sibling-certified set yields less deletion but provides exact source-tree preservation without M or ϵ.
+
+What trade-off defines a relevance-aware rule? M1-P removes approximately three times as many source conditions as M2-P for both IAI and CART while keeping aggregate MacroDev below one percentage point and rule conflict below 3%. M2-P provides narrower topology-only 21 deletion with exact preservation, whereas the Quinlan procedure provides substantially greater deletion with conflict on more than half of the test cases and markedly larger class-wise deviation. Relevance-aware rule generation therefore does not maximize deletion but instead makes the structural evidence, acceptance criterion, and preserved rule meaning explicit. 
+
+7. Conclusion 
+
+Condition relevance in a decision-tree path rule is defined by the effect of deletion on the complete rule, not by a local link orientation alone. C1/C0 orientation and matched/mismatched status provide structural diagnostics that generate candidates without declaring relevance. The mismatch-guided mechanism converts structural candidates into accepted deletions only through a joint deterministic certificate or a two-sided class-probability reliability criterion. Same-class sibling topology supplies a separate exact-preservation certificate independent of the path-level reliability effect. A relevance-aware rule is therefore not a globally shortest rule; the deletion rationale and preservation target remain explicit for every accepted condition set. On Weather, M1-D, M2-D, and the Izza procedure (Izza et al., 2022) remove 30.43%, 21.74%, and 30.43% of conditions; on human-id, all three remove 20.00%. Every deterministic rule set preserves listed-case validity, coverage, source-tree predictions, and zero opposite-class rule conflict. On saved CART and IAI trees, M1-P provides substantially greater deletion than M2-P and the Izza procedure while maintaining small accuracy changes, low conflict, and sub-one-percentage-point aggregate MacroDev. M2-P and the Izza procedure preserve source-tree predictions, whereas the Quinlan procedure (Quinlan, 1987) achieves the largest reduction at the cost of the greatest rule conflict and class-wise change. The two-axis runtime results further distinguish sample-dependent reliability evaluation from topology-only deletion. Decision-tree rule simplification should be evaluated by which conditions are removed, why deletion is justified, and what rule meaning is preserved. 
+
+Acknowledgments 
+
+This work was supported by the Basic Science Research Program through the National Research Foundation of Korea (NRF), funded by the Ministry of Education (Grant Number: NRF-2021R1A6A1A03039981). This work was also supported by the NRF under Grant RS-2019-NR040071, funded by the Ministry of Science and ICT. 
+
+References        
+
+> D. Bertsimas and J. Dunn. Optimal classification trees. Machine Learning , 106:1039–1082, 2017. M. Bohanec and I. Bratko. Trading accuracy for simplicity in decision trees. Machine Learning , 15: 223–250, 1994. L. Breiman, J. H. Friedman, R. A. Olshen, and C. J. Stone. Classification and Regression Trees .Wadsworth, 1984. J. Cendrowska. PRISM: An algorithm for inducing modular rules. International Journal of Man-Machine Studies , 27(4):349–370, 1987. W. W. Cohen. Fast effective rule induction. In Proceedings of ICML , 1995. D. Dua and C. Graff. UCI machine learning repository. University of California, Irvine, School of Information and Computer Sciences, 2017.
+
+22 E. Frank and I. H. Witten. Generating accurate rule sets without global optimization. In Proceedings of ICML , 1998. A. A. Freitas. Comprehensible classification models: A position paper. ACM SIGKDD Explorations Newsletter , 15(1):1–10, 2014. X. Hu, C. Rudin, and M. Seltzer. Optimal sparse decision trees. In Advances in Neural Information Processing Systems , 2019. Y. Izza, A. Ignatiev, and J. Marques-Silva. On tackling explanation redundancy in decision trees. Journal of Artificial Intelligence Research , 75:261–321, 2022. H. Liu and M. Cocea. Induction of classification rules by gini-index based rule generation. Information Sciences , 436:227–246, 2018. D. T. Pham and M. S. Aksoy. Rules: A simple rule extraction system. Expert Systems with Applications ,8(1):59–65, 1995. J. R. Quinlan. Generating production rules from decision trees. In Proceedings of IJCAI , pages 304–307, 1987. J. R. Quinlan. C4.5: Programs for Machine Learning . Morgan Kaufmann, 1993. C. Rudin, C. Chen, Z. Chen, H. Huang, L. Semenova, and C. Zhong. Interpretable machine learning: Fundamental principles and 10 grand challenges. Statistics Surveys , 16:1–85, 2022. J. Vanschoren, J. N. van Rijn, B. Bischl, and L. Torgo. OpenML: Networked science in machine learning. 
+
+SIGKDD Explorations , 15:49–60, 2013. 
+
+A. Shared Preprocessing and Parameters 
+
+The preprocessing stage converts the fitted tree into reusable structural annotations without deleting conditions. Algorithm 6 computes C1/C0 link orientation, descendant-label sets, sibling-leaf candidates, and label-homogeneous ancestor subtrees once before the leaf rules are processed. 23 Algorithm 6 Shared preprocessing for relevance-aware structural IRC deletion 
+
+Require: Fitted binary decision tree T , numerical tolerance rf_tol 
+
+Ensure: Link orientations, Λ( N ), SIB( L), and Hc(L) 
+
+> 1:
+
+Initialize SIB( L) ← ∅ for every leaf L. 
+
+> 2:
+
+for all nodes N in postorder do  
+
+> 3:
+
+if N is a leaf then  
+
+> 4:
+
+Λ( N ) ← { Re( N )}. 
+
+> 5:
+
+else  
+
+> 6:
+
+Λ( N ) ← Λ( Nl) ∪ Λ( Nr). 
+
+> 7:
+
+end if  
+
+> 8:
+
+end for  
+
+> 9:
+
+for all links e = ( Np, N c) do  
+
+> 10:
+
+∆1(e) ← p1(Nc) − p1(Np). 
+
+> 11:
+
+if ∆1(e) > rf_tol then  
+
+> 12:
+
+Annotate e as C1.  
+
+> 13:
+
+else if ∆1(e) < −rf_tol then  
+
+> 14:
+
+Annotate e as C0.  
+
+> 15:
+
+end if  
+
+> 16:
+
+end for  
+
+> 17:
+
+for all internal nodes Np with children Na, N b do  
+
+> 18:
+
+for all ordered pairs (Na, N b), (Nb, N a) do  
+
+> 19:
+
+if Na is a class-c leaf and Nb is internal then  
+
+> 20:
+
+for all L ∈ Leaves( Nb) with Re( L) = c do  
+
+> 21:
+
+Add link (Np, N b) to SIB( L). 
+
+> 22:
+
+end for  
+
+> 23:
+
+end if  
+
+> 24:
+
+end for  
+
+> 25:
+
+end for  
+
+> 26:
+
+for all leaves L with c = Re( L) do  
+
+> 27:
+
+Order SIB( L) from leaf to root; set Hc(L) ← L. 
+
+> 28:
+
+for all nodes S from parent( L) to the root do  
+
+> 29:
+
+if Λ( S) = {c} then  
+
+> 30:
+
+Hc(L) ← S. 
+
+> 31:
+
+end if  
+
+> 32:
+
+end for  
+
+> 33:
+
+end for 
+
+The postorder union computes Λ( N ), and the ancestor scan obtains the highest label-homogeneous ancestor used by the mismatch-guided class-probability variant M1-P. Sibling detection records the link into an internal child only for same-class descendant leaves when the opposite child is already a class-c leaf. The sibling-certified mechanism deletes all such links using the resulting topology alone. The numerical rf_tol affects C1/C0 diagnostic annotation but cannot change the M2 deletion set. Table 11 summarizes the experimental and implementation settings used throughout the analysis. 24 Table 11: Common experimental and implementation parameters. Component Setting Deterministic data Weather (14 cases, 4 nominal attributes) and human-id (8 cases, 3 nominal attributes); full one-hot encoding. Deterministic source Exact-fitting CART on all listed cases; Gini criterion; deterministic best split; no depth limit or pruning. M1-D certificate Direct joint hard-implication check over every listed case in each deterministic table. Class-probability sources Eight datasets; 30 saved stratified 70/30 splits; depth-6 CART and saved depth-6 IAI trees. Orientation tolerance rf_tol = 10 −12 for numerical ties in C1/C0 annotation. Quinlan (1987) Greedy one-condition deletion; empirical certainty factor or one-sided Fisher acceptance; α = 0 .01 , numerical CF tolerance 10 −12 .Candidate order Leaf to root for M1-P fallback; all sibling-certified links are deleted jointly by M2. Rule production One output per source leaf; no deduplication or redundant-rule deletion. Timing design Fixed training-sample size: M = 2 ,048 , 4–128 leaves; fixed tree size: 32 leaves, M = 4 ,096 –1,048 ,576 ; three tree seeds and three timed repetitions. 
+
+B. Detailed Experimental Results 
+
+The following learner-specific tables report the dataset-level results underlying the three class-probability analyses. Their columns match the main-text simplification and fidelity tables: RuleIRC and IRC/rule quantify simplification; ∆Accuracy and conflict summarize prediction preservation; and the absolute class-wise changes with MacroDev describe shifts in precision and recall. IAI and CART are presented separately, and each entry averages the 30 paired splits within one dataset. Tables 12 and 13 show that M1-P has a higher RuleIRC rate than M2-P and the Izza procedure on every dataset. Within affected rules, M1-P also deletes a larger antecedent share on every dataset except adult with IAI, where its 25.08% deletion rate is slightly below the 26.53% rate of the Izza procedure. The largest M1-P RuleIRC rates occur on spambase for both IAI and CART, at 91.99% and 89.80%, whereas EEG yields the smallest rates, at 33.60% and 45.82%. Tables 14–17 show the corresponding preservation pattern. M2-P and the Izza procedure retain zero accuracy change, zero rule conflict, and zero class-wise deviation on every dataset. M1-P conflict remains at or below 4.29%, and its largest MacroDev is 1.77 percentage points for IAI and 1.97 percentage points for CART, both on backache. The Quinlan procedure reaches 100% conflict on german and heart-h for IAI and on heart-h for CART, while its largest MacroDev occurs on german at 16.81 and 14.36 percentage points. Spambase is a notable exception: the Quinlan and M1-P MacroDev values are similar, although the Quinlan procedure still produces substantially greater rule conflict. 25 Table 12: IAI per-dataset simplification outcomes. RuleIRC is the percentage of source rules with at least one deleted condition; IRC/rule is the mean deleted-antecedent percentage within affected rules. Values are means over 30 matched splits. 
+
+Dataset Method RuleIRC (%) IRC/rule (%) adult M1-P 50.01 25.08 adult M2-P 33.08 22.81 adult Quinlan (1987) 91.54 50.98 adult Izza et al. (2022) 39.40 26.53 backache M1-P 82.45 33.24 backache M2-P 37.45 21.80 backache Quinlan (1987) 98.49 74.43 backache Izza et al. (2022) 30.87 21.56 cancer M1-P 89.45 37.86 cancer M2-P 42.18 25.03 cancer Quinlan (1987) 97.78 60.32 cancer Izza et al. (2022) 38.70 24.97 EEG M1-P 33.60 24.44 EEG M2-P 19.59 19.08 EEG Quinlan (1987) 93.79 42.86 EEG Izza et al. (2022) 18.18 19.54 german M1-P 61.94 27.21 german M2-P 17.36 18.04 german Quinlan (1987) 99.71 77.27 german Izza et al. (2022) 17.16 18.30 heart-h M1-P 84.84 46.23 heart-h M2-P 39.80 26.87 heart-h Quinlan (1987) 100.00 83.82 heart-h Izza et al. (2022) 40.68 26.70 ionosphere M1-P 86.95 40.08 ionosphere M2-P 47.29 29.27 ionosphere Quinlan (1987) 96.04 62.46 ionosphere Izza et al. (2022) 47.16 29.45 spambase M1-P 91.99 44.86 spambase M2-P 24.81 23.12 spambase Quinlan (1987) 93.18 55.27 spambase Izza et al. (2022) 29.13 22.99 26 Table 13: CART per-dataset simplification outcomes. RuleIRC is the percentage of source rules with at least one deleted condition; IRC/rule is the mean deleted-antecedent percentage within affected rules. Values are means over 30 matched splits. 
+
+Dataset Method RuleIRC (%) IRC/rule (%) adult M1-P 52.59 29.92 adult M2-P 11.21 20.58 adult Quinlan (1987) 97.15 56.12 adult Izza et al. (2022) 44.41 21.56 backache M1-P 77.88 34.69 backache M2-P 32.89 22.68 backache Quinlan (1987) 99.31 74.36 backache Izza et al. (2022) 31.31 22.26 cancer M1-P 86.09 36.61 cancer M2-P 41.09 22.80 cancer Quinlan (1987) 98.30 62.27 cancer Izza et al. (2022) 39.64 23.70 EEG M1-P 45.82 26.52 EEG M2-P 12.32 17.77 EEG Quinlan (1987) 99.09 48.27 EEG Izza et al. (2022) 33.77 18.48 german M1-P 54.25 29.25 german M2-P 22.76 19.87 german Quinlan (1987) 99.74 73.82 german Izza et al. (2022) 37.67 19.31 heart-h M1-P 83.19 49.32 heart-h M2-P 47.04 29.54 heart-h Quinlan (1987) 99.84 82.95 heart-h Izza et al. (2022) 49.05 29.76 ionosphere M1-P 78.22 49.41 ionosphere M2-P 51.73 36.08 ionosphere Quinlan (1987) 96.20 62.57 ionosphere Izza et al. (2022) 51.91 34.56 spambase M1-P 89.80 41.30 spambase M2-P 22.14 23.98 spambase Quinlan (1987) 94.78 55.60 spambase Izza et al. (2022) 35.02 22.13 27 Table 14: IAI per-dataset prediction-preservation outcomes. ∆Accuracy is relative to the fitted source tree. Values are means over 30 matched splits. 
+
+Dataset Method ∆Accuracy (pp) Conflict (%) adult M1-P 0.00 0.06 adult M2-P 0.00 0.00 adult Quinlan (1987) -1.88 9.94 adult Izza et al. (2022) 0.00 0.00 backache M1-P +0.50 4.05 backache M2-P 0.00 0.00 backache Quinlan (1987) +1.97 91.54 backache Izza et al. (2022) 0.00 0.00 cancer M1-P +0.85 2.85 cancer M2-P 0.00 0.00 cancer Quinlan (1987) +0.59 10.70 cancer Izza et al. (2022) 0.00 0.00 EEG M1-P +0.02 0.03 EEG M2-P 0.00 0.00 EEG Quinlan (1987) -0.17 23.50 EEG Izza et al. (2022) 0.00 0.00 german M1-P +0.34 3.60 german M2-P 0.00 0.00 german Quinlan (1987) +1.00 100.00 german Izza et al. (2022) 0.00 0.00 heart-h M1-P +0.42 4.17 heart-h M2-P 0.00 0.00 heart-h Quinlan (1987) +2.23 100.00 heart-h Izza et al. (2022) 0.00 0.00 ionosphere M1-P +1.33 4.29 ionosphere M2-P 0.00 0.00 ionosphere Quinlan (1987) +1.65 54.73 ionosphere Izza et al. (2022) 0.00 0.00 spambase M1-P +0.62 3.54 spambase M2-P 0.00 0.00 spambase Quinlan (1987) +0.62 14.35 spambase Izza et al. (2022) 0.00 0.00 28 Table 15: CART per-dataset prediction-preservation outcomes. ∆Accuracy is relative to the fitted source tree. Values are means over 30 matched splits. 
+
+Dataset Method ∆Accuracy (pp) Conflict (%) adult M1-P +0.04 0.21 adult M2-P 0.00 0.00 adult Quinlan (1987) -1.05 46.08 adult Izza et al. (2022) 0.00 0.00 backache M1-P +1.40 4.05 backache M2-P 0.00 0.00 backache Quinlan (1987) +2.87 92.62 backache Izza et al. (2022) 0.00 0.00 cancer M1-P +1.02 3.48 cancer M2-P 0.00 0.00 cancer Quinlan (1987) +0.99 10.73 cancer Izza et al. (2022) 0.00 0.00 EEG M1-P +0.06 0.07 EEG M2-P 0.00 0.00 EEG Quinlan (1987) +0.22 52.84 EEG Izza et al. (2022) 0.00 0.00 german M1-P +0.29 1.84 german M2-P 0.00 0.00 german Quinlan (1987) +1.37 99.58 german Izza et al. (2022) 0.00 0.00 heart-h M1-P +0.53 2.58 heart-h M2-P 0.00 0.00 heart-h Quinlan (1987) +2.65 100.00 heart-h Izza et al. (2022) 0.00 0.00 ionosphere M1-P +0.89 3.43 ionosphere M2-P 0.00 0.00 ionosphere Quinlan (1987) +0.48 21.21 ionosphere Izza et al. (2022) 0.00 0.00 spambase M1-P +0.79 2.79 spambase M2-P 0.00 0.00 spambase Quinlan (1987) +0.77 20.44 spambase Izza et al. (2022) 0.00 0.00 29 Table 16: IAI per-dataset class-wise deviations relative to the fitted source tree. MacroDev is the mean of the four absolute deviations. Values are means over 30 matched splits. 
+
+Dataset Method |∆P0| (pp) |∆R0| (pp) |∆P1| (pp) |∆R1| (pp) MacroDev (pp) adult M1-P 0.05 0.05 0.01 0.02 0.03 adult M2-P 0.00 0.00 0.00 0.00 0.00 adult Quinlan (1987) 10.63 16.38 3.53 2.92 8.36 adult Izza et al. (2022) 0.00 0.00 0.00 0.00 0.00 backache M1-P 2.14 2.56 1.07 1.32 1.77 backache M2-P 0.00 0.00 0.00 0.00 0.00 backache Quinlan (1987) 9.22 9.11 3.01 6.19 6.88 backache Izza et al. (2022) 0.00 0.00 0.00 0.00 0.00 cancer M1-P 0.92 0.75 1.37 1.76 1.20 cancer M2-P 0.00 0.00 0.00 0.00 0.00 cancer Quinlan (1987) 1.51 1.55 2.69 2.96 2.18 cancer Izza et al. (2022) 0.00 0.00 0.00 0.00 0.00 EEG M1-P 0.01 0.04 0.05 0.02 0.03 EEG M2-P 0.00 0.00 0.00 0.00 0.00 EEG Quinlan (1987) 0.79 1.10 0.81 1.77 1.12 EEG Izza et al. (2022) 0.00 0.00 0.00 0.00 0.00 german M1-P 0.47 0.81 1.34 1.48 1.03 german M2-P 0.00 0.00 0.00 0.00 0.00 german Quinlan (1987) 5.14 14.89 15.81 31.41 16.81 german Izza et al. (2022) 0.00 0.00 0.00 0.00 0.00 heart-h M1-P 0.50 1.13 1.45 0.83 0.98 heart-h M2-P 0.00 0.00 0.00 0.00 0.00 heart-h Quinlan (1987) 3.47 8.45 11.06 9.48 8.11 heart-h Izza et al. (2022) 0.00 0.00 0.00 0.00 0.00 ionosphere M1-P 1.66 0.70 1.23 3.33 1.73 ionosphere M2-P 0.00 0.00 0.00 0.00 0.00 ionosphere Quinlan (1987) 2.51 2.89 4.33 5.09 3.70 ionosphere Izza et al. (2022) 0.00 0.00 0.00 0.00 0.00 spambase M1-P 0.47 1.16 1.68 0.85 1.04 spambase M2-P 0.00 0.00 0.00 0.00 0.00 spambase Quinlan (1987) 0.51 1.17 1.69 0.93 1.07 spambase Izza et al. (2022) 0.00 0.00 0.00 0.00 0.00 30 Table 17: CART per-dataset class-wise deviations relative to the fitted source tree. MacroDev is the mean of the four absolute deviations. Values are means over 30 matched splits. 
+
+Dataset Method |∆P0| (pp) |∆R0| (pp) |∆P1| (pp) |∆R1| (pp) MacroDev (pp) adult M1-P 0.15 0.08 0.02 0.04 0.07 adult M2-P 0.00 0.00 0.00 0.00 0.00 adult Quinlan (1987) 6.79 10.26 2.20 2.00 5.31 adult Izza et al. (2022) 0.00 0.00 0.00 0.00 0.00 backache M1-P 3.04 1.89 0.95 2.01 1.97 backache M2-P 0.00 0.00 0.00 0.00 0.00 backache Quinlan (1987) 9.15 7.22 3.09 5.77 6.31 backache Izza et al. (2022) 0.00 0.00 0.00 0.00 0.00 cancer M1-P 1.52 0.63 1.17 2.96 1.57 cancer M2-P 0.00 0.00 0.00 0.00 0.00 cancer Quinlan (1987) 1.41 1.10 2.04 2.73 1.82 cancer Izza et al. (2022) 0.00 0.00 0.00 0.00 0.00 EEG M1-P 0.04 0.06 0.08 0.05 0.06 EEG M2-P 0.00 0.00 0.00 0.00 0.00 EEG Quinlan (1987) 1.43 3.23 2.26 3.97 2.72 EEG Izza et al. (2022) 0.00 0.00 0.00 0.00 0.00 german M1-P 0.32 0.75 1.20 1.07 0.84 german M2-P 0.00 0.00 0.00 0.00 0.00 german Quinlan (1987) 4.16 12.87 14.90 25.48 14.36 german Izza et al. (2022) 0.00 0.00 0.00 0.00 0.00 heart-h M1-P 0.48 1.13 1.58 0.94 1.03 heart-h M2-P 0.00 0.00 0.00 0.00 0.00 heart-h Quinlan (1987) 3.32 9.52 12.24 10.21 8.82 heart-h Izza et al. (2022) 0.00 0.00 0.00 0.00 0.00 ionosphere M1-P 1.06 0.50 1.10 2.11 1.19 ionosphere M2-P 0.00 0.00 0.00 0.00 0.00 ionosphere Quinlan (1987) 1.71 1.59 2.64 3.60 2.38 ionosphere Izza et al. (2022) 0.00 0.00 0.00 0.00 0.00 spambase M1-P 0.40 1.37 2.06 0.78 1.15 spambase M2-P 0.00 0.00 0.00 0.00 0.00 spambase Quinlan (1987) 0.42 1.42 2.13 0.77 1.18 spambase Izza et al. (2022) 0.00 0.00 0.00 0.00 0.00 31

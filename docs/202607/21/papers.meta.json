@@ -1,0 +1,54 @@
+{
+  "label": "2026-07-21",
+  "date": "2026-07-21",
+  "generated_at": "2026-07-21T21:42:48",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/21/2607.13874v1-relevance-aware-rule-structural-deletion-of-irrelevant-conditions-in-decision-trees",
+      "section": "quick",
+      "title_en": "Relevance-Aware Rule: Structural Deletion of Irrelevant Conditions in Decision Trees",
+      "authors": "Jung-Sik Hong, Jeongeon Lee, Min Kyu Sim, Sangheum Hwang",
+      "date": "2026-07-15",
+      "pdf": "https://arxiv.org/pdf/2607.13874v1",
+      "score": "6.0",
+      "evidence": "决策树中无关条件的结构性删除方法可应用于BRB规则优化",
+      "tldr": "决策树规则中的无关条件源于分裂结构机制，现有删除方法失效。本文通过理论分析发现二元分裂导致类比例反向移动，据此提出结构性框架，通过匹配链接识别可疑条件，并结合预测可靠性诊断选择性删除。实验表明该方法大幅简化规则且保持原始树可靠性。",
+      "tags": "query:brb-er",
+      "abstract_en": "Decision trees generate interpretable if--then rules, yet they contain irrelevant conditions (IRCs). These IRCs arise from the structural mechanism of tree splitting and persist even in modern optimal sparse tree induction algorithms. Existing IRC deletion methods overlook this structural mechanism; therefore, they either preserve the original tree too loosely to remain reliable, or too strictly to achieve meaningful simplification. This study provides theoretical foundations for reliable IRC deletion by establishing theorems and propositions related to the underlying IRC mechanism. The key finding is that a binary split shifts class proportions in opposite directions relative to the parent. Specifically, an increase in the class-1 proportion along one branch necessitates an increase in the class-0 proportion along its sibling, thereby generating a C1-link and a C0-link. Based on this structural fact, we propose a structural IRC deletion framework. Relative to each leaf, links that increase the leaf-class proportion are matched, whereas links that increase the proportion of the opposite leaf-class are mismatched. These mismatched links are flagged as structurally suspicious IRC candidates. Rather than deleting them outright, the framework rigorously diagnoses their relevance by assessing prediction reliability. It selectively deletes conditions that are structurally and empirically irrelevant, while strictly protecting those whose deletion would reduce the rule's reliability. Experimental results confirm that the proposed framework achieves substantial rule simplification without sacrificing the reliability of the original tree.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/21/2607.14141v1-human-ai-construction-of-bayesian-networks-for-operational-decision-support----a-virtual-survey-approach",
+      "section": "quick",
+      "title_en": "Human AI Construction of Bayesian Networks for Operational Decision Support -- A Virtual Survey Approach",
+      "authors": "Kumar Rahul, Shovan Chowdhury",
+      "date": "2026-07-13",
+      "pdf": "https://arxiv.org/pdf/2607.14141v1",
+      "score": "6.0",
+      "evidence": "利用AI代理整合专家意见处理不确定性，类似于置信规则库的不确定性建模",
+      "tldr": "构建贝叶斯网络常需专家判断或大数据，但两者各有局限。本文提出利用大语言模型作为AI专家小组，通过截尾均值去噪，形成六步框架。在替代医疗系统咨询意向案例中，发现自我效能虽表面重要但实际因果影响小，主观规范作用更强。该方法降低了构建BBN的门槛，并揭示了因果推断的差异。",
+      "tags": "query:brb-er",
+      "abstract_en": "Bayesian Belief Networks (BBNs) are powerful tools for decision-making under uncertainty. However, building their structures and estimating parameters are difficult. Currently, researchers must choose between relying on expert judgement or using large datasets to learn the structure and parameters of the network. We propose a new methodology using Large Language Models to bridge the gap between expert opinion and data-driven learning. This approach uses a panel of AI agents to estimate probabilities based on specific personas and context. We then apply a trimmed-mean rule to remove noise from these responses. We develop a six step BBN framework and illustrate it to model customer intention to consult a doctor in an alternative healthcare system. The model reveals that while self efficacy appears to be a major factor, its actual causal impact is small. In contrast, subjective norms have a much stronger effect in modelling customers' intention. The most effective strategy is to improve both confidence and community norms simultaneously.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/21/2607.16868v1-beyond-semantic-equivalence-logical-graphs-for-llm-uncertainty-quantification",
+      "section": "quick",
+      "title_en": "Beyond Semantic Equivalence: Logical Graphs for LLM Uncertainty Quantification",
+      "authors": "Yanni Dong, Minghua Liu, Meiling Zhu, Xiaowei Huang, Lijun Zhang",
+      "date": "2026-07-18",
+      "pdf": "https://arxiv.org/pdf/2607.16868v1",
+      "score": "6.0",
+      "evidence": "逻辑图用于不确定性量化，与置信分布中的不确定性处理类似",
+      "tldr": "大型语言模型常产生自信但不可靠的输出，现有不确定性度量如语义熵仅考虑语义等价性，忽略答案间的逻辑关系，导致高估不确定性。本文提出逻辑图不确定性（LGU），显式建模答案间的蕴含和不兼容，沿蕴含链聚合概率质量并计算熵，同时惩罚不兼容性。在多个问答基准上，LGU相比语义熵基线AUROC提升最高7.1%，AUARC提升3.5%。该方法通过逻辑结构显著改进了不确定性估计，提升了模型在安全关键场景中的可靠性。",
+      "tags": "query:brb-er",
+      "abstract_en": "Large Language Models (LLMs) often produce confidently stated yet unreliable outputs, posing critical challenges for deployment in safety-sensitive applications. Existing uncertainty metrics such as semantic entropy capture agreement at the level of semantic equivalence, but largely ignore the logical relationships between distinct answers. As a result, they tend to overestimate uncertainty and falsely flag hallucinations in settings where generated responses are diverse in form yet logically compatible (e.g., differing only in granularity or specificity). We propose Logical Graph Uncertainty (LGU), a framework that explicitly models implication and incompatibility among answers. LGU aggregates probability mass along entailment chains, computes entropy over logically maximal hypotheses, and penalizes mutual incompatibility among them. Across multiple question-answering benchmarks, LGU consistently improves uncertainty estimation over existing methods, and outperforms the semantic entropy baseline by up to +7.1% AUROC and +3.5% AUARC across datasets.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

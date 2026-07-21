@@ -1,0 +1,131 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-21T21:39:25.252321+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.13874v1",
+      "source": "arxiv",
+      "title": "Relevance-Aware Rule: Structural Deletion of Irrelevant Conditions in Decision Trees",
+      "abstract": "Decision trees generate interpretable if--then rules, yet they contain irrelevant conditions (IRCs). These IRCs arise from the structural mechanism of tree splitting and persist even in modern optimal sparse tree induction algorithms. Existing IRC deletion methods overlook this structural mechanism; therefore, they either preserve the original tree too loosely to remain reliable, or too strictly to achieve meaningful simplification. This study provides theoretical foundations for reliable IRC deletion by establishing theorems and propositions related to the underlying IRC mechanism. The key finding is that a binary split shifts class proportions in opposite directions relative to the parent. Specifically, an increase in the class-1 proportion along one branch necessitates an increase in the class-0 proportion along its sibling, thereby generating a C1-link and a C0-link. Based on this structural fact, we propose a structural IRC deletion framework. Relative to each leaf, links that increase the leaf-class proportion are matched, whereas links that increase the proportion of the opposite leaf-class are mismatched. These mismatched links are flagged as structurally suspicious IRC candidates. Rather than deleting them outright, the framework rigorously diagnoses their relevance by assessing prediction reliability. It selectively deletes conditions that are structurally and empirically irrelevant, while strictly protecting those whose deletion would reduce the rule's reliability. Experimental results confirm that the proposed framework achieves substantial rule simplification without sacrificing the reliability of the original tree.",
+      "authors": [
+        "Jung-Sik Hong",
+        "Jeongeon Lee",
+        "Min Kyu Sim",
+        "Sangheum Hwang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-15T14:24:17+00:00",
+      "link": "https://arxiv.org/pdf/2607.13874v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "structural deletion of irrelevant conditions in decision trees applies to BRB rule optimization",
+      "llm_evidence_cn": "决策树中无关条件的结构性删除方法可应用于BRB规则优化",
+      "llm_evidence": "决策树中无关条件的结构性删除方法可应用于BRB规则优化",
+      "canonical_evidence": "决策树中无关条件的结构性删除方法可应用于BRB规则优化",
+      "llm_tldr_en": "Provides theoretical foundations for deleting irrelevant conditions in decision trees, revealing a structural mechanism that could be applied to optimize belief rule bases by removing redundant conditions.",
+      "llm_tldr_cn": "本文揭示了决策树中无关条件产生的结构机制，并提出了可靠的删除理论。研究指出二元分裂会反向转移类别比例，基于此建立了定理和命题。该方法可迁移至置信规则库的优化中，通过删除冗余条件简化规则集，提升推理效率而不损失准确性。",
+      "llm_tldr": "本文揭示了决策树中无关条件产生的结构机制，并提出了可靠的删除理论。研究指出二元分裂会反向转移类别比例，基于此建立了定理和命题。该方法可迁移至置信规则库的优化中，通过删除冗余条件简化规则集，提升推理效率而不损失准确性。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "BRB optimization and parameter learning methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.14141v1",
+      "source": "arxiv",
+      "title": "Human AI Construction of Bayesian Networks for Operational Decision Support -- A Virtual Survey Approach",
+      "abstract": "Bayesian Belief Networks (BBNs) are powerful tools for decision-making under uncertainty. However, building their structures and estimating parameters are difficult. Currently, researchers must choose between relying on expert judgement or using large datasets to learn the structure and parameters of the network. We propose a new methodology using Large Language Models to bridge the gap between expert opinion and data-driven learning. This approach uses a panel of AI agents to estimate probabilities based on specific personas and context. We then apply a trimmed-mean rule to remove noise from these responses. We develop a six step BBN framework and illustrate it to model customer intention to consult a doctor in an alternative healthcare system. The model reveals that while self efficacy appears to be a major factor, its actual causal impact is small. In contrast, subjective norms have a much stronger effect in modelling customers' intention. The most effective strategy is to improve both confidence and community norms simultaneously.",
+      "authors": [
+        "Kumar Rahul",
+        "Shovan Chowdhury"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-13T06:15:07+00:00",
+      "link": "https://arxiv.org/pdf/2607.14141v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uses AI agents for expert opinion integration under uncertainty, similar to BRB uncertainty modeling",
+      "llm_evidence_cn": "利用AI代理整合专家意见处理不确定性，类似于置信规则库的不确定性建模",
+      "llm_evidence": "利用AI代理整合专家意见处理不确定性，类似于置信规则库的不确定性建模",
+      "canonical_evidence": "利用AI代理整合专家意见处理不确定性，类似于置信规则库的不确定性建模",
+      "llm_tldr_en": "Proposes a human-AI method to build Bayesian networks for operational decision support, using LLM-based agents to estimate probabilities and a trimmed-mean rule for noise reduction, bridging expert knowledge and data.",
+      "llm_tldr_cn": "针对不确定性下决策支持的贝叶斯网络构建难题，提出结合人类与AI的方法：利用大语言模型驱动的AI代理面板估计概率，并采用修剪均值规则去除噪声。该方法在客户就医意图建模中验证了有效性，弥合了专家知识与数据驱动学习之间的鸿沟，为不确定性建模提供了新思路。",
+      "llm_tldr": "针对不确定性下决策支持的贝叶斯网络构建难题，提出结合人类与AI的方法：利用大语言模型驱动的AI代理面板估计概率，并采用修剪均值规则去除噪声。该方法在客户就医意图建模中验证了有效性，弥合了专家知识与数据驱动学习之间的鸿沟，为不确定性建模提供了新思路。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "uncertainty modeling in belief rule base",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.16868v1",
+      "source": "arxiv",
+      "title": "Beyond Semantic Equivalence: Logical Graphs for LLM Uncertainty Quantification",
+      "abstract": "Large Language Models (LLMs) often produce confidently stated yet unreliable outputs, posing critical challenges for deployment in safety-sensitive applications. Existing uncertainty metrics such as semantic entropy capture agreement at the level of semantic equivalence, but largely ignore the logical relationships between distinct answers. As a result, they tend to overestimate uncertainty and falsely flag hallucinations in settings where generated responses are diverse in form yet logically compatible (e.g., differing only in granularity or specificity). We propose Logical Graph Uncertainty (LGU), a framework that explicitly models implication and incompatibility among answers. LGU aggregates probability mass along entailment chains, computes entropy over logically maximal hypotheses, and penalizes mutual incompatibility among them. Across multiple question-answering benchmarks, LGU consistently improves uncertainty estimation over existing methods, and outperforms the semantic entropy baseline by up to +7.1% AUROC and +3.5% AUARC across datasets.",
+      "authors": [
+        "Yanni Dong",
+        "Minghua Liu",
+        "Meiling Zhu",
+        "Xiaowei Huang",
+        "Lijun Zhang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-18T16:14:08+00:00",
+      "link": "https://arxiv.org/pdf/2607.16868v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "logical graphs for uncertainty quantification, analogous to handling uncertainty in belief distributions",
+      "llm_evidence_cn": "逻辑图用于不确定性量化，与置信分布中的不确定性处理类似",
+      "llm_evidence": "逻辑图用于不确定性量化，与置信分布中的不确定性处理类似",
+      "canonical_evidence": "逻辑图用于不确定性量化，与置信分布中的不确定性处理类似",
+      "llm_tldr_en": "Proposes Logical Graph Uncertainty (LGU) for LLMs, modeling implication and incompatibility among answers to improve uncertainty quantification over semantic entropy.",
+      "llm_tldr_cn": "该论文针对大语言模型输出不确定性量化中语义等价忽略逻辑关系的问题，提出逻辑图不确定性（LGU）框架。LGU显式建模答案之间的蕴含和不兼容关系，沿着蕴含链聚合概率质量。在多个问答数据集上，LGU比语义熵更准确地识别幻觉，减少不确定性过估。",
+      "llm_tldr": "该论文针对大语言模型输出不确定性量化中语义等价忽略逻辑关系的问题，提出逻辑图不确定性（LGU）框架。LGU显式建模答案之间的蕴含和不兼容关系，沿着蕴含链聚合概率质量。在多个问答数据集上，LGU比语义熵更准确地识别幻觉，减少不确定性过估。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "uncertainty modeling in belief rule base",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
