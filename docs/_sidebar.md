@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-07-22 <!--dpr-date:20260722-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/22/2607.17266v1-debate-on-graph-reliable-and-adaptive-reasoning-of-large-language-model-on-uncertain-knowledge-graph" data-sidebar-item="{&quot;title&quot;: &quot;Debate-on-Graph: Reliable and Adaptive Reasoning of Large Language Model on Uncertain Knowledge Graph&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.17266v1-debate-on-graph-reliable-and-adaptive-reasoning-of-large-language-model-on-uncertain-knowledge-graph&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;brb-er&quot;}], &quot;evidence&quot;: &quot;置信知识图谱中不确定性建模与推理&quot;}">Debate-on-Graph: Reliable and Adaptive Reasoning of Large Language Model on Uncertain Knowledge Graph</a>
   * 2026-07-21 <!--dpr-date:20260721-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/21/2607.13874v1-relevance-aware-rule-structural-deletion-of-irrelevant-conditions-in-decision-trees" data-sidebar-item="{&quot;title&quot;: &quot;Relevance-Aware Rule: Structural Deletion of Irrelevant Conditions in Decision Trees&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.13874v1-relevance-aware-rule-structural-deletion-of-irrelevant-conditions-in-decision-trees&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;brb-er&quot;}], &quot;evidence&quot;: &quot;决策树中无关条件的结构性删除方法可应用于BRB规则优化&quot;}">Relevance-Aware Rule: Structural Deletion of Irrelevant Conditions in Decision Trees</a>

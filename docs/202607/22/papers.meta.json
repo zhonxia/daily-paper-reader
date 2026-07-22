@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-22",
+  "date": "2026-07-22",
+  "generated_at": "2026-07-22T20:39:46",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/22/2607.17266v1-debate-on-graph-reliable-and-adaptive-reasoning-of-large-language-model-on-uncertain-knowledge-graph",
+      "section": "quick",
+      "title_en": "Debate-on-Graph: Reliable and Adaptive Reasoning of Large Language Model on Uncertain Knowledge Graph",
+      "authors": "Peiji Yu, Xin Chen, Tianxing Wu",
+      "date": "2026-07-19",
+      "pdf": "https://arxiv.org/pdf/2607.17266v1",
+      "score": "6.0",
+      "evidence": "置信知识图谱中不确定性建模与推理",
+      "tldr": "大语言模型在问答任务中易产生幻觉，现有知识图谱增强方法无法过滤噪声，反而加剧问题。本文提出Debate-on-Graph框架，利用不确定知识图谱的置信度，通过启发式搜索提取可靠子图，并引入多智能体辩论机制进行自适应推理。在四个基准数据集上取得最优性能，实现可靠且自适应的推理。",
+      "tags": "query:brb-er",
+      "abstract_en": "Large language models (LLMs) have demonstrated remarkable capabilities in natural language processing. However, LLMs often suffer from hallucinations and lack of relevant knowledge when dealing with question answering (QA) tasks. To mitigate these issues, knowledge graphs (KGs) have been utilized to enhance LLM reasoning. Nevertheless, KGs often contain noise and errors, while existing KG-enhanced LLM approaches are generally unable to identify and filter such noisy and erroneous content, which can instead amplify hallucinations and pose challenges for reliable reasoning. Uncertain knowledge graphs (UKGs), which associate each triple with a confidence score to quantify uncertainty, offer a promising direction to address this challenge. Compared with prior work, we investigate how to leverage UKGs to support LLMs for QA. We propose Debate-on-Graph (DoG), a new framework that enables LLMs and UKGs to collaborate adaptively for reliable reasoning. Specifically, we first design a heuristic search algorithm tailored for UKGs to extract reliable and question-relevant subgraphs, thereby reducing noise and errors in retrieved knowledge. We then introduce a Multi-Agent Debate mechanism, which yields reliable answers through adaptive adversarial debates, aiming to fully exploit the knowledge in UKGs while preserving the reliability of retrieved evidence. Extensive experiments on four benchmark QA datasets show that DoG achieves state-of-the-art performance over existing LLM reasoning methods and KG-based baselines, while enabling reliable and adaptive reasoning. Our code is available at https://github.com/seucoin/Debate-on-Graph.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

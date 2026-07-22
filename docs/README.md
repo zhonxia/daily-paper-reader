@@ -6,30 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-21
-- 运行时间：2026-07-21 21:42:42 UTC
+- 最新运行日期：2026-07-22
+- 运行时间：2026-07-22 20:39:39 UTC
 - 运行状态：成功
-- 本次总论文数：3
+- 本次总论文数：1
 - 精读区：0
-- 速读区：3
+- 速读区：1
 
 ### 今日简报（AI）
-今日速读三篇评分6.0的论文，重点挖掘决策树规则优化、贝叶斯网络构建及LLM不确定性量化三个方向。其中最值得关注的是《Relevance-Aware Rule》提出的无关条件删除方法和《Beyond Semantic Equivalence》中逻辑图量化不确定性的思路。建议普通读者优先阅读后者，探索逻辑图如何提升LLM输出的可信度。
-- 详情：[/202607/21/README](/202607/21/README)
+今日速读论文聚焦大模型在不确定知识图谱上的可靠推理新方法。
+该文提出“图辩论”框架，通过多轮辩论提升LLM在模糊知识中的推理稳定性。
+建议后续关注辩论式推理与图谱增强的结合，可尝试在低质量知识场景中验证。
+- 详情：[/202607/22/README](/202607/22/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Relevance-Aware Rule: Structural Deletion of Irrelevant Conditions in Decision Trees](/202607/21/2607.13874v1-relevance-aware-rule-structural-deletion-of-irrelevant-conditions-in-decision-trees)  
+1. [Debate-on-Graph: Reliable and Adaptive Reasoning of Large Language Model on Uncertain Knowledge Graph](/202607/22/2607.17266v1-debate-on-graph-reliable-and-adaptive-reasoning-of-large-language-model-on-uncertain-knowledge-graph)  
    标签：评分：6.0/10、query:brb-er
-   evidence：决策树中无关条件的结构性删除方法可应用于BRB规则优化
-2. [Human AI Construction of Bayesian Networks for Operational Decision Support -- A Virtual Survey Approach](/202607/21/2607.14141v1-human-ai-construction-of-bayesian-networks-for-operational-decision-support----a-virtual-survey-approach)  
-   标签：评分：6.0/10、query:brb-er
-   evidence：利用AI代理整合专家意见处理不确定性，类似于置信规则库的不确定性建模
-3. [Beyond Semantic Equivalence: Logical Graphs for LLM Uncertainty Quantification](/202607/21/2607.16868v1-beyond-semantic-equivalence-logical-graphs-for-llm-uncertainty-quantification)  
-   标签：评分：6.0/10、query:brb-er
-   evidence：逻辑图用于不确定性量化，与置信分布中的不确定性处理类似
+   evidence：置信知识图谱中不确定性建模与推理
 
 
 <div class="dpr-home-promo-card">

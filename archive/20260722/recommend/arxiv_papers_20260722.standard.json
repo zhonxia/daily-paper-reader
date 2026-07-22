@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-22T20:39:07.704927+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.17266v1",
+      "source": "arxiv",
+      "title": "Debate-on-Graph: Reliable and Adaptive Reasoning of Large Language Model on Uncertain Knowledge Graph",
+      "abstract": "Large language models (LLMs) have demonstrated remarkable capabilities in natural language processing. However, LLMs often suffer from hallucinations and lack of relevant knowledge when dealing with question answering (QA) tasks. To mitigate these issues, knowledge graphs (KGs) have been utilized to enhance LLM reasoning. Nevertheless, KGs often contain noise and errors, while existing KG-enhanced LLM approaches are generally unable to identify and filter such noisy and erroneous content, which can instead amplify hallucinations and pose challenges for reliable reasoning. Uncertain knowledge graphs (UKGs), which associate each triple with a confidence score to quantify uncertainty, offer a promising direction to address this challenge. Compared with prior work, we investigate how to leverage UKGs to support LLMs for QA. We propose Debate-on-Graph (DoG), a new framework that enables LLMs and UKGs to collaborate adaptively for reliable reasoning. Specifically, we first design a heuristic search algorithm tailored for UKGs to extract reliable and question-relevant subgraphs, thereby reducing noise and errors in retrieved knowledge. We then introduce a Multi-Agent Debate mechanism, which yields reliable answers through adaptive adversarial debates, aiming to fully exploit the knowledge in UKGs while preserving the reliability of retrieved evidence. Extensive experiments on four benchmark QA datasets show that DoG achieves state-of-the-art performance over existing LLM reasoning methods and KG-based baselines, while enabling reliable and adaptive reasoning. Our code is available at https://github.com/seucoin/Debate-on-Graph.",
+      "authors": [
+        "Peiji Yu",
+        "Xin Chen",
+        "Tianxing Wu"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-07-19T14:17:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.17266v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uncertainty modeling in knowledge graphs with confidence scores",
+      "llm_evidence_cn": "置信知识图谱中不确定性建模与推理",
+      "llm_evidence": "置信知识图谱中不确定性建模与推理",
+      "canonical_evidence": "置信知识图谱中不确定性建模与推理",
+      "llm_tldr_en": "Proposes Debate-on-Graph for LLM reasoning on uncertain knowledge graphs, modeling triple confidence as uncertainty, relevant to uncertainty handling in BRB",
+      "llm_tldr_cn": "针对大型语言模型在不确定知识图谱上的推理难题，提出Debate-on-Graph框架，利用三元组置信度量化不确定性，并通过多轮辩论过滤噪声。该方法与置信规则库中不确定性建模思路相通，为处理不确定信息提供了可迁移的推理机制。实验表明其能有效减少幻觉，提升推理可靠性。",
+      "llm_tldr": "针对大型语言模型在不确定知识图谱上的推理难题，提出Debate-on-Graph框架，利用三元组置信度量化不确定性，并通过多轮辩论过滤噪声。该方法与置信规则库中不确定性建模思路相通，为处理不确定信息提供了可迁移的推理机制。实验表明其能有效减少幻觉，提升推理可靠性。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "uncertainty modeling in belief rule base",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
