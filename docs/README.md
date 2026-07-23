@@ -6,26 +6,30 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-22
-- 运行时间：2026-07-22 20:39:39 UTC
+- 最新运行日期：2026-07-23
+- 运行时间：2026-07-23 21:44:50 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：3
 - 精读区：0
-- 速读区：1
+- 速读区：3
 
 ### 今日简报（AI）
-今日速读论文聚焦大模型在不确定知识图谱上的可靠推理新方法。
-该文提出“图辩论”框架，通过多轮辩论提升LLM在模糊知识中的推理稳定性。
-建议后续关注辩论式推理与图谱增强的结合，可尝试在低质量知识场景中验证。
-- 详情：[/202607/22/README](/202607/22/README)
+今天速读了3篇论文，重点聚焦知识图谱推理与符号推理方向。最值得关注的是《CLARK》和《SoftReason》两篇7分工作，分别提出闭环自适应推理和可微符号推理架构。建议先巩固知识图谱推理基础，再深入研读这两篇。
+- 详情：[/202607/23/README](/202607/23/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Debate-on-Graph: Reliable and Adaptive Reasoning of Large Language Model on Uncertain Knowledge Graph](/202607/22/2607.17266v1-debate-on-graph-reliable-and-adaptive-reasoning-of-large-language-model-on-uncertain-knowledge-graph)  
+1. [CLARK: Closed-loop Learning for Adaptive Reasoning over Knowledge Graphs](/202607/23/2607.19996v1-clark-closed-loop-learning-for-adaptive-reasoning-over-knowledge-graphs)  
+   标签：评分：7.0/10、query:brb-er
+   evidence：基于规则的概率推理与不确定性处理（LP^MLN）
+2. [SoftReason: A Fully Differentiable Neuro-Soft-Symbolic Deductive Reasoning Architecture over High-Dimensional Perceptual Data](/202607/23/2607.20402v1-softreason-a-fully-differentiable-neuro-soft-symbolic-deductive-reasoning-architecture-over-high-dimensional-perceptual-data)  
+   标签：评分：7.0/10、query:brb-er
+   evidence：使用软符号推理和规则定义的神经软符号演绎推理，与证据推理方法类似
+3. [Autonomous Collaborative Learning Among an Ensemble of Tsetlin Machines with Consensus-Based Inference](/202607/23/2607.20124v1-autonomous-collaborative-learning-among-an-ensemble-of-tsetlin-machines-with-consensus-based-inference)  
    标签：评分：6.0/10、query:brb-er
-   evidence：置信知识图谱中不确定性建模与推理
+   evidence：Tsetlin机作为替代规则系统，可用于与BRB比较
 
 
 <div class="dpr-home-promo-card">

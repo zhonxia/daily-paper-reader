@@ -1,0 +1,54 @@
+{
+  "label": "2026-07-23",
+  "date": "2026-07-23",
+  "generated_at": "2026-07-23T21:44:56",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/23/2607.19996v1-clark-closed-loop-learning-for-adaptive-reasoning-over-knowledge-graphs",
+      "section": "quick",
+      "title_en": "CLARK: Closed-loop Learning for Adaptive Reasoning over Knowledge Graphs",
+      "authors": "Yousef Khan, Luca Gherardini, Marco Maratea, Joel Arrais, Jose Sousa",
+      "date": "2026-07-22",
+      "pdf": "https://arxiv.org/pdf/2607.19996v1",
+      "score": "7.0",
+      "evidence": "基于规则的概率推理与不确定性处理（LP^MLN）",
+      "tldr": "现有机器学习模型在数据分布变化时性能下降，且难以整合先验知识。CLARK框架通过将CACTUS知识图谱转化为LP^MLN程序，结合符号规则挖掘和概率权重学习，实现了自适应推理。在医学数据集上的实验表明，该方法提升了分类性能和泛化能力。CLARK为构建自适应、可解释的知识驱动模型提供了系统化方案。",
+      "tags": "query:brb-er",
+      "abstract_en": "Machine Learning models are widely used for automating classification tasks by extracting statistical patterns from data. However, their performance deteriorates if the data distribution changes, making them ill-suited to handle uncertain and evolving information. Moreover, they provide limited support for integrating prior knowledge. To address these limitations, we present CLARK (Closed-loop Learning for Adaptive Reasoning over Knowledge Graphs), a framework that integrates knowledge graphs, symbolic rule mining, and probabilistic reasoning under the Logic Programs with Markov Logic Networks (LP$^{\\text{MLN}}$) formalism. Starting from CACTUS-derived KGs, CLARK translates graph structure into an LP$^{\\text{MLN}}$ program and iteratively enriches it with candidate rules proposed by symbolic learners. These rules are calibrated through probabilistic weight learning, enabling reasoning under uncertainty and refinement of the underlying graph structure. We evaluate CLARK on two medical datasets, analysing both rule quality and downstream classification performance. Results demonstrate that CLARK leads to improved classification performance and more generalisable inference. Overall, CLARK provides a principled approach to constructing adaptive, interpretable, knowledge-driven models for classification.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/23/2607.20402v1-softreason-a-fully-differentiable-neuro-soft-symbolic-deductive-reasoning-architecture-over-high-dimensional-perceptual-data",
+      "section": "quick",
+      "title_en": "SoftReason: A Fully Differentiable Neuro-Soft-Symbolic Deductive Reasoning Architecture over High-Dimensional Perceptual Data",
+      "authors": "Wael AbdAlmageed",
+      "date": "2026-07-22",
+      "pdf": "https://arxiv.org/pdf/2607.20402v1",
+      "score": "7.0",
+      "evidence": "使用软符号推理和规则定义的神经软符号演绎推理，与证据推理方法类似",
+      "tldr": "经典神经符号推理在感知和演绎间存在离散接口，难以端到端优化。SoftReason通过将演绎状态表示为候选常量和谓词上的软解释张量，实现感知、知识图谱证据和演绎闭包的完全可微。其核心创新是可微的即时推论算子，利用谓词定义嵌入和潜在组合通道形成软体谓词混合，并通过单调概率OR更新解释。在知识感知视觉问答（KVQA）任务上，该架构展示了端到端感知基础与逻辑推理的融合能力。",
+      "tags": "query:brb-er",
+      "abstract_en": "In many reasoning problems, the premises are not observed as discrete symbols, but must be inferred from high-dimensional inputs. Further, the predicate vocabulary, argument structure, and trusted evidence are supplied by a Knowledge Graph (KG), or rule definitions. Classical neuro-symbolic pipelines have a discrete interface between perception and deduction. We present a neuro-soft-symbolic architecture for differentiable deductive reasoning over latent perceptual facts and knowledge-provided predicates. SoftReason removes the gradient gap by representing the deductive state as a local soft interpretation tensor over candidate constants and predicates. Perception proposes probabilistic base facts, KG triples enter as high-confidence soft evidence, and every query anchor, predicate choice, and closure update remains differentiable. Our core innovation is a learned differentiable lift of the immediate-consequence operator. It uses predicate-definition embeddings and latent composition channels to form soft body-predicate mixtures, aggregate over all possible witnesses, propose query-conditioned head facts, and update the interpretation through a monotone probabilistic OR. We instantiate the framework on Knowledge-aware Visual Question Answering (KVQA), and demonstrates how SoftReason supports end-to-end perceptual grounding, KG evidence injection, and differentiable deductive closure in one trainable architecture.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/23/2607.20124v1-autonomous-collaborative-learning-among-an-ensemble-of-tsetlin-machines-with-consensus-based-inference",
+      "section": "quick",
+      "title_en": "Autonomous Collaborative Learning Among an Ensemble of Tsetlin Machines with Consensus-Based Inference",
+      "authors": "Yehuda Rudin, Osnat Keren, Michal Yemini, Alexander Fish",
+      "date": "2026-07-22",
+      "pdf": "https://arxiv.org/pdf/2607.20124v1",
+      "score": "6.0",
+      "evidence": "Tsetlin机作为替代规则系统，可用于与BRB比较",
+      "tldr": "Tsetlin Machine集成学习在分布式场景下研究不足，本文提出一种基于共识推理的去中心化协作范式，各代理维护私有模型且不交换原始数据，通过组合个体预测实现全局共识。在二维网格和连通图拓扑上的实验表明，该方法分类性能可媲美集中式模型，为多模态异构环境下的信息融合提供了新方案。",
+      "tags": "query:brb-er",
+      "abstract_en": "Tsetlin Machine (TM) is a rule-based machine-learning algorithm comprising collectives of two-action Tsetlin Automata (TAs) that cooperatively form conjunctive logical clauses from Boolean inputs through stochastic feedback. Although few recent studies have examined TM Federated Learning, the broader area of distributed and decentralized TM learning has not received much attention in the existing literature and warrants further exploration. In this work, we propose a paradigm for decentralized collaborative learning under a vertical feature-partitioning setting among an ensemble of Tsetlin Machines using consensus-based inference. Within this decentralized paradigm, each agent maintains its own private TM model, and there is no exchange of raw data among agents. Inference combines individual agents model predictions into a global consensus. The paradigm accommodates heterogeneous TM-based agents with differing data acquisition means, local data distributions, or computational resources, thereby facilitating the integration and fusion of information in settings such as multi-modal sensing environments. Experiments conducted using two-dimensional grid and connected graph network topologies demonstrate that the classification accuracies achieved are comparable to those of centralized models.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

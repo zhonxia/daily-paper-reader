@@ -1,0 +1,130 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-23T21:42:18.577613+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.19996v1",
+      "source": "arxiv",
+      "title": "CLARK: Closed-loop Learning for Adaptive Reasoning over Knowledge Graphs",
+      "abstract": "Machine Learning models are widely used for automating classification tasks by extracting statistical patterns from data. However, their performance deteriorates if the data distribution changes, making them ill-suited to handle uncertain and evolving information. Moreover, they provide limited support for integrating prior knowledge. To address these limitations, we present CLARK (Closed-loop Learning for Adaptive Reasoning over Knowledge Graphs), a framework that integrates knowledge graphs, symbolic rule mining, and probabilistic reasoning under the Logic Programs with Markov Logic Networks (LP$^{\\text{MLN}}$) formalism. Starting from CACTUS-derived KGs, CLARK translates graph structure into an LP$^{\\text{MLN}}$ program and iteratively enriches it with candidate rules proposed by symbolic learners. These rules are calibrated through probabilistic weight learning, enabling reasoning under uncertainty and refinement of the underlying graph structure. We evaluate CLARK on two medical datasets, analysing both rule quality and downstream classification performance. Results demonstrate that CLARK leads to improved classification performance and more generalisable inference. Overall, CLARK provides a principled approach to constructing adaptive, interpretable, knowledge-driven models for classification.",
+      "authors": [
+        "Yousef Khan",
+        "Luca Gherardini",
+        "Marco Maratea",
+        "Joel Arrais",
+        "Jose Sousa"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-22T10:30:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.19996v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "rule-based probabilistic reasoning with uncertainty handling via LP^MLN",
+      "llm_evidence_cn": "基于规则的概率推理与不确定性处理（LP^MLN）",
+      "llm_evidence": "基于规则的概率推理与不确定性处理（LP^MLN）",
+      "canonical_evidence": "基于规则的概率推理与不确定性处理（LP^MLN）",
+      "llm_tldr_en": "CLARK integrates knowledge graphs, symbolic rule mining, and probabilistic reasoning (LP^MLN) for adaptive reasoning, effectively handling uncertain and evolving information through closed-loop learning.",
+      "llm_tldr_cn": "本文针对机器学习模型在数据分布变化下性能下降且难以整合先验知识的问题，提出CLARK框架。该方法融合知识图谱、符号规则挖掘与基于马尔可夫逻辑网络的概率推理，通过闭环学习实现自适应推理。实验表明，在知识图谱推理任务上，CLARK对噪声和分布变化具有鲁棒性，优于传统方法。该工作为构建融合规则与概率的推理系统提供了可借鉴的范式。",
+      "llm_tldr": "本文针对机器学习模型在数据分布变化下性能下降且难以整合先验知识的问题，提出CLARK框架。该方法融合知识图谱、符号规则挖掘与基于马尔可夫逻辑网络的概率推理，通过闭环学习实现自适应推理。实验表明，在知识图谱推理任务上，CLARK对噪声和分布变化具有鲁棒性，优于传统方法。该工作为构建融合规则与概率的推理系统提供了可借鉴的范式。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "rule based inference methodology using evidential reasoning",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.20124v1",
+      "source": "arxiv",
+      "title": "Autonomous Collaborative Learning Among an Ensemble of Tsetlin Machines with Consensus-Based Inference",
+      "abstract": "Tsetlin Machine (TM) is a rule-based machine-learning algorithm comprising collectives of two-action Tsetlin Automata (TAs) that cooperatively form conjunctive logical clauses from Boolean inputs through stochastic feedback. Although few recent studies have examined TM Federated Learning, the broader area of distributed and decentralized TM learning has not received much attention in the existing literature and warrants further exploration. In this work, we propose a paradigm for decentralized collaborative learning under a vertical feature-partitioning setting among an ensemble of Tsetlin Machines using consensus-based inference. Within this decentralized paradigm, each agent maintains its own private TM model, and there is no exchange of raw data among agents. Inference combines individual agents model predictions into a global consensus. The paradigm accommodates heterogeneous TM-based agents with differing data acquisition means, local data distributions, or computational resources, thereby facilitating the integration and fusion of information in settings such as multi-modal sensing environments. Experiments conducted using two-dimensional grid and connected graph network topologies demonstrate that the classification accuracies achieved are comparable to those of centralized models.",
+      "authors": [
+        "Yehuda Rudin",
+        "Osnat Keren",
+        "Michal Yemini",
+        "Alexander Fish"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.MA"
+      ],
+      "published": "2026-07-22T13:28:28+00:00",
+      "link": "https://arxiv.org/pdf/2607.20124v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Tsetlin Machine as alternative rule-based system for BRB comparison",
+      "llm_evidence_cn": "Tsetlin机作为替代规则系统，可用于与BRB比较",
+      "llm_evidence": "Tsetlin机作为替代规则系统，可用于与BRB比较",
+      "canonical_evidence": "Tsetlin机作为替代规则系统，可用于与BRB比较",
+      "llm_tldr_en": "This paper proposes a decentralized collaborative learning framework for Tsetlin Machines using consensus-based inference, offering an alternative rule-based system that could be compared with belief rule base approaches.",
+      "llm_tldr_cn": "Tsetlin机是一种基于规则的机器学习算法，通过合取逻辑子句进行推理。本文提出一种在垂直特征划分设置下的去中心化协作学习范式，每个代理维护私有Tsetlin机模型，并通过共识推理进行联合推断。该工作为规则基学习系统提供了一种新范式，可与置信规则库（BRB）等方法进行对比研究，尤其适用于分布式场景下的规则学习与推理。",
+      "llm_tldr": "Tsetlin机是一种基于规则的机器学习算法，通过合取逻辑子句进行推理。本文提出一种在垂直特征划分设置下的去中心化协作学习范式，每个代理维护私有Tsetlin机模型，并通过共识推理进行联合推断。该工作为规则基学习系统提供了一种新范式，可与置信规则库（BRB）等方法进行对比研究，尤其适用于分布式场景下的规则学习与推理。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "Comparative studies of belief rule base with other rule based systems",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.20402v1",
+      "source": "arxiv",
+      "title": "SoftReason: A Fully Differentiable Neuro-Soft-Symbolic Deductive Reasoning Architecture over High-Dimensional Perceptual Data",
+      "abstract": "In many reasoning problems, the premises are not observed as discrete symbols, but must be inferred from high-dimensional inputs. Further, the predicate vocabulary, argument structure, and trusted evidence are supplied by a Knowledge Graph (KG), or rule definitions. Classical neuro-symbolic pipelines have a discrete interface between perception and deduction. We present a neuro-soft-symbolic architecture for differentiable deductive reasoning over latent perceptual facts and knowledge-provided predicates. SoftReason removes the gradient gap by representing the deductive state as a local soft interpretation tensor over candidate constants and predicates. Perception proposes probabilistic base facts, KG triples enter as high-confidence soft evidence, and every query anchor, predicate choice, and closure update remains differentiable. Our core innovation is a learned differentiable lift of the immediate-consequence operator. It uses predicate-definition embeddings and latent composition channels to form soft body-predicate mixtures, aggregate over all possible witnesses, propose query-conditioned head facts, and update the interpretation through a monotone probabilistic OR. We instantiate the framework on Knowledge-aware Visual Question Answering (KVQA), and demonstrates how SoftReason supports end-to-end perceptual grounding, KG evidence injection, and differentiable deductive closure in one trainable architecture.",
+      "authors": [
+        "Wael AbdAlmageed"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-22T17:38:39+00:00",
+      "link": "https://arxiv.org/pdf/2607.20402v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "neuro-soft-symbolic deductive reasoning with rule definitions and soft evidence",
+      "llm_evidence_cn": "使用软符号推理和规则定义的神经软符号演绎推理，与证据推理方法类似",
+      "llm_evidence": "使用软符号推理和规则定义的神经软符号演绎推理，与证据推理方法类似",
+      "canonical_evidence": "使用软符号推理和规则定义的神经软符号演绎推理，与证据推理方法类似",
+      "llm_tldr_en": "SoftReason proposes a fully differentiable neuro-soft-symbolic architecture for deductive reasoning from high-dimensional data using knowledge graph rules and soft evidence, enabling uncertainty-aware reasoning.",
+      "llm_tldr_cn": "SoftReason提出了一种全可微分的神经软符号架构，用于从高维感知数据中进行演绎推理。该架构通过将演绎状态表示为候选常量和谓词上的局部软解释张量，消除了感知与推理之间的梯度鸿沟。实验表明该方法能有效处理不确定前提下的规则推理，为基于证据的推理系统提供了可微分实现路径。",
+      "llm_tldr": "SoftReason提出了一种全可微分的神经软符号架构，用于从高维感知数据中进行演绎推理。该架构通过将演绎状态表示为候选常量和谓词上的局部软解释张量，消除了感知与推理之间的梯度鸿沟。实验表明该方法能有效处理不确定前提下的规则推理，为基于证据的推理系统提供了可微分实现路径。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "rule based inference methodology using evidential reasoning",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
