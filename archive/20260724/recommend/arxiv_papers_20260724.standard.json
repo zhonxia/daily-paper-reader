@@ -1,0 +1,92 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-24T21:38:15.769526+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.20801v1",
+      "source": "arxiv",
+      "title": "Imprecise Probabilistic Programming, Precisely: Credal Sets via Graded Monads, BDDs, and Semiring-Parametric Inference (Functional Pearl)",
+      "abstract": "Imprecise probability generalizes standard probability theory by replacing a single distribution with a convex set of possible distributions. We show that this generalization requires no change to the standard BDD compilation and weighted model counting pipeline used by discrete probabilistic languages. An imprecise coin flip is simply a BDD variable whose weight is left free rather than fixed. We introduce Imp, a Haskell-embedded DSL for imprecise probabilistic programming. A graded monad, indexed by finite sets of named sources of epistemic uncertainty, restores the commutativity that the standard convex powerset monad lacks, and GHC's type system enforces this at compile time. Weighted model counting is parametric in the semiring, so the same compiled BDD supports exact, differentiable, and interval-bounded inference.",
+      "authors": [
+        "Jack Liell-Cock",
+        "Sam Staton"
+      ],
+      "primary_category": "cs.PL",
+      "categories": [
+        "cs.PL",
+        "math.PR"
+      ],
+      "published": "2026-07-23T00:06:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.20801v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "imprecise probability modeling for uncertainty using credal sets",
+      "llm_evidence_cn": "使用credal集进行不精确概率建模，处理不确定性",
+      "llm_evidence": "使用credal集进行不精确概率建模，处理不确定性",
+      "canonical_evidence": "使用credal集进行不精确概率建模，处理不确定性",
+      "llm_tldr_en": "Imp introduces a graded monad for imprecise probabilistic programming with credal sets, using BDD compilation and semiring-parametric inference to represent epistemic uncertainty.",
+      "llm_tldr_cn": "标准概率语言难以表达认知不确定性。本文提出Imp，一个嵌入Haskell的不精确概率编程DSL，通过分级单子跟踪不确定性源，利用BDD编译和半环参数化推理实现credal集的高效计算。该方法保留了标准概率编程的编译管线，同时能灵活表达多种不确定性形式，为不确定性建模提供了实用的工具。",
+      "llm_tldr": "标准概率语言难以表达认知不确定性。本文提出Imp，一个嵌入Haskell的不精确概率编程DSL，通过分级单子跟踪不确定性源，利用BDD编译和半环参数化推理实现credal集的高效计算。该方法保留了标准概率编程的编译管线，同时能灵活表达多种不确定性形式，为不确定性建模提供了实用的工具。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "uncertainty modeling in belief rule base",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.21210v1",
+      "source": "arxiv",
+      "title": "Explainable Belief Harmonization under Dynamic Epistemic Partitions",
+      "abstract": "Existing approaches to multi-agent belief combination have established mature foundations for combining uncertain beliefs under common assumptions: consensus methods use iterative averaging, logic-based methods resolve conflicting knowledge bases, and epistemic logic analyzes agents' information states. Typically, these approaches assume that the structure determining what each agent can represent remains fixed. However, in many scenarios, agents gain or lose observational capacity during execution, and what was once admissible may become structurally impossible. This paper presents a formal framework for handling such runtime changes in epistemic partitions over continuous belief profiles. A hybrid approach exploits the advantages of answer set programming in elaboration tolerance, declarative integrity constraints, and explanations, with the numerical flexibility of Python. The framework applies to domains where agents operate at heterogeneous and possibly changing levels of resolution, and provides formal guarantees of admissibility preservation under refinement, unique mass-preserving repair under coarsening, and explanation completeness. Evaluation across 100 randomly generated topology changes confirms complete violation detection and explanation coverage.",
+      "authors": [
+        "Adam Kostka",
+        "Jarosław A. Chudziak"
+      ],
+      "primary_category": "cs.LO",
+      "categories": [
+        "cs.LO",
+        "cs.AI",
+        "cs.MA"
+      ],
+      "published": "2026-07-23T11:22:41+00:00",
+      "link": "https://arxiv.org/pdf/2607.21210v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "belief harmonization under dynamic epistemic partitions addresses belief distribution and uncertainty combination",
+      "llm_evidence_cn": "动态认知划分下的信念协调处理了信念分布和不确定性组合",
+      "llm_evidence": "动态认知划分下的信念协调处理了信念分布和不确定性组合",
+      "canonical_evidence": "动态认知划分下的信念协调处理了信念分布和不确定性组合",
+      "llm_tldr_en": "This paper presents a framework for harmonizing beliefs among agents when epistemic partitions change over time, using answer set programming. It addresses runtime changes in observational capacity and provides a method for combining conflicting belief profiles.",
+      "llm_tldr_cn": "现有信念组合方法通常假设认知结构固定，但现实中智能体可能动态获得或失去观测能力。本文提出了一种处理运行时认知划分变化的信念协调框架，利用回答集编程实现连续信念分布的组合。该框架能够处理信念冲突，并保持可解释性。对不确定性建模和分布推理有参考价值。",
+      "llm_tldr": "现有信念组合方法通常假设认知结构固定，但现实中智能体可能动态获得或失去观测能力。本文提出了一种处理运行时认知划分变化的信念协调框架，利用回答集编程实现连续信念分布的组合。该框架能够处理信念冲突，并保持可解释性。对不确定性建模和分布推理有参考价值。",
+      "llm_tags": [
+        "query:brb-er:composite"
+      ],
+      "matched_query_tag": "query:brb-er:composite",
+      "matched_query_text": "Papers central to 请你帮我找有关置信规则库（BRB）和证据推理（E-R）的相关论文，或者是其他领域有助于这个研究的论文。, especially work that connects or combines: belief rule base inference methodology; evidential reasoning approach decision making; belief rule base expert system uncertainty; rule based inference methodology using evidential reasoning; uncertainty modeling in belief rule base; belief distribution inference in BRB; Belief rule base and evidential reasoning for uncertain decision making; BRB optimization and parameter learning methods; Evidence reasoning theory applications in expert systems; Comparative studies of belief rule base with other rule based systems.",
+      "matched_requirement_id": "req-composite-brb-er",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

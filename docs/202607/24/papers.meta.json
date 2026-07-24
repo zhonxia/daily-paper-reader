@@ -1,0 +1,39 @@
+{
+  "label": "2026-07-24",
+  "date": "2026-07-24",
+  "generated_at": "2026-07-24T21:39:35",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/24/2607.20801v1-imprecise-probabilistic-programming-precisely-credal-sets-via-graded-monads-bdds-and-semiring-parametric-inference-functional-pearl",
+      "section": "quick",
+      "title_en": "Imprecise Probabilistic Programming, Precisely: Credal Sets via Graded Monads, BDDs, and Semiring-Parametric Inference (Functional Pearl)",
+      "authors": "Jack Liell-Cock, Sam Staton",
+      "date": "2026-07-23",
+      "pdf": "https://arxiv.org/pdf/2607.20801v1",
+      "score": "6.0",
+      "evidence": "使用credal集进行不精确概率建模，处理不确定性",
+      "tldr": "不精确概率通过凸集推广标准概率，但现有概率编程语言难以直接支持。Imp语言在Haskell中嵌入graded monad，用有限命名认知不确定性源索引恢复幂集单子的交换性，同时利用BDD编译和半环参数化加权模型计数，无需改变标准流程即可实现精确、可微及区间界限推理。类型系统在编译期保证安全性。",
+      "tags": "query:brb-er",
+      "abstract_en": "Imprecise probability generalizes standard probability theory by replacing a single distribution with a convex set of possible distributions. We show that this generalization requires no change to the standard BDD compilation and weighted model counting pipeline used by discrete probabilistic languages. An imprecise coin flip is simply a BDD variable whose weight is left free rather than fixed. We introduce Imp, a Haskell-embedded DSL for imprecise probabilistic programming. A graded monad, indexed by finite sets of named sources of epistemic uncertainty, restores the commutativity that the standard convex powerset monad lacks, and GHC's type system enforces this at compile time. Weighted model counting is parametric in the semiring, so the same compiled BDD supports exact, differentiable, and interval-bounded inference.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/24/2607.21210v1-explainable-belief-harmonization-under-dynamic-epistemic-partitions",
+      "section": "quick",
+      "title_en": "Explainable Belief Harmonization under Dynamic Epistemic Partitions",
+      "authors": "Adam Kostka, Jarosław A. Chudziak",
+      "date": "2026-07-23",
+      "pdf": "https://arxiv.org/pdf/2607.21210v1",
+      "score": "6.0",
+      "evidence": "动态认知划分下的信念协调处理了信念分布和不确定性组合",
+      "tldr": "现有信念组合方法假设认知划分固定，但实际场景中智能体观测能力会动态变化。本文提出混合框架，结合回答集编程的声明性约束与Python的数值灵活性，处理连续信念分布上的运行时划分变更。方法在划分细化时保证可接受性保持，粗化时唯一质量保留修复，并提供完整解释。在100个随机拓扑变化上验证了检测与解释的完整性。",
+      "tags": "query:brb-er",
+      "abstract_en": "Existing approaches to multi-agent belief combination have established mature foundations for combining uncertain beliefs under common assumptions: consensus methods use iterative averaging, logic-based methods resolve conflicting knowledge bases, and epistemic logic analyzes agents' information states. Typically, these approaches assume that the structure determining what each agent can represent remains fixed. However, in many scenarios, agents gain or lose observational capacity during execution, and what was once admissible may become structurally impossible. This paper presents a formal framework for handling such runtime changes in epistemic partitions over continuous belief profiles. A hybrid approach exploits the advantages of answer set programming in elaboration tolerance, declarative integrity constraints, and explanations, with the numerical flexibility of Python. The framework applies to domains where agents operate at heterogeneous and possibly changing levels of resolution, and provides formal guarantees of admissibility preservation under refinement, unique mass-preserving repair under coarsening, and explanation completeness. Evaluation across 100 randomly generated topology changes confirms complete violation detection and explanation coverage.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
