@@ -1,0 +1,132 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-25T21:02:08.559742+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.21210v1",
+      "source": "arxiv",
+      "title": "Explainable Belief Harmonization under Dynamic Epistemic Partitions",
+      "abstract": "Existing approaches to multi-agent belief combination have established mature foundations for combining uncertain beliefs under common assumptions: consensus methods use iterative averaging, logic-based methods resolve conflicting knowledge bases, and epistemic logic analyzes agents' information states. Typically, these approaches assume that the structure determining what each agent can represent remains fixed. However, in many scenarios, agents gain or lose observational capacity during execution, and what was once admissible may become structurally impossible. This paper presents a formal framework for handling such runtime changes in epistemic partitions over continuous belief profiles. A hybrid approach exploits the advantages of answer set programming in elaboration tolerance, declarative integrity constraints, and explanations, with the numerical flexibility of Python. The framework applies to domains where agents operate at heterogeneous and possibly changing levels of resolution, and provides formal guarantees of admissibility preservation under refinement, unique mass-preserving repair under coarsening, and explanation completeness. Evaluation across 100 randomly generated topology changes confirms complete violation detection and explanation coverage.",
+      "authors": [
+        "Adam Kostka",
+        "Jarosław A. Chudziak"
+      ],
+      "primary_category": "cs.LO",
+      "categories": [
+        "cs.LO",
+        "cs.AI",
+        "cs.MA"
+      ],
+      "published": "2026-07-23T11:22:41+00:00",
+      "link": "https://arxiv.org/pdf/2607.21210v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "belief harmonization under dynamic partitions relates to belief distribution inference in BRB",
+      "llm_evidence_cn": "动态分区下的信念协调与BRB中的信念分布推理相关",
+      "llm_evidence": "动态分区下的信念协调与BRB中的信念分布推理相关",
+      "canonical_evidence": "动态分区下的信念协调与BRB中的信念分布推理相关",
+      "llm_tldr_en": "Proposes a formal framework for multi-agent belief combination under dynamic epistemic partitions, using answer set programming to handle runtime changes in observational capacity, relevant to belief distribution inference in rule-based systems.",
+      "llm_tldr_cn": "现有信念组合方法假设知识结构固定，但现实中智能体的观测能力可能变化。本文提出一种形式化框架，利用回答集编程处理连续信念分布上的动态认知分区变化，实现可解释的信念协调。该框架可迁移至置信规则库中的信念分布推理，为处理规则权重和证据的动态更新提供新思路，实验结果验证了其有效性。",
+      "llm_tldr": "现有信念组合方法假设知识结构固定，但现实中智能体的观测能力可能变化。本文提出一种形式化框架，利用回答集编程处理连续信念分布上的动态认知分区变化，实现可解释的信念协调。该框架可迁移至置信规则库中的信念分布推理，为处理规则权重和证据的动态更新提供新思路，实验结果验证了其有效性。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "belief distribution inference in BRB",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.15823v1",
+      "source": "arxiv",
+      "title": "Aggregation of Statistical Evidence under Exchangeability",
+      "abstract": "We study aggregation of statistical evidence under unknown and potentially complex dependence using group-invariance. Building on permutation-based constructions that treat transformed datasets as exchangeable units, we aggregate evidence across statistics for each transformed dataset and calibrate the resulting aggregates across transformations. We develop a finite-sample power and adaptivity theory for this framework, together with extensions to sequential and data-dependent aggregation that preserve validity. For single-batch aggregation, which uses one collection of transformed datasets for both standardization and calibration, we show that the critical values uniformly improve on deterministic calibrations valid under arbitrary dependence, including Bonferroni correction, while adapting to the unknown dependence structure. We also introduce a sequential alpha-spending version that permits early rejection when evidence is strong, and a two-batch extension that separates standardization from calibration to accommodate learned aggregation rules and reduce computation. Applications to adaptive nonparametric testing and conformal prediction illustrate how these results sharpen existing aggregation methods.",
+      "authors": [
+        "Antonin Schrab",
+        "Rajen Shah",
+        "Arthur Gretton",
+        "Ilmun Kim"
+      ],
+      "primary_category": "stat.ME",
+      "categories": [
+        "stat.ME",
+        "cs.LG",
+        "math.ST",
+        "stat.ML"
+      ],
+      "published": "2026-07-17T10:32:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.15823v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "aggregation of statistical evidence under exchangeability",
+      "llm_evidence_cn": "可交换性下统计证据的聚合",
+      "llm_evidence": "可交换性下统计证据的聚合",
+      "canonical_evidence": "可交换性下统计证据的聚合",
+      "llm_tldr_en": "Studies aggregation of statistical evidence under unknown dependence using permutation-based methods, providing finite-sample theory and improved calibrations.",
+      "llm_tldr_cn": "该论文研究在未知且复杂依赖下统计证据的聚合问题，利用基于置换的构造将变换后的数据集视为可交换单元，聚合跨变换的证据并校准。提出了有限样本的统计效力与自适应性理论，并扩展至序贯和数据依赖聚合。结果表明关键值一致优于任意依赖下有效的确定性校准，包括Bonferroni方法。该工作为证据组合提供了理论基础，可应用于专家系统中的证据推理。",
+      "llm_tldr": "该论文研究在未知且复杂依赖下统计证据的聚合问题，利用基于置换的构造将变换后的数据集视为可交换单元，聚合跨变换的证据并校准。提出了有限样本的统计效力与自适应性理论，并扩展至序贯和数据依赖聚合。结果表明关键值一致优于任意依赖下有效的确定性校准，包括Bonferroni方法。该工作为证据组合提供了理论基础，可应用于专家系统中的证据推理。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "Evidence reasoning theory applications in expert systems",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.16981v1",
+      "source": "arxiv",
+      "title": "Expected Free Energy as Belief-Dependent Utility for rho-POMDPs",
+      "abstract": "An agent acting under partial observability must decide when to gather information and which observations are worth their cost. Standard POMDPs value information only through its eventual effect on reward. The $ρ$-POMDP framework instead rewards uncertainty reduction directly, through a belief-dependent utility $ρ$, but in practice both the choice of $ρ$ and the weight placed on it are tuned by hand for every task. We show that active inference removes this tuning entirely. Minimizing Expected Free Energy (EFE) is exactly equivalent to solving a $ρ$-POMDP whose utility is expected information gain, and the exploration weight is fixed at $w=1$ because the variational bound expresses pragmatic and epistemic value in the same units (nats). We prove this equivalence for observe-then-commit POMDPs and extend it to factored observation POMDPs, a broader class that covers interleaved observe-act problems such as non-destructive testing and mobile sensing, where gathering information leaves the hidden state unchanged. Experiments support the theory. Across environments ranging from the classic Tiger problem to RockSample and a new Structural Inspection benchmark with over 65,000 states, the untuned weight matches or outperforms reward-only planning at the same horizon, avoids the over-exploration of bonuses tuned per task, and sits near the reward-maximizing knee of the success-reward Pareto frontier. The practical payoff is an exploration objective that works out of the box. In applications such as fault detection and medical screening, where every test has a price and every missed fault has a cost, EFE supplies a belief-dependent utility that is derived rather than tuned.",
+      "authors": [
+        "Patrick Cooper",
+        "Alvaro Velasquez"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-18T22:08:24+00:00",
+      "link": "https://arxiv.org/pdf/2607.16981v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "belief-dependent utility and expected free energy for partially observable decision making, relates to belief distribution and uncertainty",
+      "llm_evidence_cn": "信念依赖效用与期望自由能用于部分可观察决策，与信念分布和不确定性相关",
+      "llm_evidence": "信念依赖效用与期望自由能用于部分可观察决策，与信念分布和不确定性相关",
+      "canonical_evidence": "信念依赖效用与期望自由能用于部分可观察决策，与信念分布和不确定性相关",
+      "llm_tldr_en": "Shows that minimizing Expected Free Energy is equivalent to solving a rho-POMDP with belief-dependent utility, providing a principled way to value information without hand-tuning.",
+      "llm_tldr_cn": "针对部分可观察环境下信息获取价值难以自动权衡的问题，证明了最小化期望自由能等价于求解具有信念依赖效用的rho-POMDP，且探索权重固定为1。该工作为主动推理中的信念更新与不确定性建模提供了理论统一框架。对于信念规则库中的信念分布推理和不确定性处理具有方法借鉴意义。",
+      "llm_tldr": "针对部分可观察环境下信息获取价值难以自动权衡的问题，证明了最小化期望自由能等价于求解具有信念依赖效用的rho-POMDP，且探索权重固定为1。该工作为主动推理中的信念更新与不确定性建模提供了理论统一框架。对于信念规则库中的信念分布推理和不确定性处理具有方法借鉴意义。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "belief rule base inference methodology",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

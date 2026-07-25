@@ -1,0 +1,54 @@
+{
+  "label": "2026-07-25",
+  "date": "2026-07-25",
+  "generated_at": "2026-07-25T21:06:37",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202607/25/2607.21210v1-explainable-belief-harmonization-under-dynamic-epistemic-partitions",
+      "section": "quick",
+      "title_en": "Explainable Belief Harmonization under Dynamic Epistemic Partitions",
+      "authors": "Adam Kostka, Jarosław A. Chudziak",
+      "date": "2026-07-23",
+      "pdf": "https://arxiv.org/pdf/2607.21210v1",
+      "score": "7.0",
+      "evidence": "动态分区下的信念协调与BRB中的信念分布推理相关",
+      "tldr": "针对现有信念组合方法假设认知划分固定不变的问题，本文提出一个混合框架，利用回答集编程（ASP）的声明式约束与可解释性，结合Python数值灵活性，处理运行时观测粒度变化。框架在划分细化时保证可接受性，粗化时唯一保持质量修复，并提供完整解释。随机生成100个拓扑变化的评估显示，该方法能完全检测违规并覆盖所有解释，适用于异构分辨率动态调整的多智能体系统。",
+      "tags": "query:brb-er",
+      "abstract_en": "Existing approaches to multi-agent belief combination have established mature foundations for combining uncertain beliefs under common assumptions: consensus methods use iterative averaging, logic-based methods resolve conflicting knowledge bases, and epistemic logic analyzes agents' information states. Typically, these approaches assume that the structure determining what each agent can represent remains fixed. However, in many scenarios, agents gain or lose observational capacity during execution, and what was once admissible may become structurally impossible. This paper presents a formal framework for handling such runtime changes in epistemic partitions over continuous belief profiles. A hybrid approach exploits the advantages of answer set programming in elaboration tolerance, declarative integrity constraints, and explanations, with the numerical flexibility of Python. The framework applies to domains where agents operate at heterogeneous and possibly changing levels of resolution, and provides formal guarantees of admissibility preservation under refinement, unique mass-preserving repair under coarsening, and explanation completeness. Evaluation across 100 randomly generated topology changes confirms complete violation detection and explanation coverage.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/25/2607.15823v1-aggregation-of-statistical-evidence-under-exchangeability",
+      "section": "quick",
+      "title_en": "Aggregation of Statistical Evidence under Exchangeability",
+      "authors": "Antonin Schrab, Rajen Shah, Arthur Gretton, Ilmun Kim",
+      "date": "2026-07-17",
+      "pdf": "https://arxiv.org/pdf/2607.15823v1",
+      "score": "6.0",
+      "evidence": "可交换性下统计证据的聚合",
+      "tldr": "现有统计证据聚合方法如Bonferroni校正因忽视未知依赖而过于保守。本文利用可交换性群不变性，通过置换构造变换数据集，将统计量聚合后校准。提出的单批聚合方法在有限样本下改进确定性校正，同时自适应未知依赖结构；顺序alpha-spending允许早期拒绝。该框架发展了适应未知依赖的理论，可扩展至自适应非参数检验和保形预测，显著提升聚合效率。",
+      "tags": "query:brb-er",
+      "abstract_en": "We study aggregation of statistical evidence under unknown and potentially complex dependence using group-invariance. Building on permutation-based constructions that treat transformed datasets as exchangeable units, we aggregate evidence across statistics for each transformed dataset and calibrate the resulting aggregates across transformations. We develop a finite-sample power and adaptivity theory for this framework, together with extensions to sequential and data-dependent aggregation that preserve validity. For single-batch aggregation, which uses one collection of transformed datasets for both standardization and calibration, we show that the critical values uniformly improve on deterministic calibrations valid under arbitrary dependence, including Bonferroni correction, while adapting to the unknown dependence structure. We also introduce a sequential alpha-spending version that permits early rejection when evidence is strong, and a two-batch extension that separates standardization from calibration to accommodate learned aggregation rules and reduce computation. Applications to adaptive nonparametric testing and conformal prediction illustrate how these results sharpen existing aggregation methods.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/25/2607.16981v1-expected-free-energy-as-belief-dependent-utility-for-rho-pomdps",
+      "section": "quick",
+      "title_en": "Expected Free Energy as Belief-Dependent Utility for rho-POMDPs",
+      "authors": "Patrick Cooper, Alvaro Velasquez",
+      "date": "2026-07-18",
+      "pdf": "https://arxiv.org/pdf/2607.16981v1",
+      "score": "6.0",
+      "evidence": "信念依赖效用与期望自由能用于部分可观察决策，与信念分布和不确定性相关",
+      "tldr": "标准部分可观测马尔可夫决策过程(POMDP)仅通过奖励间接评估信息价值，而ρ-POMDP直接奖励不确定性减少但需手工调节。本文证明主动推理中的期望自由能(EFE)最小化等价于求解一个ρ-POMDP，其信念依赖效用为期望信息增益，且探索权重自动固定为1。通过理论证明扩展至因子观测POMDP类，并在老虎问题、RockSample及新结构性检测基准(超过65000状态)上实验验证。未调权重的方法匹配或超越同视野下仅奖励规划，避免每任务调参的过度探索，提供即用型探索目标。",
+      "tags": "query:brb-er",
+      "abstract_en": "An agent acting under partial observability must decide when to gather information and which observations are worth their cost. Standard POMDPs value information only through its eventual effect on reward. The $ρ$-POMDP framework instead rewards uncertainty reduction directly, through a belief-dependent utility $ρ$, but in practice both the choice of $ρ$ and the weight placed on it are tuned by hand for every task. We show that active inference removes this tuning entirely. Minimizing Expected Free Energy (EFE) is exactly equivalent to solving a $ρ$-POMDP whose utility is expected information gain, and the exploration weight is fixed at $w=1$ because the variational bound expresses pragmatic and epistemic value in the same units (nats). We prove this equivalence for observe-then-commit POMDPs and extend it to factored observation POMDPs, a broader class that covers interleaved observe-act problems such as non-destructive testing and mobile sensing, where gathering information leaves the hidden state unchanged. Experiments support the theory. Across environments ranging from the classic Tiger problem to RockSample and a new Structural Inspection benchmark with over 65,000 states, the untuned weight matches or outperforms reward-only planning at the same horizon, avoids the over-exploration of bonuses tuned per task, and sits near the reward-maximizing knee of the success-reward Pareto frontier. The practical payoff is an exploration objective that works out of the box. In applications such as fault detection and medical screening, where every test has a price and every missed fault has a cost, EFE supplies a belief-dependent utility that is derived rather than tuned.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
