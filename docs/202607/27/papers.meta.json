@@ -1,0 +1,39 @@
+{
+  "label": "2026-07-27",
+  "date": "2026-07-27",
+  "generated_at": "2026-07-27T21:35:34",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/27/2607.21185v1-differentiable-logic-programming-to-mitigate-reasoning-shortcuts-in-neurosymbolic-systems",
+      "section": "quick",
+      "title_en": "Differentiable Logic Programming to Mitigate Reasoning Shortcuts in Neurosymbolic Systems",
+      "authors": "Akihiro Takemura, Katsumi Inoue",
+      "date": "2026-07-23",
+      "pdf": "https://arxiv.org/pdf/2607.21185v1",
+      "score": "6.0",
+      "evidence": "可微逻辑编程用于不确定性下的规则推理",
+      "tldr": "神经符号系统融合神经网络与逻辑推理，但易受捷径推理影响。本文提出基于矩阵的可微逻辑规划方法，通过统一编码规则与约束、优化梯度流来缓解约束满足和认知两类捷径。在MNIST变体上的实验表明，将神经输出一对一接地到逻辑原子可显著减少捷径。该方法强调了架构选择在神经符号集成中的关键作用。",
+      "tags": "query:brb-er",
+      "abstract_en": "Neurosymbolic (NeSy) systems integrate neural networks with logical reasoning to achieve both generalization and interpretability, but recent work has shown they are susceptible to shortcut reasoning behaviors.  We propose a novel method using matrix-based differentiable logic programming to mitigate reasoning shortcuts in two phenomena: constraint satisfaction shortcuts, where constraints are satisfied without achieving the intended task, and cognition shortcuts, where biased data leads to semantically incorrect concept mappings despite logically sound inference. Building on recent matrix-based logic programming semantics, we introduce design elements to mitigate shortcuts, including a unified encoding of rules and constraints in a single matrix.  We also identify connections to fuzzy logic t-norms and empirically compare their gradient flow properties. Through carefully designed experiments on MNIST variants, we show that one-to-one grounding of neural outputs to logical atoms significantly reduces both shortcut types compared to previous methods that rely on soft probability distributions.  We then confirm that architectural choices in coupling symbolic knowledge with neural learning play a critical role in shortcut mitigation.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/27/2607.22385v1-agentic-root-cause-analysis-through-evidence-grounded-reasoning",
+      "section": "quick",
+      "title_en": "Agentic Root Cause Analysis through Evidence-Grounded Reasoning",
+      "authors": "Amaury Wei, Olga Fink",
+      "date": "2026-07-24",
+      "pdf": "https://arxiv.org/pdf/2607.22385v1",
+      "score": "6.0",
+      "evidence": "基于证据推理的诊断方法",
+      "tldr": "工业异常根因分析依赖人工且现有数据驱动方法缺乏可解释性并需大量标注。AgentRCA作为零样本代理框架，结合数字孪生与大语言模型，通过迭代收集证据并评估假设定位物理故障。在真实多相流设施和化工厂的测试中，其诊断性能媲美全监督方法，同时生成透明推理链条。该工作证明了自主假设推理可作为可扩展的工业根因分析基础。",
+      "tags": "query:brb-er",
+      "abstract_en": "Diagnosing the root cause of anomalies is essential for safe industrial operation. Despite extensive sensor instrumentation, formulating hypotheses and gathering evidence remains a manual process, creating a major operational bottleneck. While existing data-driven approaches aim to automate this, two critical limitations restrict their deployment: their operate as black boxes unable to justify their diagnosis, and they require scarce labeled examples of faulty operation. To address this gap, we introduce AgentRCA, a zero-shot agentic framework for evidence-grounded root cause analysis. Rather than learning fault-specific mappings, AgentRCA performs inference-time reasoning by combining a data-driven digital twin (modeling normal system dynamics) with a tool-augmented large language model. The agent iteratively gathers statistical evidence, evaluates competing hypotheses, and identifies the physical fault that best explains the observed behavior. Evaluated on a real-world multiphase-flow facility and a large-scale chemical plant, AgentRCA achieves diagnostic performance competitive with fully supervised baselines without relying on fault-specific training. Crucially, it produces transparent reasoning traces that explicitly link observed symptoms to their underlying physical causes. These results establish autonomous hypothesis-driven reasoning as a practical foundation for scalable industrial root cause analysis.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
