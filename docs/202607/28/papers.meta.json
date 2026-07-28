@@ -1,0 +1,39 @@
+{
+  "label": "2026-07-28",
+  "date": "2026-07-28",
+  "generated_at": "2026-07-28T21:47:51",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/28/2607.20582v1-bayesian-uncertainty-estimation-improves-clinical-decision-making-in-medical-ai-agents",
+      "section": "quick",
+      "title_en": "Bayesian uncertainty estimation improves clinical decision making in medical AI agents",
+      "authors": "Frederik Hauke, Patrick Wienholt, Christiane Kuhl, Dyke Ferber, Jakob Nikolas Kather, Sven Nebelung, Daniel Truhn",
+      "date": "2026-07-22",
+      "pdf": "https://arxiv.org/pdf/2607.20582v1",
+      "score": "6.0",
+      "evidence": "使用贝叶斯不确定性估计（蒙特卡洛dropout）改进决策，与置信规则库的不确定性建模相关",
+      "tldr": "医学影像AI模型通常缺乏可靠置信度，限制其在模糊或非典型病例中的应用。本文对胸部X光片多任务分类器应用Monte Carlo dropout，获取认知不确定性信号，该信号能跟踪泛化能力并标记自信但易错的预测。加入该信号后错误检测AUROC从0.74提升至0.77。在临床决策支持智能体中，以二元错误风险标志而非原始分数呈现不确定性，可将不可靠发现上的自信误诊从8.5%降至2.7%。",
+      "tags": "query:brb-er",
+      "abstract_en": "Machine learning models for medical image analysis typically lack a reliable measure of confidence, limiting their use in ambiguous or atypical cases. Here we show that Monte Carlo dropout, applied to a multi-task chest-radiograph classifier (eight thoracic findings, 137,593 training images), provides an epistemic uncertainty signal that tracks generalisation across training-set scales and flags confident yet error-prone predictions. Adding this signal to the point prediction raised error-detection AUROC from 0.74 to 0.77 ($Δ$AUROC +0.023, 95% CI [+0.014, +0.033]). In a controlled 2x2 factorial experiment, a clinical-decision-support agent exploited this uncertainty only when it was delivered as a binary error-risk flag rather than as raw scores, cutting confident misdiagnoses on unreliable findings from 8.5% to 2.7%. Epistemic uncertainty estimation thus carries decision-relevant information beyond point predictions, but its value for downstream agents depends on how it is communicated.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/28/2607.22811v1-from-hybrid-mechanistic--data-driven-modeling-toward-neuro-symbolic-ai-what-why-and-how",
+      "section": "quick",
+      "title_en": "From Hybrid Mechanistic--Data-Driven Modeling Toward Neuro-Symbolic AI: What, Why, and How",
+      "authors": "Moein E. Samadi, Andreas Schuppert",
+      "date": "2026-07-24",
+      "pdf": "https://arxiv.org/pdf/2607.22811v1",
+      "score": "6.0",
+      "evidence": "桥接混合建模与神经符号AI，涉及信念侧和认知不确定性",
+      "tldr": "混合机理-数据驱动模型虽广泛使用，但设计缺乏统一语义接口且轻视机理部分认知不确定性。本文提出Hybrid-to-NeSy (H2N)框架，将此类模型重构为神经符号AI实例：机理知识置于语言侧、学习模块置于信念侧、约束置于逻辑侧，导出逻辑-信念分解。从该分解中提取结构违规率(SVR)和信念分散度(BD)两个指标。在标签噪声分类实验中，高SVR和BD的模型精度变异性更大；在结构分布偏移下，H2N能量化外推时的模型不确定性，弥补了传统精度指标事后发现的不足。",
+      "tags": "query:brb-er",
+      "abstract_en": "Hybrid mechanistic/data-driven models, which combine first-principles with learned components, are increasingly used in process engineering and scientific machine learning. Common hybrid modeling designs are specified primarily through their architectures and training losses, which offers a limited basis for a shared semantic interface to compare or verify them across domains, with comparatively little attention paid to epistemic uncertainty in the mechanistic part.   We bridge hybrid modeling and neuro-symbolic (NeSy) AI by reconstructing these designs as instances of NeSy interface. The resulting translation, Hybrid-to-NeSy (H2N), places mechanistic knowledge on the language side, learned modules on the belief side, and validity domains together with constraints on the logic side. For each design, H2N then yields an explicit NeSy inference functional and a logic-belief decomposition.   From this decomposition we derive two metrics: structural violation rate (SVR), measuring whether the learned belief respects the mechanistic structure; and belief dispersion (BD), measuring how concentrated the learned plausibility is, serving as a hybrid model's epistemic uncertainty in its mechanistic part. We instantiate H2N on a case study of a structured hybrid model for binary classification under label noise and show that models with higher SVR and BD exhibit greater variability in held-out accuracy. Under structural distribution shift, H2N further quantifies a model's uncertainty during extrapolations, whereas test accuracy reveals the same shift only post hoc.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
