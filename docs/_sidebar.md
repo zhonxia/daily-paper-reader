@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-07-29 <!--dpr-date:20260729-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/29/2607.22811v1-from-hybrid-mechanistic--data-driven-modeling-toward-neuro-symbolic-ai-what-why-and-how" data-sidebar-item="{&quot;title&quot;: &quot;From Hybrid Mechanistic--Data-Driven Modeling Toward Neuro-Symbolic AI: What, Why, and How&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.22811v1-from-hybrid-mechanistic--data-driven-modeling-toward-neuro-symbolic-ai-what-why-and-how&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;brb-er&quot;}], &quot;evidence&quot;: &quot;混合建模中的认知不确定性与神经符号接口信念侧&quot;}">From Hybrid Mechanistic--Data-Driven Modeling Toward Neuro-Symbolic AI: What, Why, and How</a>
   * 2026-07-28 <!--dpr-date:20260728-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/28/2607.20582v1-bayesian-uncertainty-estimation-improves-clinical-decision-making-in-medical-ai-agents" data-sidebar-item="{&quot;title&quot;: &quot;Bayesian uncertainty estimation improves clinical decision making in medical AI agents&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.20582v1-bayesian-uncertainty-estimation-improves-clinical-decision-making-in-medical-ai-agents&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;brb-er&quot;}], &quot;evidence&quot;: &quot;使用贝叶斯不确定性估计（蒙特卡洛dropout）改进决策，与置信规则库的不确定性建模相关&quot;}">Bayesian uncertainty estimation improves clinical decision making in medical AI agents</a>

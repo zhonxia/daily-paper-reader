@@ -1,0 +1,56 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-29T21:33:45.553601+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.22811v1",
+      "source": "arxiv",
+      "title": "From Hybrid Mechanistic--Data-Driven Modeling Toward Neuro-Symbolic AI: What, Why, and How",
+      "abstract": "Hybrid mechanistic/data-driven models, which combine first-principles with learned components, are increasingly used in process engineering and scientific machine learning. Common hybrid modeling designs are specified primarily through their architectures and training losses, which offers a limited basis for a shared semantic interface to compare or verify them across domains, with comparatively little attention paid to epistemic uncertainty in the mechanistic part.   We bridge hybrid modeling and neuro-symbolic (NeSy) AI by reconstructing these designs as instances of NeSy interface. The resulting translation, Hybrid-to-NeSy (H2N), places mechanistic knowledge on the language side, learned modules on the belief side, and validity domains together with constraints on the logic side. For each design, H2N then yields an explicit NeSy inference functional and a logic-belief decomposition.   From this decomposition we derive two metrics: structural violation rate (SVR), measuring whether the learned belief respects the mechanistic structure; and belief dispersion (BD), measuring how concentrated the learned plausibility is, serving as a hybrid model's epistemic uncertainty in its mechanistic part. We instantiate H2N on a case study of a structured hybrid model for binary classification under label noise and show that models with higher SVR and BD exhibit greater variability in held-out accuracy. Under structural distribution shift, H2N further quantifies a model's uncertainty during extrapolations, whereas test accuracy reveals the same shift only post hoc.",
+      "authors": [
+        "Moein E. Samadi",
+        "Andreas Schuppert"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.LO",
+        "stat.ML"
+      ],
+      "published": "2026-07-24T18:00:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.22811v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "hybrid modeling with epistemic uncertainty and belief side in neuro-symbolic interface",
+      "llm_evidence_cn": "混合建模中的认知不确定性与神经符号接口信念侧",
+      "llm_evidence": "混合建模中的认知不确定性与神经符号接口信念侧",
+      "canonical_evidence": "混合建模中的认知不确定性与神经符号接口信念侧",
+      "llm_tldr_en": "This paper bridges hybrid mechanistic/data-driven modeling and neuro-symbolic AI by reconstructing hybrid designs as instances of a neuro-symbolic interface (H2N), placing mechanistic knowledge on the language side and learned modules on the belief side, with explicit handling of epistemic uncertainty, enabling cross-domain comparison and validation of hybrid models.",
+      "llm_tldr_cn": "本论文针对混合机理/数据驱动模型缺少统一比较框架且忽视认知不确定性的问题，提出H2N翻译方法，将其转化为神经符号AI架构，将机理知识放在语言侧、学习模块放在信念侧。该方法使得混合模型的设计可以被形式化比较和验证，并显式处理了认知不确定性。实验表明，该框架能够有效统一不同领域的混合模型，为信任规则库等不确定性系统建模提供了方法论参考。",
+      "llm_tldr": "本论文针对混合机理/数据驱动模型缺少统一比较框架且忽视认知不确定性的问题，提出H2N翻译方法，将其转化为神经符号AI架构，将机理知识放在语言侧、学习模块放在信念侧。该方法使得混合模型的设计可以被形式化比较和验证，并显式处理了认知不确定性。实验表明，该框架能够有效统一不同领域的混合模型，为信任规则库等不确定性系统建模提供了方法论参考。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "uncertainty modeling in belief rule base",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

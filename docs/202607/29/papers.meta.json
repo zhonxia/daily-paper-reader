@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-29",
+  "date": "2026-07-29",
+  "generated_at": "2026-07-29T21:34:11",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/29/2607.22811v1-from-hybrid-mechanistic--data-driven-modeling-toward-neuro-symbolic-ai-what-why-and-how",
+      "section": "quick",
+      "title_en": "From Hybrid Mechanistic--Data-Driven Modeling Toward Neuro-Symbolic AI: What, Why, and How",
+      "authors": "Moein E. Samadi, Andreas Schuppert",
+      "date": "2026-07-24",
+      "pdf": "https://arxiv.org/pdf/2607.22811v1",
+      "score": "6.0",
+      "evidence": "混合建模中的认知不确定性与神经符号接口信念侧",
+      "tldr": "混合机理/数据驱动建模因缺乏语义接口而难以比较，且忽略机理部分的不确定性。本文提出Hybrid-to-NeSy (H2N) 转换，将混合模型重构为神经符号AI实例，将机理知识、学习模块和约束分别映射到语言、信念和逻辑侧，导出推理函数及逻辑-信念分解。基于分解定义结构违规率(SVR)和信念离散度(BD)两个度量，用于量化模型对机理结构的尊重程度及认知不确定性。在含标签噪声的二元分类案例中，高SVR和BD的模型准确率变异性更大；在结构分布偏移下，H2N能提前量化外推不确定性，而测试准确率仅事后揭示。该工作为混合模型提供了统一比较框架和不确定性量化工具。",
+      "tags": "query:brb-er",
+      "abstract_en": "Hybrid mechanistic/data-driven models, which combine first-principles with learned components, are increasingly used in process engineering and scientific machine learning. Common hybrid modeling designs are specified primarily through their architectures and training losses, which offers a limited basis for a shared semantic interface to compare or verify them across domains, with comparatively little attention paid to epistemic uncertainty in the mechanistic part.   We bridge hybrid modeling and neuro-symbolic (NeSy) AI by reconstructing these designs as instances of NeSy interface. The resulting translation, Hybrid-to-NeSy (H2N), places mechanistic knowledge on the language side, learned modules on the belief side, and validity domains together with constraints on the logic side. For each design, H2N then yields an explicit NeSy inference functional and a logic-belief decomposition.   From this decomposition we derive two metrics: structural violation rate (SVR), measuring whether the learned belief respects the mechanistic structure; and belief dispersion (BD), measuring how concentrated the learned plausibility is, serving as a hybrid model's epistemic uncertainty in its mechanistic part. We instantiate H2N on a case study of a structured hybrid model for binary classification under label noise and show that models with higher SVR and BD exhibit greater variability in held-out accuracy. Under structural distribution shift, H2N further quantifies a model's uncertainty during extrapolations, whereas test accuracy reveals the same shift only post hoc.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
