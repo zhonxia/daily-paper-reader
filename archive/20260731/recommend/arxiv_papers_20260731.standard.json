@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-31T21:31:43.284606+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.25257v1",
+      "source": "arxiv",
+      "title": "Laplace-PSN-IRT: Uncertainty Quantification for Neural Item Response Theory Models of LLM Benchmarks",
+      "abstract": "Item Response Theory (IRT) has recently been proposed as a framework for evaluating large language model (LLM) benchmarks by separating a model's latent ability from the properties of individual benchmark items. Existing neural IRT approaches, including PSN-IRT, estimate these quantities using point estimates, limiting uncertainty quantification and downstream statistical inference. We introduce Laplace-PSN-IRT, a post-hoc last-layer Laplace approximation that augments a trained PSN-IRT model with approximate Bayesian posterior inference, recovering calibrated uncertainty over model ability and item difficulty without retraining. The resulting posterior enables credible intervals, probabilistic comparisons between models, and propagation of parameter uncertainty into Fisher-information-based item selection. We show that most pairwise comparisons among 12 models on a standard LLM benchmark leaderboard are not statistically distinguishable despite differing point-estimate ranks. We further show that point-estimate Fisher information can become nearly zero for many benchmark items because it is evaluated at a single reference ability, whereas posterior-expected Fisher information remains substantially more stable across the ability range. Finally, posterior-expected Fisher information more accurately recovers full-benchmark ability rankings from small benchmark subsets in most experimental settings while matching point-estimate performance for the smallest subsets. We validate the calibration of the approximate posterior using held-out predictive coverage and find that modeling item difficulty as random while treating item discrimination as fixed produces well-calibrated uncertainty in this architecture.",
+      "authors": [
+        "Juan Francisco",
+        "Mandujano Reyes"
+      ],
+      "primary_category": "stat.AP",
+      "categories": [
+        "stat.AP",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-07-28T03:56:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.25257v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Bayesian posterior and calibrated uncertainty quantification for latent variables; transferable to BRB parameter uncertainty modeling.",
+      "llm_evidence_cn": "面向潜在变量的贝叶斯后验与校准不确定性量化方法，可迁移至BRB参数不确定性建模。",
+      "llm_evidence": "面向潜在变量的贝叶斯后验与校准不确定性量化方法，可迁移至BRB参数不确定性建模。",
+      "canonical_evidence": "面向潜在变量的贝叶斯后验与校准不确定性量化方法，可迁移至BRB参数不确定性建模。",
+      "llm_tldr_en": "Introduces a post-hoc last-layer Laplace approximation for PSN-IRT, recovering calibrated Bayesian uncertainty over model ability and item difficulty without retraining, enabling credible intervals and probabilistic comparisons.",
+      "llm_tldr_cn": "现有神经项目反应理论模型（如PSN-IRT）用点估计评估LLM基准，缺少不确定性量化与统计推断能力。本文提出Laplace-PSN-IRT，对训练后的模型施加最后一层Laplace近似，无需重训即可获得关于模型能力与题目难度的校准后验分布。该后验支持可信区间与模型间概率比较。这种不确定性量化思路可迁移到置信规则库（BRB）的参数学习与推理不确定性建模中。",
+      "llm_tldr": "现有神经项目反应理论模型（如PSN-IRT）用点估计评估LLM基准，缺少不确定性量化与统计推断能力。本文提出Laplace-PSN-IRT，对训练后的模型施加最后一层Laplace近似，无需重训即可获得关于模型能力与题目难度的校准后验分布。该后验支持可信区间与模型间概率比较。这种不确定性量化思路可迁移到置信规则库（BRB）的参数学习与推理不确定性建模中。",
+      "llm_tags": [
+        "query:brb-er:composite"
+      ],
+      "matched_query_tag": "query:brb-er:composite",
+      "matched_query_text": "Papers central to 请你帮我找有关置信规则库（BRB）和证据推理（E-R）的相关论文，或者是其他领域有助于这个研究的论文。, especially work that connects or combines: belief rule base inference methodology; evidential reasoning approach decision making; belief rule base expert system uncertainty; rule based inference methodology using evidential reasoning; uncertainty modeling in belief rule base; belief distribution inference in BRB; Belief rule base and evidential reasoning for uncertain decision making; BRB optimization and parameter learning methods; Evidence reasoning theory applications in expert systems; Comparative studies of belief rule base with other rule based systems.",
+      "matched_requirement_id": "req-composite-brb-er",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

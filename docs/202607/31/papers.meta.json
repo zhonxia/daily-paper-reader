@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-31",
+  "date": "2026-07-31",
+  "generated_at": "2026-07-31T21:32:24",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/31/2607.25257v1-laplace-psn-irt-uncertainty-quantification-for-neural-item-response-theory-models-of-llm-benchmarks",
+      "section": "quick",
+      "title_en": "Laplace-PSN-IRT: Uncertainty Quantification for Neural Item Response Theory Models of LLM Benchmarks",
+      "authors": "Juan Francisco, Mandujano Reyes",
+      "date": "2026-07-28",
+      "pdf": "https://arxiv.org/pdf/2607.25257v1",
+      "score": "6.0",
+      "evidence": "面向潜在变量的贝叶斯后验与校准不确定性量化方法，可迁移至BRB参数不确定性建模。",
+      "tldr": "现有神经IRT模型如PSN-IRT仅提供点估计，难以量化LLM基准评估中的不确定性。本文提出Laplace-PSN-IRT，通过事后最后一层Laplace近似为已训练模型增加贝叶斯后验推断，无需重训即可获得校准的不确定性。实验表明多数模型对比在统计上不可区分，且后验期望Fisher信息比点估计更稳定、能更准确恢复小规模子集排名，并验证了随机题目难度的校准效果。",
+      "tags": "query:brb-er",
+      "abstract_en": "Item Response Theory (IRT) has recently been proposed as a framework for evaluating large language model (LLM) benchmarks by separating a model's latent ability from the properties of individual benchmark items. Existing neural IRT approaches, including PSN-IRT, estimate these quantities using point estimates, limiting uncertainty quantification and downstream statistical inference. We introduce Laplace-PSN-IRT, a post-hoc last-layer Laplace approximation that augments a trained PSN-IRT model with approximate Bayesian posterior inference, recovering calibrated uncertainty over model ability and item difficulty without retraining. The resulting posterior enables credible intervals, probabilistic comparisons between models, and propagation of parameter uncertainty into Fisher-information-based item selection. We show that most pairwise comparisons among 12 models on a standard LLM benchmark leaderboard are not statistically distinguishable despite differing point-estimate ranks. We further show that point-estimate Fisher information can become nearly zero for many benchmark items because it is evaluated at a single reference ability, whereas posterior-expected Fisher information remains substantially more stable across the ability range. Finally, posterior-expected Fisher information more accurately recovers full-benchmark ability rankings from small benchmark subsets in most experimental settings while matching point-estimate performance for the smallest subsets. We validate the calibration of the approximate posterior using held-out predictive coverage and find that modeling item difficulty as random while treating item discrimination as fixed produces well-calibrated uncertainty in this architecture.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

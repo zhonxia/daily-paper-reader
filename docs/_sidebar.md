@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-07-31 <!--dpr-date:20260731-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/31/2607.25257v1-laplace-psn-irt-uncertainty-quantification-for-neural-item-response-theory-models-of-llm-benchmarks" data-sidebar-item="{&quot;title&quot;: &quot;Laplace-PSN-IRT: Uncertainty Quantification for Neural Item Response Theory Models of LLM Benchmarks&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.25257v1-laplace-psn-irt-uncertainty-quantification-for-neural-item-response-theory-models-of-llm-benchmarks&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;brb-er&quot;}], &quot;evidence&quot;: &quot;面向潜在变量的贝叶斯后验与校准不确定性量化方法，可迁移至BRB参数不确定性建模。&quot;}">Laplace-PSN-IRT: Uncertainty Quantification for Neural Item Response Theory Models of LLM Benchmarks</a>
   * 2026-07-29 <!--dpr-date:20260729-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/29/2607.22811v1-from-hybrid-mechanistic--data-driven-modeling-toward-neuro-symbolic-ai-what-why-and-how" data-sidebar-item="{&quot;title&quot;: &quot;From Hybrid Mechanistic--Data-Driven Modeling Toward Neuro-Symbolic AI: What, Why, and How&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.22811v1-from-hybrid-mechanistic--data-driven-modeling-toward-neuro-symbolic-ai-what-why-and-how&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;brb-er&quot;}], &quot;evidence&quot;: &quot;混合建模中的认知不确定性与神经符号接口信念侧&quot;}">From Hybrid Mechanistic--Data-Driven Modeling Toward Neuro-Symbolic AI: What, Why, and How</a>
