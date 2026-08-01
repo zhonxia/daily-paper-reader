@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-08-01 <!--dpr-date:20260801-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/01/2607.25719v1-optimization-with-dynamic-constraint-learning-dcl" data-sidebar-item="{&quot;title&quot;: &quot;Optimization with Dynamic Constraint Learning (DCL)&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.25719v1-optimization-with-dynamic-constraint-learning-dcl&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;brb-er&quot;}], &quot;evidence&quot;: &quot;动态约束学习优化方法适用于未知约束下的BRB参数学习&quot;}">Optimization with Dynamic Constraint Learning (DCL)</a>
   * 2026-07-31 <!--dpr-date:20260731-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202607/31/2607.25257v1-laplace-psn-irt-uncertainty-quantification-for-neural-item-response-theory-models-of-llm-benchmarks" data-sidebar-item="{&quot;title&quot;: &quot;Laplace-PSN-IRT: Uncertainty Quantification for Neural Item Response Theory Models of LLM Benchmarks&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.25257v1-laplace-psn-irt-uncertainty-quantification-for-neural-item-response-theory-models-of-llm-benchmarks&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;brb-er&quot;}], &quot;evidence&quot;: &quot;面向潜在变量的贝叶斯后验与校准不确定性量化方法，可迁移至BRB参数不确定性建模。&quot;}">Laplace-PSN-IRT: Uncertainty Quantification for Neural Item Response Theory Models of LLM Benchmarks</a>

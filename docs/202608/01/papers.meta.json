@@ -1,0 +1,24 @@
+{
+  "label": "2026-08-01",
+  "date": "2026-08-01",
+  "generated_at": "2026-08-01T20:59:58",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/01/2607.25719v1-optimization-with-dynamic-constraint-learning-dcl",
+      "section": "quick",
+      "title_en": "Optimization with Dynamic Constraint Learning (DCL)",
+      "authors": "Ezgi Oztekin, Figen Oztoprak, S. Ilker Birbil",
+      "date": "2026-07-28",
+      "pdf": "https://arxiv.org/pdf/2607.25719v1",
+      "score": "6.0",
+      "evidence": "动态约束学习优化方法适用于未知约束下的BRB参数学习",
+      "tldr": "针对目标函数已知但约束函数未知且无法在优化过程中查询的复杂约束优化问题，提出动态约束学习（DCL）数据驱动框架。该方法在每次迭代中，利用当前附近的可行与不可行数据学习局部代理约束模型，并在数据支持的信任域内求解一个局部子问题。与离线全局约束学习相比，DCL能够随着优化进程调整代理模型，使用更简单的局部模型和更小的子问题即可达到与全局模型相当的解质量。这为解决真实世界中的黑箱约束优化提供了高效且可扩展的新途径。",
+      "tags": "query:brb-er",
+      "abstract_en": "We propose Dynamic Constraint Learning (DCL), a data-driven framework for constrained optimization when constraint functions are unknown and cannot be queried during optimization. At each iteration, the method learns a local surrogate from nearby data and solves a subproblem within a data-supported trust region. Compared with offline global constraint learning, the approach uses local surrogates that adapt to the data distribution during optimization and can achieve solution quality comparable to that of global models while using simpler local models and smaller optimization subproblems. We demonstrate the performance of DCL on a synthetic test problem and two case studies from the literature.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-01T20:58:46.491597+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.25719v1",
+      "source": "arxiv",
+      "title": "Optimization with Dynamic Constraint Learning (DCL)",
+      "abstract": "We propose Dynamic Constraint Learning (DCL), a data-driven framework for constrained optimization when constraint functions are unknown and cannot be queried during optimization. At each iteration, the method learns a local surrogate from nearby data and solves a subproblem within a data-supported trust region. Compared with offline global constraint learning, the approach uses local surrogates that adapt to the data distribution during optimization and can achieve solution quality comparable to that of global models while using simpler local models and smaller optimization subproblems. We demonstrate the performance of DCL on a synthetic test problem and two case studies from the literature.",
+      "authors": [
+        "Ezgi Oztekin",
+        "Figen Oztoprak",
+        "S. Ilker Birbil"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "math.OC"
+      ],
+      "published": "2026-07-28T13:45:13+00:00",
+      "link": "https://arxiv.org/pdf/2607.25719v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Dynamic constraint learning for optimization suits BRB parameter learning under unknown constraints",
+      "llm_evidence_cn": "动态约束学习优化方法适用于未知约束下的BRB参数学习",
+      "llm_evidence": "动态约束学习优化方法适用于未知约束下的BRB参数学习",
+      "canonical_evidence": "动态约束学习优化方法适用于未知约束下的BRB参数学习",
+      "llm_tldr_en": "Proposes Dynamic Constraint Learning (DCL), a data-driven optimization framework that learns local surrogates of unknown constraints in a trust region, achieving quality comparable to global models on synthetic and case-study problems.",
+      "llm_tldr_cn": "针对约束函数未知且无法在优化过程中查询的问题，作者提出动态约束学习（DCL）框架。它在每一步从附近数据学习局部代理模型，并在数据支持的信任域内求解子问题。与离线全局约束学习相比，DCL使用更简单的局部模型和更小的子问题即可获得相当的优化质量。在合成测试问题和两个文献案例研究中验证了其有效性。该方法可为BRB中参数学习与约束优化提供一种灵活的优化工具。",
+      "llm_tldr": "针对约束函数未知且无法在优化过程中查询的问题，作者提出动态约束学习（DCL）框架。它在每一步从附近数据学习局部代理模型，并在数据支持的信任域内求解子问题。与离线全局约束学习相比，DCL使用更简单的局部模型和更小的子问题即可获得相当的优化质量。在合成测试问题和两个文献案例研究中验证了其有效性。该方法可为BRB中参数学习与约束优化提供一种灵活的优化工具。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "BRB optimization and parameter learning methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
