@@ -1,0 +1,24 @@
+{
+  "label": "2026-08-04",
+  "date": "2026-08-04",
+  "generated_at": "2026-08-04T21:47:54",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/04/2607.24582v1-cader-confidence-aware-dynamic-evidence-reasoning-for-long-video-understanding",
+      "section": "quick",
+      "title_en": "CADER: Confidence-Aware Dynamic Evidence Reasoning for Long-Video Understanding",
+      "authors": "Jinlong Yang, Wenhao Zhang, Kuanwei Lin, Sijie Cheng",
+      "date": "2026-07-27",
+      "pdf": "https://arxiv.org/pdf/2607.24582v1",
+      "score": "7.0",
+      "evidence": "将证据推理方法应用于长视频理解，通过置信度感知自适应收集证据",
+      "tldr": "长视频理解常依赖大型视觉语言模型与工具增强推理，但现有系统对所有样本采用统一推理策略，导致简单问题冗余调用工具，困难问题又缺乏细粒度证据控制。为此提出CADER，一种无需训练的自适应推理框架，先通过全局推理与logit-margin置信度评估，让高置信样本提前退出；对不确定样本激活第二阶段工具增强循环，结合时间裁剪、语义验证与相关性引导重采样逐步定位证据。在多个VideoQA基准上，CADER既提升长视频推理性能，又对高置信样本跳过第二阶段，并在仅使用无工具思维链监督的主干上达到与专用工具增强框架相当的效果，为自适应长视频推理提供了实用的推理期路径。",
+      "tags": "query:brb-er",
+      "abstract_en": "Long-video understanding increasingly relies on large vision-language models and tool-augmented reasoning, but most systems apply the same inference procedure to every example regardless of difficulty. This uniform strategy invokes unnecessary tool-assisted processing for easy questions and provides limited control when difficult questions require fine-grained temporal evidence. We propose CADER (Confidence-Aware Dynamic Evidence Reasoning), a training-free framework for adaptive and reliable long-video reasoning. CADER first performs global reasoning over uniformly sampled frames and estimates answer confidence with a logit-margin signal, allowing high-confidence examples to exit early. For uncertain examples, CADER activates a second-stage tool-augmented loop that combines temporal cropping, lightweight semantic verification, and Relevance-Guided Resampling to progressively localize question-relevant evidence. This design treats tool use as a sample-level decision: a single global pass handles easy cases, while additional reasoning is reserved for examples where uncertainty suggests that more evidence is needed. Experiments on multiple VideoQA benchmarks show that CADER improves long-video reasoning while bypassing Stage~2 for high-confidence samples. Moreover, when applied to a backbone trained only with tool-free chain-of-thought supervision, CADER achieves competitive performance against specialized tool-augmented frameworks, suggesting a practical inference-time route for adaptive long-video reasoning.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

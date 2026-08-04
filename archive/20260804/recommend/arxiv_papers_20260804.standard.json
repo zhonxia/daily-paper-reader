@@ -1,0 +1,56 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-04T21:47:05.089580+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.24582v1",
+      "source": "arxiv",
+      "title": "CADER: Confidence-Aware Dynamic Evidence Reasoning for Long-Video Understanding",
+      "abstract": "Long-video understanding increasingly relies on large vision-language models and tool-augmented reasoning, but most systems apply the same inference procedure to every example regardless of difficulty. This uniform strategy invokes unnecessary tool-assisted processing for easy questions and provides limited control when difficult questions require fine-grained temporal evidence. We propose CADER (Confidence-Aware Dynamic Evidence Reasoning), a training-free framework for adaptive and reliable long-video reasoning. CADER first performs global reasoning over uniformly sampled frames and estimates answer confidence with a logit-margin signal, allowing high-confidence examples to exit early. For uncertain examples, CADER activates a second-stage tool-augmented loop that combines temporal cropping, lightweight semantic verification, and Relevance-Guided Resampling to progressively localize question-relevant evidence. This design treats tool use as a sample-level decision: a single global pass handles easy cases, while additional reasoning is reserved for examples where uncertainty suggests that more evidence is needed. Experiments on multiple VideoQA benchmarks show that CADER improves long-video reasoning while bypassing Stage~2 for high-confidence samples. Moreover, when applied to a backbone trained only with tool-free chain-of-thought supervision, CADER achieves competitive performance against specialized tool-augmented frameworks, suggesting a practical inference-time route for adaptive long-video reasoning.",
+      "authors": [
+        "Jinlong Yang",
+        "Wenhao Zhang",
+        "Kuanwei Lin",
+        "Sijie Cheng"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-07-27T15:49:42+00:00",
+      "link": "https://arxiv.org/pdf/2607.24582v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Evidential reasoning method applied to long-video understanding with confidence-aware adaptive evidence gathering",
+      "llm_evidence_cn": "将证据推理方法应用于长视频理解，通过置信度感知自适应收集证据",
+      "llm_evidence": "将证据推理方法应用于长视频理解，通过置信度感知自适应收集证据",
+      "canonical_evidence": "将证据推理方法应用于长视频理解，通过置信度感知自适应收集证据",
+      "llm_tldr_en": "CADER is a training-free framework for long-video reasoning that estimates confidence from a logit-margin signal, exits early on easy questions, and activates detailed temporal evidence reasoning for uncertain ones, improving accuracy and efficiency.",
+      "llm_tldr_cn": "长视频理解通常对所有样本采用相同的推理流程，导致简单问题浪费计算、困难问题证据不足。为此，CADER提出一种无需训练的置信度感知动态证据推理框架：先对均匀采样帧进行全局推理，用logit-margin信号估计答案置信度；高置信度样本提前退出，低置信度样本则激活第二阶段细粒度时间证据推理。实验表明该方法在提升准确率的同时有效控制工具调用开销，为自适应证据推理提供了新思路。",
+      "llm_tldr": "长视频理解通常对所有样本采用相同的推理流程，导致简单问题浪费计算、困难问题证据不足。为此，CADER提出一种无需训练的置信度感知动态证据推理框架：先对均匀采样帧进行全局推理，用logit-margin信号估计答案置信度；高置信度样本提前退出，低置信度样本则激活第二阶段细粒度时间证据推理。实验表明该方法在提升准确率的同时有效控制工具调用开销，为自适应证据推理提供了新思路。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "evidential reasoning approach decision making",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

@@ -6,22 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-03
-- 运行时间：2026-08-03 20:44:55 UTC
+- 最新运行日期：2026-08-04
+- 运行时间：2026-08-04 21:47:46 UTC
 - 运行状态：成功
-- 本次总论文数：0
+- 本次总论文数：1
 - 精读区：0
-- 速读区：0
+- 速读区：1
 
 ### 今日简报（AI）
-> 今日无新推荐，系统未产出可展示论文。
-- 详情：[/202608/03/README](/202608/03/README)
+今日聚焦长视频理解，速读一篇相关新方法。  
+值得关注的是《CADER》提出置信度感知的动态证据推理，用于长视频理解，评分7.0。  
+建议对该方向感兴趣的读者直接阅读原文，了解具体机制与效果。
+- 详情：[/202608/04/README](/202608/04/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [CADER: Confidence-Aware Dynamic Evidence Reasoning for Long-Video Understanding](/202608/04/2607.24582v1-cader-confidence-aware-dynamic-evidence-reasoning-for-long-video-understanding)  
+   标签：评分：7.0/10、query:brb-er
+   evidence：将证据推理方法应用于长视频理解，通过置信度感知自适应收集证据
 
 
 <div class="dpr-home-promo-card">

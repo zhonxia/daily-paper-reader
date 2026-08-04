@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-08-04 <!--dpr-date:20260804-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/04/2607.24582v1-cader-confidence-aware-dynamic-evidence-reasoning-for-long-video-understanding" data-sidebar-item="{&quot;title&quot;: &quot;CADER: Confidence-Aware Dynamic Evidence Reasoning for Long-Video Understanding&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.24582v1-cader-confidence-aware-dynamic-evidence-reasoning-for-long-video-understanding&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;brb-er&quot;}], &quot;evidence&quot;: &quot;将证据推理方法应用于长视频理解，通过置信度感知自适应收集证据&quot;}">CADER: Confidence-Aware Dynamic Evidence Reasoning for Long-Video Understanding</a>
   * 2026-08-01 <!--dpr-date:20260801-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/01/2607.25719v1-optimization-with-dynamic-constraint-learning-dcl" data-sidebar-item="{&quot;title&quot;: &quot;Optimization with Dynamic Constraint Learning (DCL)&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.25719v1-optimization-with-dynamic-constraint-learning-dcl&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;brb-er&quot;}], &quot;evidence&quot;: &quot;动态约束学习优化方法适用于未知约束下的BRB参数学习&quot;}">Optimization with Dynamic Constraint Learning (DCL)</a>
