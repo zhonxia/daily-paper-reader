@@ -1,0 +1,857 @@
+Title: Evidential Rule Learning for Interpretable Classification with Abstention
+
+URL Source: https://arxiv.org/pdf/2608.05859v1
+
+Published Time: Fri, 07 Aug 2026 00:49:25 GMT
+
+Number of Pages: 25
+
+Markdown Content:
+> Evidential Rule Learning with Abstention
+
+# Evidential Rule Learning for Interpretable Classification with Abstention 
+
+Javier Fumanal-Idocin 
+
+School of Computer Science and Electronic Engineering University of Essex, Colchester CO4 3SQ, UK 
+
+j.fumanal-idocin@essex.ac.uk 
+
+Javier Andreu-Perez 
+
+School of Computer Science and Electronic Engineering University of Essex, Colchester CO4 3SQ, UK 
+
+j.andreu-perez@essex.ac.uk 
+
+## Abstract 
+
+Interpretable classification often requires more than accurate predictions for real-life deployment: models should be transparent about the evidence behind their decisions and abstain when they cannot decide reliably. We introduce Fast Evidential Rule Learning (FERL), a method that learns interpretable, accurate fuzzy rule models whose outputs are evidential. Unlike post-hoc calibration, FERL’s belief, plausibility, and abstention capabilities arise directly from the fuzzy memberships in a single deterministic pass, with no auxiliary head, held-out set, or repeated inference. Our theoretical analysis further shows that FERL is Lipschitz stable, which means that its evidential outputs vary smoothly with the input. Against state-of-the-art rule learners, FERL is statistically significantly more accurate across a 30 tabular-dataset benchmark ( +2 .6% average accuracy over the second best). Its native set predictions attain the best utility-discounted accuracy among credal classifiers ( u65 /u 80 = 0 .80 /0.83 vs. 0.79 /0.80 
+
+for the naive credal classifier), at higher set coverage ( 0.92 vs. ≤ 0.82 ). FERL also matches dedicated out-of-distribution detectors on tabular near-OOD detection ( 77 .7 vs. 77 .4 AUROC for the strongest baseline). Under detector-class-disjoint concept-bottleneck evaluation, its it is within 2.3 AUROC points of the strongest dedicated detector on both CUB and AwA2, while attaining the best AwA2 AUPR-Out (68 .3) and novel-class rejection ( 57 .2), while being able to name which attributes are anomalous. 
+
+# 1 Introduction 
+
+Decision trees and rule lists remain the reference models whenever a prediction has to be justified to a human: a leaf is a conjunction of conditions, and the path that reaches it, the explanation (Rudin, 2019). This transparency, however, usually comes at a price. Tree-based classifiers such as CART (Breiman et al., 1984) and C4.5 (Quinlan, 1993) must grow large to be accurate, and a single leaf returns a hard class label or local class distribution with only a limited account of how much evidence supports the decision. This makes standard tree probability estimates biased towards overconfident values (Provost and Domingos, 2003). Rules are also uninformative when learned directly over unstructured inputs such as image pixels, so they require neuro-symbolic approaches, e.g., concept bottleneck models (CBMs) (Koh et al., 2020). Because of these problems, post-hoc explanation methods such as LIME (Ribeiro et al., 2016), SHAP (Lundberg and Lee, 2017), and Grad-CAM (Selvaraju et al., 2020) remain an alternative for building explanations, but they also have problems: they explain an already existing predictor and can be unfaithful to its actual decision (Adebayo et al., 2018; Taimeskhanov et al., 2024) and they might give a poor estimation of the global reasoning process of the explained model (Rudin, 2019). Which is why interpretable-by-design models are preferable when possible. For high-stakes domains interpretability alone is not enough: a model must also report realistic, reliable confidence in each decision (Hüllermeier and Waegeman, 2021). A popular approach to do this is to calibrate the model predictions, or use a score that quantifies the uncertainty in each decision. Post-hoc calibrators can be model-agnostic, like temperature scaling (Guo et al., 2017), Dirichlet calibration (Kull et al., 2019), isotonic regression (Zadrozny and Elkan, 2002) and conformal predictions (Angelopoulos and Bates, 2023). There are also specific alternatives for trees, such as per-leaf calibration (Leathart et al., 2017; Johansson et al., 2019), that adjust the prediction probability, although not the amount of evidence supporting it (Amini 1arXiv:2608.05859v1 [cs.LG] 6 Aug 2026 Evidential Rule Learning with Abstention 
+
+et al., 2020). These techniques also tend to degrade under distribution shift (Ovadia et al., 2019), which is problematic for real-life deployment. Reliability can also be built into the prediction. Sampling-based methods such as MC-dropout (Gal and Ghahramani, 2016) and deep ensembles (Lakshminarayanan et al., 2017) estimate uncertainty but require repeated inference, while deterministic uncertainty methods (DUMs) capture 
+
+epistemic uncertainty in a single pass, using distance-aware (Mukhoti et al., 2023) or evidential (Amini et al., 2020) scores. The evidential approaches come from belief-function theory (Shafer, 1976; Smets and Kennes, 1994). Popular approaches in this direction are evidential deep learning (Sensoy et al., 2018; Amini et al., 2020) and Dempster–Shafer (DS) neural networks (Denœux, 2019). Evidential fuzzy rule classifiers use the possibility semantics of fuzzy memberships (Dubois and Prade, 1988) as evidence (Shiraishi et al., 2025). There are, however, some problems in existing DUMs. They need spectral fine-tuning of the neural architecture to avoid feature collapse, and because the score depends on the geometry of a learned representation, they only reliably detect geometric novelty. This means that they tend to assign deceptively low uncertainty to a near-OOD input that overlaps the training manifold. Besides, they report a scalar with no symbolic account of why a case is doubtful. In this work, we introduce Fast Evidential Rule Learning (FERL), a fuzzy rule-tree learner where each node emits a DS mass function in which the firing strength of a rule becomes the mass placed on its class distribution, and whatever does not fire becomes mass on ignorance. This makes every prediction carry a point label, a graded confidence, and a set-valued prediction. FERL is, to our knowledge, the first model that is at once an interpretable rule learner, a credal classifier with abstention and an OOD detector, in a single deterministic pass. This makes FERL a compelling way to add interpretability, reliability, and principled abstention to tabular classification and to neuro-symbolic pipelines. As a summary, our contributions are as follows: 
+
+• A native evidential and accurate rule learner. We introduce FERL, a fuzzy rule tree whose DS evidence is read directly off the fuzzy memberships, computing belief, plausibility, credal prediction sets, and abstention in a single pass, with no separate calibration model, held-out set, or repeated forward passes. 
+
+• A closed-form account of construction and evidential prediction. We analytically characterise both the learned fuzzy tree and its evidence sources: fuzzy splits weakly decrease Gini impurity, conserve in-support routing mass, and give a local stability certificate controlled by their band widths. The induced mass functions admit a closed form, interval-dominance prediction reduces to an ignorance-margin rule, and repeated Dempster combination of nested nodes monotonically shrinks ignorance. 
+
+• Broad empirical evaluation. We benchmark FERL on 30 tabular classification datasets spanning diverse sizes, domains, and feature dimensions. We also benchmark FERL on 2 image datasets with annotated concepts within a concept-bottleneck image benchmark. In this setting, FERL operates on concept vectors rather than raw pixels, so its rules and abstention decisions are expressed in human-understandable attributes. FERL OOD performance matches dedicated OOD detectors while naming the anomalous attributes, and stays informative under off-support distribution shift, where it becomes more prone to abstain as its prediction sets widen. 
+
+# 2 Related Work 
+
+Interpretable trees and rule learners. CART (Breiman et al., 1984) and C4.5 (Quinlan, 1993) are the canonical greedy trees, and RIPPER (Cohen, 1995) is another classic algorithm that produces compact ordered rule lists. Fuzzy rule learners soften crisp thresholds using fuzzy logic: decision trees replace hard splits with membership functions (Olaru and Wehenkel, 2003; Fumanal Idocin and Andreu-Perez, 2024; Hühn and Hüllermeier, 2009). Recent work uses gradient-based and neural optimisation for rule-learning (Omran et al., 2018; Qiao et al., 2021; Wang et al., 2021, 2023; Dierckx et al., 2023; Fumanal-Idocin et al., 2025; Xu et al., 2026). All of these approaches rely heavily on the Straight-Through estimator (Bengio et al., 2013) to mitigate the problem of non-differentiable argmax operations in rule-based reasoning. Modern non-neural 2Evidential Rule Learning with Abstention 
+
+literature also focuses on scalability: FIGS (Tan et al., 2022) grows a sum of shallow trees to stay as small as possible, and rule sampling (Pellegrina and Vandin, 2024) tries to obtain the smallest size with guarantees. FERL closes both gaps: it learns accurate classifiers across different rulebase-complexity levels and trains efficiently to handle scale to large datasets. 
+
+Evidential and credal classification. Dempster–Shafer theory (Dempster, 1967; Shafer, 1976) models partial and conflicting evidence with belief functions, with a long history in classification, from the evidential 
+
+k-NN rule (Denoeux, 1995) to evidential neural networks (Sensoy et al., 2018). In deep learning (Ulmer et al., 2023), such methods predict Dirichlet (or belief) parameters in a single pass, grounded in subjective logic (Jøsang, 2016). Quantified ignorance supports abstention above a threshold (Xin et al., 2021; Mao et al., 2024). FERL shares this single-pass procedure but computes evidence using interpretable fuzzy rules rather than a black-box network, following the established connection between graded membership and belief functions: a source firing with strength ϕ induces a Bayesian mass discounted by 1 − ϕ (Smets and Kennes, 1994). Credal classifiers reason with sets of probabilities: the naive credal classifier (Corani and Zaffalon, 2008) and credal decision trees built on the imprecise Dirichlet model (Abellán and Moral, 2003) return non-dominated classes, evaluated by utility-discounted accuracy (Zaffalon et al., 2012). Recent work uses credal sets to quantify decision uncertainty as well (Lienen and Hüllermeier, 2021; Wang et al., 2025). Unlike existing tree-based credal classifiers, FERL produces set-valued outputs natively from fuzzy memberships rather than imprecise leaf-frequency estimates, mitigating the miscalibration of tree-based inference. 
+
+# 3 Method 
+
+Notation. We address multiclass classification with C classes, and write the label set as the frame of discernment Θ = {1, . . . , C }. Training data are N labelled samples {(xi, y i)}Ni=1 , each with d features and a label yi ∈ Θ. FERL grows a fuzzy tree T with nodes o; each internal split pairs a feature with a fuzzy set of membership μ(·) ∈ [0 , 1] , and memberships multiply along a root-to-o path into a firing strength 
+
+ϕo(x) ∈ [0 , 1] . Every node stores a consequent class distribution po ∈ [0 , 1] C , ∑ 
+
+> c
+
+po(c) = 1 , estimated from the soft weighted samples it covers. At inference, evidence is combined over a node set A(x): all active nodes in the compact variant, or the active leaves in the deep variant. We write K = max x |A(x)| for the largest number of evidence sources combined for one input. Each o ∈ A(x) contributes a Dempster–Shafer mass 
+
+mo on Θ, and the combined, normalised mass m (normaliser Z) yields a belief Bel (c), a plausibility Pl (c),and an ignorance mass m(Θ) . The pignistic transform BetP gives the point label ˆy = arg max c BetP (c), and interval dominance gives the credal (set-valued) prediction S(x) ⊆ Θ, an abstention when S(x) = Θ . The tree complexity is governed by a rule budget R (terminal leaves, equivalent to rules, with R ≤ max_rules ) and a total number J of stored nodes, together with a maximum depth D, a patience on non-improving splits, and a minimum gain δ. A learned split additionally places its threshold at θ with a linear fuzzy decision boundary of half-width h. Features not observed in a root-to-node o path are denoted as “free” with respect to o.
+
+## 3.1 Building the Fuzzy Tree 
+
+FERL grows a classification tree in which every internal split assigns a feature together with one fuzzy set that defines the condition on that feature. This involves two procedures: 
+
+• The parameters for each split are computed using a bootstrapping procedure that allows us to find fuzzy partitions with statistical robustness with respect to the gain function. 
+
+• We crop the fuzzy sets’ support to avoid spurious firing in non-explored regions, which detects geometric OOD, and store in each node the necessary parameters to do near-OOD detection. 
+
+Learning the Fuzzy Splits. FERL works with two possible gain functions: the Complete Classification Index (CCI), which measures the gain in correctly classified soft mass obtained by replacing a node with a 3Evidential Rule Learning with Abstention 
+
+candidate split; and weighted Gini impurity (WGI). CCI works very well for small tree variants, but it is more costly to compute than WGI, which is the preferred metric for deeper variants. Growth is greedy up to a budget on the number of rules and the depth, which allows us to target different interpretability-performance aims. For small FERL trees, we pre-fix the possible fuzzy partitions, using intuitive semantics. In these cases, this results in an optimal trade-off between interpretability and performance. For deeper variants, this approach does not scale. So, we repeatedly bootstrap and find the standard Gini-optimal cut in each resample. The resulting empirical distribution of cut locations determines the following fuzzy partition: 
+
+μθ,h (xf ) = min 
+
+(
+
+1, max 
+
+(
+
+0, θ + h − xf
+
+2h
+
+)) 
+
+, (1) where xf is the value of the candidate feature, θ the median of the per-resample optimal cut locations {cb}Bb=1 ,and h is a robust measure of their spread: 
+
+h = γ · MAD , MAD = median b |cb − θ|, (2) with γ > 0 a width multiplier. The other branch receives then the complementary membership 1 − μθ,h (xf ).The condition is thus fully active for xf ≤ θ − h, off for xf ≥ θ + h, and behaves linearly across the interval 
+
+[θ − h, θ + h].
+
+Bounded-Support Memberships and Geometry-Awareness A point far outside the training range that activates a leaf at full strength can result in false node confidence. To solve this, we soft-bound the support of each fuzzy membership function to the feature range the node actually observed in training, decaying it to zero beyond a small margin ϵ. This makes out-of-distribution points that fall outside the observed range on some feature have their leaf activations collapse towards zero, which raises the model’s ignorance. This mechanism is exact: as shown in the supplementary material, the routing mass lost to the support bounds decomposes node by node, each term naming the split feature responsible, and if every leaf firing vanishes the combined evidential output is provably vacuous. However, this procedure cannot detect a near-OOD point that stays within the observed data manifold. For instance, when the sample belongs to a novel class that overlaps the training set. To solve this, we model the behaviour of unsplit features in every node: each of them fits a diagonal Gaussian weighted by the fuzzy memberships to its root-to-node path over the features absent from it. Since the firing ϕo depends on x only through the features tested on that path, this is precisely a model of the unsplit features given the split ones: 
+
+p(xfree( o)
+
+∣∣ ϕo
+
+) ≈ N (μo, diag( σ2 
+
+> o
+
+)). (3) The diagonal covariance keeps every unsplit feature’s contribution separable, so we can then detect which attributes are anomalous at any path. At test time we compute the firing-weighted average of the diagonal Mahalanobis distance per node. These feature scores show how atypical a sample is where the tree was not looking. 
+
+## 3.2 Building Evidential Outputs 
+
+In FERL, each fuzzy activation is treated as a piece of evidence: we turn each activated node o into a Dempster–Shafer mass function on the label set Θ = {1, . . . , C }: the node places mass ϕo(x) po(c) on class c
+
+and residual mass 1 − ϕo(x) on the whole frame Θ. A node that fires weakly contributes mostly ignorance, and a node that fires strongly commits to its class distribution. Combining the masses of the active nodes with Dempster’s rule of combination returns a belief Bel (c) and a plausibility Pl (c) for every class. A point prediction is read from the pignistic transform of the combined mass, and a set-valued prediction is obtained by interval dominance: class c is part of the final prediction when Pl (c) ≥ max c′ Bel (c′). The prediction set contracts to a singleton when one class dominates, expands when several classes are plausible, and covers the whole frame when no evidence reliably separates any of them, which naturally results in an abstention. 4Evidential Rule Learning with Abstention 
+
+An important idea in FERL inference is focusing on which nodes to combine. Dempster’s rule treats all nodes as independent bodies of evidence, which they are not. In a compact tree, this is not problematic, as the few internal nodes along a path carry complementary evidence. In fact, we find that internal nodes can be used to regularise the overconfident estimations of the leaves. In a deep tree, the nodes are numerous and strongly correlated, and combining all of them drives ignorance to zero. So, in that case, we only combine the leaves. Because a sample’s path activates only a handful of leaves, the combined mass retains a meaningful ignorance term, and this term turns out to be a locally adaptive metric for genuinely hard regions. (a) Decisive evidence                               
+
+> 𝑐 1
+> 𝑐 2𝑐 3
+> 𝑐 1
+> 𝑐 2
+> 𝑐 3
+> 01
+> 𝑆 (𝑥 )={𝑐 1}→Point Prediction
+> 𝑚 (Θ)=0.10 →one class dominates
+> (b) Conflicting evidence
+> 𝑐 1
+> 𝑐 2𝑐 3
+> 𝑐 1
+> 𝑐 2
+> 𝑐 3
+> 01
+> 𝑆 (𝑥 )={𝑐 1,𝑐 2}→ set prediction
+> 𝑚 (Θ)=0.25 →two classes remain plausible
+> (c) Vacuous evidence
+> 𝑐 1
+> 𝑐 2𝑐 3
+> 𝑐 1
+> 𝑐 2
+> 𝑐 3
+> 01
+> 𝑆 (𝑥 )=Θ→ abstain
+> 𝑚 (Θ)=0.70 →no class separates
+
+Figure 1: FERL evidential output. FERL naturally expresses doubt about its predictions, computed using Eq. 4. In (a), the belief in the dominant class is clear, so the result is a singleton. In (b), conflicting evidence shows that the plausibility of class c 2 is bigger than belief in the dominant class, so the prediction set includes both classes. Finally, in (c) the evidence is not decisive for any class, so FERL abstains. 
+
+Analytical Form of the Evidential Output We write ϕo = ϕo(x) for brevity. Each node is a reliability-discounted Bayesian mass function: 
+
+mo({c}) = ϕopo(c), mo(Θ) = 1 − ϕo.
+
+Before normalisation, the combined mass has only the following non-zero terms: 
+
+˜m(Θ) = ∏
+
+> o∈A(x)
+
+(1 − ϕo),
+
+˜m({c}) = ∏
+
+> o∈A(x)
+
+(1 − ϕo + ϕopo(c)) − ∏
+
+> o∈A(x)
+
+(1 − ϕo).
+
+After division by Z = ˜m(Θ) + ∑ 
+
+> c
+
+˜m({c}), these quantities give the normalised mass m. The normaliser 
+
+Z is the total mass Dempster’s rule assigns to non-empty focal sets. Dividing by Z redistributes it and restores ∑ 
+
+> c
+
+m({c}) + m(Θ) = 1 . Hence Bel (c) = m({c}) and Pl (c) = m({c}) + m(Θ) , and interval dominance simplifies to 
+
+S(x) = {c : m({c}) ≥ max  
+
+> j
+
+m({j}) − m(Θ) }. (4) This credal set prediction chooses classes whose mass lies within the residual ignorance of the best-supported class, and the set prediction expands as the model lacks evidence for the decision (Figure 1). This expression also clarifies the dependence problem in trees. Combining an existing singleton class-plus-ignorance mass m
+
+with an additional node whose ignorance is a = 1 − ϕ gives 
+
+m′(Θ) = m(Θ) aZ′ ,Z′ = a + m(Θ)(1 − a) + ∑ 
+
+> c
+
+m({c})ϕp (c). (5) 5Evidential Rule Learning with Abstention 
+
+Since Z′ ≥ a, adding a non-vacuous source cannot increase residual ignorance. In a deep tree, all-node Dempster combination repeatedly discounts ignorance with correlated evidence. This accounts for why we exclude the internal nodes from the final decision in the deep variant, and also suggests the use of selective node combinations or other decision rules in order to obtain good ignorance measures while exploiting the nested structure of the tree. For our experimentation in the main paper, we have used the standard DS combination rule on the leaf nodes, as its empirical performance proved superior to other alternatives. However, we also study in our Supplementary materials other possible alternatives. 
+
+## 3.3 Analysis of Output Stability 
+
+Contrary to crisp trees, FERL output is a continuous function of the input. This allows FERL to make more committed decisions in “clear” splits, while being more conservative in “dubious” ones. We show how this works in the following proof. Let λ be the largest slope of any fuzzy membership used in the tree, let 
+
+K = max x |A(x)| bound the number of combined nodes, and let D be the maximum depth. 
+
+Proposition 1 (Lipschitz stability) The unnormalised evidential masses ˜m({c}) and ˜m(Θ) are Lipschitz in x with constant O(KDλ ). Consequently, on the region Ωτ = {x : Z(x) ≥ τ } where the normaliser is bounded below, the pignistic output is Lipschitz, 
+
+∥BetP( · | x) − BetP( · | x′)∥1 ≤ κ K D λ τ ∥x − x′∥∞,
+
+for a constant κ depending only on the number of classes C.Proof sketch. Each firing strength is a product of at most D single-feature λ-Lipschitz memberships, and each mass a product and difference of at most K such bounded factors, giving O(KDλ ); the quotient rule applied to BetP (c) = ( ˜m({c}) + ˜m(Θ) /C )/Z on Z ≥ τ then has this bound. The full proof, and a tighter per-path refinement of the constant, are given in the supplementary material. The bound shows the impact of tree architecture in the final output: stability improves when fewer evidence sources are combined (smaller K), paths are shallower (smaller D), and fuzzy memberships are smoother (smaller λ). The rule budget R controls this indirectly by limiting the available leaves and hence the number of sources that can enter A(x).
+
+# 4 Experiments 
+
+## 4.1 Setup 
+
+Tabular data. We evaluate on thirty tabular classification datasets from the UCI repository (Kelly et al., 2023), spanning binary and many-class problems with numeric and categorical features, up to 64 features and 19k samples. Results are reported by stratified five-fold cross-validated means. Within each outer training fold, we reserve 25% for conformal calibration and fit every predictor on the remainder. Classification performance is measured in accuracy, and model complexity based on the number of leaves per tree (equivalent to rules in a rulebase). We report the area under the risk–coverage curve (AURC) for selective classification, and for set-valued prediction we report determinacy (fraction of singleton outputs), empirical set coverage, mean set size, and utility-discounted accuracy at the standard u65 and u80 discount levels (Zaffalon et al., 2012). 
+
+Image data. We use concept-bottleneck models (CBMs) (Koh et al., 2020) on Caltech–UCSD Birds (CUB) (Wah et al., 2011) and Animals with Attributes 2 (AwA2) (Xian et al., 2019). A neural concept detector maps each image to a vector of probabilities for human-named attributes, and FERL, CART, and logistic regression are then fit as alternative classification heads over exactly the same detector-predicted vectors. This makes FERL rules, confidence, and abstention refer to attributes rather than image pixels. We evaluate accuracy and OOD capabilities in this setting for a standard symbol-extractor–FERL pipeline. 6Evidential Rule Learning with Abstention 
+
+## 4.2 Baselines 
+
+FERL configurations. We use three different variants of FERL: compact uses a maximum of 15 rules and has a precomputed fuzzy partition where the conditions map to semantically intuitive concepts (“low”, “medium” and “high”); medium uses a maximum of 50 rules; deep uses a maximum of 200 rules and combines only the leaves of its tree. The three variants also sit at three points of the stability dial of Section 3.3: from compact to deep, larger rule and depth budgets permit larger K and D, trading the stability constant of Proposition 1 for accuracy. 
+
+Comparison methods. We compare against modern and classic interpretable trees and rule learners. For crisp tree methods: CART (Breiman et al., 1984), C4.5 (Quinlan, 1993), and FIGS (Tan et al., 2022). For fuzzy rule-based classifiers, we compare against Fuzzy-rule baselines: FURIA (Hühn and Hüllermeier, 2009) and Fuzzy-UCS ( FUCS ) that also uses Dempster–Shafer inference (Shiraishi et al., 2025). For neural and sampling-based rule learners: RRL (Wang et al., 2021), RL-Net (Dierckx et al., 2023), NeuRules 
+
+(Xu et al., 2026). To compare with sampled rule lists we implemented SamRuLe (Pellegrina and Vandin, 2024). We also include a logistic regression ( LR ) as a non-rule-based interpretable baseline. For dedicated credal and evidential classifiers: the naive credal classifier ( NCC ) (Corani and Zaffalon, 2008), credal decision trees ( CDT ) and their C4.5 variant (Abellán and Moral, 2003), and evidential deep learning ( EDL ) (Sensoy et al., 2018) (which is non-explainable). For set-valued comparison, MLP-Conformal applies deterministic, tie-conservative split-conformal adaptive prediction sets (APS) at α = 0 .1 (Romano et al., 2020) to the softmax output of a one-hidden-layer, 64-unit multilayer perceptron. For the sake of comparison, we also include random forest ( RF ) (Breiman, 2001) and gradient boosting ( GB ) (Chen and Guestrin, 2016) as two non-interpretable, highly performant classifiers. 
+
+# 5 Results 
+
+## 5.1 Tabular Data 
+
+Accuracy and Model Complexity Table 1 reports accuracy, model size, and selective-risk AURC for all methods. The compact FERL tree attains 77 .8 accuracy with fewer than six rules, already competitive with a full C4.5 tree ( 78 .2) that is more than forty times larger, and above it on selective risk. The medium FERL tree using bootstrapping to learn the fuzzy partition lifts accuracy to 79 .2 at about forty rules. It surpasses most more complex rule-learners while matching CART ( 79 .8), even when it is an order of magnitude smaller. The deep FERL variant reaches 83 .2, becoming the best tree/rule-based method both in accuracy and AURC. However, the distance with respect to non-interpretable ensemble classifiers is still significant. It is also remarkable that modern rule learners struggle to compete with CART. NeuRules is the strongest one, matching FERL-medium’s accuracy ( 79 .3 vs. 79 .2) with a smaller rule count but at higher selective risk ( 14 .1
+
+vs. 12 .7 AURC). RRL ( 77 .9) and RL-Net are particularly complex for the accuracy they achieve, and while SamRuLe’s sampled rule lists stay compact, they fall well below FERL-compact. FUCS reaches 78 .59 only with rule bases in the thousands. Figure 3 shows the evolution of accuracy and model complexity for all the rule learners involved. A Friedman test across the 30 tabular datasets rejects equal performance among the thirteen interpretable methods for both accuracy and AURC ( p < 0.001 in both cases). FERL-deep obtains the best average rank on both metrics (accuracy rank 2.97, AURC rank 2.57), while Figure 2 shows the Nemenyi post-hoc comparison for accuracy. Complementary Holm-corrected Wilcoxon signed-rank tests across datasets find FERL-deep statistically indistinguishable in accuracy only from LR and better than every other rule learner (all p < 0.01 ). The complete pairwise accuracy and AURC results, together with a per-dataset analysis, are provided in the supplementary material. 
+
+Training and Inference Cost Timing every method in one process on one CPU, and taking medians over the thirty datasets, FERL-deep fits in 0.26 s: among rule learners only CART ( 0.002 s) and FIGS ( 0.17 s) 7Evidential Rule Learning with Abstention 
+
+Table 1: Accuracy and selective-risk AURC. Computed over thirty tabular benchmarks (mean ± std over datasets, 0–100 scale). “Size” is the number of leaves for trees and rules for rule sets. Bold marks the best result for an interpretable model and underlined the best one for a non-interpretable model. Method Acc. ↑ Size AURC ↓
+
+Trees & rule learners (general) 
+
+CART 79.76 ± 11.69 175 19.89 ± 10.91 C4.5 78.19 ± 12.34 254 18.07 ± 12.20 FIGS 80.63 ± 10.67 28 15.22 ± 10.73 RRL 77.95 ± 13.71 201 13.89 ± 11.86 RL-Net 74.81 ± 13.00 195 20.80 ± 10.51 NeuRules 79.27 ± 11.61 19 14.07 ± 11.10 SamRuLe 70.53 ± 12.65 15 20.07 ± 10.18 
+
+Fuzzy rule-based 
+
+FURIA 78.51 ± 13.57 69 17.42 ± 13.94 FUCS (DS) 78.59 ± 13.61 1483 17.08 ± 12.37 
+
+Credal & evidential 
+
+NCC 77.97 ± 12.63 290 12.07 ± 10.31 CDT 76.60 ± 11.50 125 13.90 ± 10.21 CDT (C4.5) 76.60 ± 11.50 125 13.90 ± 10.21 
+
+FERL family (ours) 
+
+FERL-compact 77.77 ± 11.51 6 17.33 ± 11.61 FERL-medium 79.21 ± 9.82 43 12.72 ± 8.54 FERL-deep 83.23 ± 10.27 143 9.21 ± 8.33 
+
+Linear Model 
+
+Logistic reg. 81.13 ± 12.66 – 10.59 ± 11.05 
+
+Non-interpretable methods 
+
+RF 86.62 ± 11.10 - 6.26 ± 7.96 GB 85.58 ± 10.67 - 6.60 ± 7.36 EDL 84.71 ± 11.15 – 7.30 ± 8.12 
+
+fit faster, while NeuRules ( 4.8 s), SamRuLe ( 12 .9 s), FUCS ( 140 .4 s) and RL-Net ( 146 .8 s) are one to three orders of magnitude slower. The margin is largest at inference: FERL scores a fold in 1.5 ms against 16 .8 ms for FURIA and 744 ms for FUCS, the other DS fuzzy rule learner. 3 4 5 6 7 8 9 10    
+
+> FERL-deep (3)
+> Logistic reg. (4.8)
+> FUCS (DS) (6)
+> FIGS (6.2)
+> NeuRules (6.8)
+> FURIA (6.8)
+> (10) SamRuLe
+> (9.2) RL-Net
+> (8.8) C4.5
+> (7.7) CART
+> (7.4) RRL
+> (7.2) FERL-compact
+> (6.9) FERL-medium
+> Accuracy ranks on the tabular benchmark (Nemenyi CD, Friedman p< 10 8)
+
+Figure 2: Critical-difference diagram of accuracy ranks on the tabular benchmark. The diagram uses the Nemenyi post-hoc test; methods joined by a bar are not significantly different. Lower rank is better. 
+
+Evaluation of Prediction Sets Table 2 evaluates both native set-valued outputs and post-hoc conformal sets under the utility-discounted accuracy (Zaffalon et al., 2012). FERL-deep obtains the highest utility at 8Evidential Rule Learning with Abstention 10 1 10 2 10 3 10 4 
+
+> model size (#nodes, log scale)
+> 70
+> 72
+> 74
+> 76
+> 78
+> 80
+> 82
+> 84
+> 86
+> accuracy (%)
+> FERL-compact
+> FERL-medium
+> FERL-deep
+> FUCS (DS)
+> SamRuLe
+> RRL
+> RL-Net
+> NeuRules CART
+> RF
+> GBDT
+> Accuracy--compactness frontier (30 tabular datasets)
+> Classical rule learners
+> Modern rule learners
+> Non-interp. ceilings
+> FERL (ours)
+
+Figure 3: Accuracy vs. model size. The x-axis corresponds to the log scale of the number of nodes in each tree/rule based classifier, the y axis corresponds to the accuracy obtained by each model. 
+
+both reference discount levels ( u65 = 0 .795 , u80 = 0 .827 ). Best coverage is obtained by MLP-Conformal, which reaches 0.952 , at the cost of the largest prediction sets on average. NCC is the one that obtains the smallest prediction sets. However, this determinism reflects an overconfident bias, as its performance is lower than most rule-learners. Results here show that FERL is capable of very good coverage (close to conformal) while producing significantly smaller sets, without falling into the overconfident estimates of NCC and CDT. 
+
+Table 2: Native and conformal set-valued prediction. Mean ± std over the thirty tabular datasets. Determinacy is the singleton fraction, coverage is empirical, and size is the mean set cardinality. Conformal uses significance at 
+
+α = 0 .1; u65 /u80 are utility-discounted accuracies. Method Determ. Coverage Size u65 u80 
+
+FERL-deep 0.74 ± 0.21 0.92 ± 0.04 1.70 ± 1.25 0.80 ± 0.14 0.83 ± 0.12 
+
+FERL-compact 0.66 ± 0.19 0.87 ± 0.06 1.68 ± 0.80 0.72 ± 0.13 0.76 ± 0.12 NCC 0.91 ± 0.12 0.81 ± 0.10 1.11 ± 0.17 0.79 ± 0.12 0.80 ± 0.11 CDT 0.88 ± 0.08 0.82 ± 0.08 1.19 ± 0.19 0.78 ± 0.11 0.79 ± 0.10 MLP-Conformal 0.22 ± 0.35 0.95 ± 0.05 2.17 ± 0.84 0.63 ± 0.16 0.74 ± 0.14 
+
+Out-of-Distribution Detection We compare FERL’s OOD residual against three dedicated post-hoc OOD detectors: class-conditional Mahalanobis distance (Lee et al., 2018), k-nearest-neighbour distance (Sun et al., 2022), and Isolation Forest (Liu et al., 2008). The experiment setting is leave-one-class-out on the multiclass datasets from the tabular benchmark. In this case, rules are still firing so naive ignorance is uninformative. Table 3 shows that FERL-deep’s OOD residual signal is marginally better than the strongest dedicated competitor ( 77 .7 vs. 77 .4 for kNN distance) and clearly ahead of Mahalanobis and Isolation Forest, and that it does so with the lowest standard deviation across datasets of any method, i.e. it is the most consistent detector of the comparison. FERL-medium is also capable of surpassing class-conditional Mahalanobis and Isolation Forest. The same ranking holds when fixing a threshold. Accepting 95% of retained-class inputs, FERL-deep rejects the largest fraction of novel-class inputs ( 36 .5% ), ahead of every dedicated detector. 
+
+## 5.2 Concept Bottleneck Integration 
+
+We integrate FERL with a CBM by replacing its classification head and training on the symbol detector’s output. In the following, we compare it against another tree-based method, CART, and LR, which is the 9Evidential Rule Learning with Abstention     
+
+> Table 3: OOD-detection: AUROC and rejection. Reject is the fraction of held-out novel-class inputs rejected at a threshold fixed to accept 95% of retained-class inputs.
+
+Method AUROC Reject 
+
+FERL 
+
+FERL-compact 67.41 ± 7.19 24.46 ± 12.66 FERL-medium 76.10 ±11.26 31.82 ± 16.30 FERL-deep 77.66 ±10.67 36.47 ± 16.89 
+
+Native OOD detectors 
+
+Mahalanobis 74.42 ±13.20 30.69 ± 20.49 
+
+kNN distance 77.38 ±13.86 31.28 ± 22.10 Isolation Forest 70.33 ±11.34 25.45 ± 18.29 Softmax entropy 54.18 ± 7.55 4.00 ± 4.34                                                                            
+
+> Table 4: Concept-bottleneck accuracy. “Raw” and “calib.” show the effect of per-concept isotonic calibration on the symbol extractor. “Concept-restricted LR” is an LR head restricted to the same number of concepts as the FERL tree. Method raw calib.
+> CUB-20
+> FERL-deep 77.67 ±4.44 86.28 ±1.57 CART 80.32 ±2.23 85.57 ±1.29 Concept-restricted LR 72.75 ±1.29 74.24 ±0.81 LR 88.35 ±1.78 88.54 ±0.70
+> CUB-200
+> FERL-deep 59.38 ±4.57 65.18 ±0.77 CART 64.66 ±1.24 64.84 ±1.34 Concept-restricted LR 49.54 ±24.70 58.12 ±1.89 LR 70.42 ±1.03 70.71 ±1.01
+> AwA2
+> FERL-deep 95.08 ±0.11 94.91 ±0.14 CART 94.69 ±0.17 94.54 ±0.17 Concept-restricted LR 95.80 ±0.11 95.78 ±0.22 LR 95.76 ±0.13 95.79 ±0.15
+
+reference model used in CBMs for the explainability of its weights. 
+
+Accuracy Results. Table 4 reports the accuracy for different classification heads on CUB-20, CUB-200, and AwA2 using the same symbol extractor. We found that per-concept calibration is particularly important on CUB: FERL-deep improves from 77 .67% to 86 .28% on CUB-20 and from 59 .38% to 65 .18% on CUB-200. With calibrated concepts it slightly exceeds CART on both tasks, making it the strongest tree-based CBM head in this comparison. Still, standard LR remains the strongest predictor. The nature of this advantage comes from the fact that the LR is effectively using more concepts for each decision. We can see that its advantage disappears when limiting the number of concepts used to the same as FERL. This shows that although the largest LR weights have been typically used as a way to interpret the final decision of the CBM, it is actually a large number of symbols that are required to acquire good performance. On AwA2, all methods perform similarly around 95% accuracy, and the calibration offered no additional gains. 
+
+OOD Detection. We next evaluate whether the same concept-level representation supports detection of classes that are entirely unseen at deployment. For each dataset, we partition the classes into five folds and 10 Evidential Rule Learning with Abstention 
+
+remove the held-out fold before training both the image-to-concept detector and the classification heads. Per-concept isotonic calibration, FERL fitting, and OOD-threshold selection use retained-class data only, and held-out-class test images are used only for final evaluation. Mahalanobis distance, kNN distance, and Isolation Forest receive exactly the same calibrated concept vectors as FERL. We first average the five held-out-class folds within each detector seed and then report mean and standard deviation over three detector seeds. Table 5 shows that FERL’s native residual score is competitive with dedicated OOD detectors without adding a separate detector. On CUB-200, FERL reaches 68 .2 AUROC and 31 .0 AUPR-Out, within 2.3 and 
+
+2.4 points, respectively, of the strongest dedicated result. On AwA2, it reaches 86 .2 AUROC, within 2.0
+
+points of kNN, while obtaining the best AUPR-Out ( 68 .3) and the highest unseen-class rejection at the retained-class validation threshold ( 57 .2% ). This operating-point advantage is not uniform: FERL’s AwA2 FPR95 is 75 .8, compared with 54 .2–54 .3 for Mahalanobis and kNN. Thus, the residual is also a competitive near-OOD signal at no additional cost within a CBM scheme. 
+
+Table 5: Detector-class-disjoint open-world CBM detection. Best results per dataset and metric are bold.                                                                                                     
+
+> Method AUROC AUPR-Out FPR95 Reject
+> CUB-200
+> FERL-deep 68.2 ±2.4 31.0 ±1.5 82.3 ±2.6 10.2 ±0.3 Mahalanobis 70.2 ±2.5 32.3 ±2.4 73.3 ±3.7 13.5 ±1.8
+> kNN distance 70.5 ±3.0 33.4 ±3.1 74.3 ±5.2 13.6 ±2.0
+> Isolation Forest 58.8 ±1.4 25.6 ±1.5 89.3 ±1.3 8.5 ±1.7
+> AwA2
+> FERL-deep 86.2 ±0.2 68.3 ±0.5 75.8 ±1.4 57.2 ±0.9
+> Mahalanobis 88.0 ±0.8 67.5 ±0.4 54.2 ±5.4 56.2 ±0.3
+> kNN distance 88.2 ±0.4 67.7 ±0.4 54.3 ±4.9 53.2 ±1.8 Isolation Forest 81.8 ±0.4 55.4 ±2.6 78.6 ±1.2 39.1 ±3.7
+
+# 6 Conclusion 
+
+We presented FERL, a fast and scalable fuzzy rule-learning method in which Dempster–Shafer evidence is the product of the fuzzy memberships that define the rules, and where each node split is computed using bootstrapped samples that create robust fuzzy partitions. FERL provides a high-performance interpretable classifier with set-valued prediction, abstention, and OOD detection, and can target different accuracy– complexity trade-offs through its rule budget. In a 30-dataset tabular benchmark, the medium-sized FERL tree is competitive with classical and recent rule learners while using fewer rules than most of them, and the deep FERL tree surpasses every other single rule learner with statistical significance. Its native residual also matches or closely approaches dedicated OOD detectors without fitting a separate detector. Within a CBM, FERL remains competitive as a classification head and carries the same OOD mechanism into a detector-class-disjoint open-world setting: it stays within 2.3 AUROC points of the strongest dedicated detector on CUB and AwA2, while attaining the best AwA2 AUPR-Out and unseen-class rejection. These results show that a single concept-level FERL head can provide auditable rules, evidential abstention, and attribute-level novelty diagnostics without an auxiliary uncertainty model. 
+
+# References 
+
+Joaquín Abellán and Serafin Moral. Building classification trees using the total uncertainty criterion. 
+
+International Journal of Intelligent Systems , 18(12):1215–1225, 2003. Julius Adebayo, Justin Gilmer, Michael Muelly, Ian Goodfellow, Moritz Hardt, and Been Kim. Sanity checks for saliency maps. Advances in neural information processing systems , 31, 2018. 11 Evidential Rule Learning with Abstention 
+
+Jesús Alcalá-Fdez, Alberto Fernández, Julián Luengo, Joaquín Derrac, Salvador García, Luciano Sánchez, and Francisco Herrera. KEEL data-mining software tool: Data set repository, integration of algorithms and experimental analysis framework. Journal of Multiple-Valued Logic and Soft Computing , 17(2-3):255–287, 2011. Alexander Amini, Wilko Schwarting, Ava Soleimany, and Daniela Rus. Deep evidential regression. Advances in neural information processing systems , 33:14927–14937, 2020. Anastasios N. Angelopoulos and Stephen Bates. A gentle introduction to conformal prediction and distribution-free uncertainty quantification. Foundations and Trends in Machine Learning , 16(4):494–591, 2023. Yoshua Bengio, Nicholas Léonard, and Aaron Courville. Estimating or propagating gradients through stochastic neurons for conditional computation. arXiv preprint arXiv:1308.3432 , 2013. Leo Breiman. Random forests. Machine Learning , 45(1):5–32, 2001. Leo Breiman, Jerome H. Friedman, Richard A. Olshen, and Charles J. Stone. Classification and Regression Trees . Wadsworth, 1984. Tianqi Chen and Carlos Guestrin. XGBoost: A scalable tree boosting system. In Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining , pages 785–794, 2016. William W. Cohen. Fast effective rule induction. In Proceedings of the Twelfth International Conference on Machine Learning (ICML) , pages 115–123, 1995. Giorgio Corani and Marco Zaffalon. Learning reliable classifiers from small or incomplete data sets: The naive credal classifier 2. Journal of Machine Learning Research , 9:581–621, 2008. Arthur P. Dempster. Upper and lower probabilities induced by a multivalued mapping. The Annals of Mathematical Statistics , 38(2):325–339, 1967. Thierry Denoeux. A k-nearest neighbor classification rule based on Dempster–Shafer theory. IEEE Transac-tions on Systems, Man, and Cybernetics , 25(5):804–813, 1995. Thierry Denoeux. Conjunctive and disjunctive combination of belief functions induced by nondistinct bodies of evidence. Artificial Intelligence , 172(2-3):234–264, 2008. Thierry Denœux. Logistic regression, neural networks and Dempster–Shafer theory: A new perspective. 
+
+Knowledge-Based Systems , 176:54–67, 2019. Lucile Dierckx, Rosana Veroneze, and Siegfried Nijssen. RL-Net: Interpretable rule learning with neural networks. In Advances in Knowledge Discovery and Data Mining (PAKDD) . Springer, 2023. Didier Dubois and Henri Prade. Possibility Theory: An Approach to Computerized Processing of Uncertainty .Plenum Press, 1988. Javier Fumanal Idocin and Javier Andreu-Perez. Ex-fuzzy: A library for symbolic explainable ai through fuzzy logic programming. Neurocomputing , 2024. Javier Fumanal-Idocin, Raquel Fernandez-Peralta, and Javier Andreu-Perez. Compact rule-based classifier learning via gradient descent. arXiv preprint arXiv:2502.01375 , 2025. Yarin Gal and Zoubin Ghahramani. Dropout as a Bayesian approximation: Representing model uncertainty in deep learning. In International Conference on Machine Learning , pages 1050–1059. PMLR, 2016. Chuan Guo, Geoff Pleiss, Yu Sun, and Kilian Q. Weinberger. On calibration of modern neural networks. In 
+
+Proceedings of the 34th International Conference on Machine Learning (ICML) , pages 1321–1330, 2017. Jens Hühn and Eyke Hüllermeier. FURIA: An algorithm for unordered fuzzy rule induction. Data Mining and Knowledge Discovery , 19(3):293–319, 2009. 12 Evidential Rule Learning with Abstention 
+
+Eyke Hüllermeier and Willem Waegeman. Aleatoric and epistemic uncertainty in machine learning: An introduction to concepts and methods. Machine Learning , 110(3):457–506, 2021. Ulf Johansson, Tuwe Löfström, and Henrik Boström. Calibrating probability estimation trees using venn-abers predictors. In Proceedings of the 2019 SIAM International Conference on Data Mining , pages 28–36. SIAM, 2019. Audun Jøsang. Subjective Logic: A Formalism for Reasoning Under Uncertainty . Springer, 2016. Markelle Kelly, Rachel Longjohn, and Kolby Nottingham. UCI Machine Learning Repository. https: //archive.ics.uci.edu, 2023. Pang Wei Koh, Thao Nguyen, Yew Siang Tang, Stephen Mussmann, Emma Pierson, Been Kim, and Percy Liang. Concept bottleneck models. In Proceedings of the 37th International Conference on Machine Learning (ICML) , pages 5338–5348, 2020. Meelis Kull, Miquel Perello Nieto, Markus Kängsepp, Telmo Silva Filho, Hao Song, and Peter Flach. Beyond temperature scaling: Obtaining well-calibrated multi-class probabilities with dirichlet calibration. In H. Wallach, H. Larochelle, A. Beygelzimer, F. d 'Alché-Buc, E. Fox, and R. Garnett, editors, Advances in Neural Information Processing Systems , volume 32. Curran Associates, Inc., 2019. Balaji Lakshminarayanan, Alexander Pritzel, and Charles Blundell. Simple and scalable predictive uncertainty estimation using deep ensembles. In Advances in Neural Information Processing Systems , volume 30, 2017. Tim Leathart, Eibe Frank, Geoffrey Holmes, and Bernhard Pfahringer. Probability calibration trees. In 
+
+Asian conference on machine learning , pages 145–160. PMLR, 2017. Kimin Lee, Kibok Lee, Honglak Lee, and Jinwoo Shin. A simple unified framework for detecting out-of-distribution samples and adversarial attacks. In Advances in Neural Information Processing Systems ,volume 31, 2018. Julian Lienen and Eyke Hüllermeier. Credal self-supervised learning. Advances in Neural Information Processing Systems , 34:14370–14382, 2021. Fei Tony Liu, Kai Ming Ting, and Zhi-Hua Zhou. Isolation forest. In 2008 Eighth IEEE International Conference on Data Mining , pages 413–422. IEEE, 2008. Scott M. Lundberg and Su-In Lee. A unified approach to interpreting model predictions. In Advances in Neural Information Processing Systems , volume 30, 2017. Anqi Mao, Mehryar Mohri, and Yutao Zhong. Predictor-rejector multi-class abstention: Theoretical analysis and algorithms. In International Conference on Algorithmic Learning Theory , pages 822–867. PMLR, 2024. Jishnu Mukhoti, Andreas Kirsch, Joost van Amersfoort, Philip H.S. Torr, and Yarin Gal. Deep deterministic uncertainty: A new simple baseline. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 24384–24394, 2023. Cristina Olaru and Louis Wehenkel. A complete fuzzy decision tree technique. Fuzzy Sets and Systems , 138 (2):221–254, 2003. Pouya Ghiasnezhad Omran, Kewen Wang, and Zhe Wang. Scalable rule learning via learning representation. In IJCAI-18 . International Joint Conferences on Artificial Intelligence, 2018. Yaniv Ovadia, Emily Fertig, Jie Ren, Zachary Nado, David Sculley, Sebastian Nowozin, Joshua Dillon, Balaji Lakshminarayanan, and Jasper Snoek. Can you trust your model’s uncertainty? evaluating predictive uncertainty under dataset shift. Advances in neural information processing systems , 32, 2019. Leonardo Pellegrina and Fabio Vandin. Scalable rule lists learning with sampling. In Proceedings of the 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining , pages 2352–2363, 2024. 13 Evidential Rule Learning with Abstention 
+
+Foster Provost and Pedro Domingos. Tree induction for probability-based ranking. Machine learning , 52(3): 199–215, 2003. Litao Qiao, Weijia Wang, and Bill Lin. Learning accurate and interpretable decision rule sets from neural networks. In Proceedings of the AAAI conference on artificial intelligence , volume 35, pages 4303–4311, 2021. J. Ross Quinlan. C4.5: Programs for Machine Learning . Morgan Kaufmann, 1993. Marco Tulio Ribeiro, Sameer Singh, and Carlos Guestrin. “why should i trust you?”: Explaining the predictions of any classifier. In Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining , pages 1135–1144, 2016. Yaniv Romano, Matteo Sesia, and Emmanuel Candès. Classification with valid and adaptive coverage. In 
+
+Advances in Neural Information Processing Systems (NeurIPS) , volume 33, pages 3581–3591, 2020. Cynthia Rudin. Stop explaining black box machine learning models for high stakes decisions and use interpretable models instead. Nature Machine Intelligence , 1(5):206–215, 2019. Ramprasaath R Selvaraju, Michael Cogswell, Abhishek Das, Ramakrishna Vedantam, Devi Parikh, and Dhruv Batra. Grad-cam: visual explanations from deep networks via gradient-based localization. International journal of computer vision , 128(2):336–359, 2020. Murat Sensoy, Lance Kaplan, and Melih Kandemir. Evidential deep learning to quantify classification uncertainty. In Advances in Neural Information Processing Systems (NeurIPS) , volume 31, 2018. Glenn Shafer. A Mathematical Theory of Evidence . Princeton University Press, 1976. Hiroki Shiraishi, Hisao Ishibuchi, and Masaya Nakata. Evidential fuzzy rule-based machine learning to quantify classification uncertainty. In Proceedings of the Genetic and Evolutionary Computation Conference Companion , pages 69–70, 2025. Philippe Smets and Robert Kennes. The transferable belief model. Artificial Intelligence , 66(2):191–234, 1994. Yiyou Sun, Yifei Ming, Xiaojin Zhu, and Yixuan Li. Out-of-distribution detection with deep nearest neighbors. In International Conference on Machine Learning , pages 20827–20840. PMLR, 2022. Magamed Taimeskhanov, Ronan Sicre, and Damien Garreau. Cam-based methods can see through walls. In Joint European conference on machine learning and knowledge discovery in databases , pages 332–348. Springer, 2024. Yan Shuo Tan, Chandan Singh, Keyan Nasseri, Abhineet Agarwal, and Bin Yu. Fast interpretable greedy-tree sums. arXiv preprint arXiv:2201.11931 , 2022. Dennis Ulmer, Christian Hardmeier, and Jes Frellsen. Prior and posterior networks: A survey on evidential deep learning methods for uncertainty estimation. Transactions on Machine Learning Research , 2023. Catherine Wah, Steve Branson, Peter Welinder, Pietro Perona, and Serge Belongie. The Caltech-UCSD birds-200-2011 dataset. Technical Report CNS-TR-2011-001, California Institute of Technology, 2011. Kaizheng Wang, Fabio Cuzzolin, Keivan Shariatmadar, David Moens, and Hans Hallez. Credal wrapper of model averaging for uncertainty estimation in classification. In International Conference on Learning Representations , volume 2025, pages 70290–70318, 2025. Zhuo Wang, Wei Zhang, Ning Liu, and Jianyong Wang. Scalable rule-based representation learning for interpretable classification. Advances in Neural Information Processing Systems , 34:30479–30491, 2021. 14 Evidential Rule Learning with Abstention 
+
+Zhuo Wang, Wei Zhang, Ning Liu, and Jianyong Wang. Learning interpretable rules for scalable data representation and classification. IEEE Transactions on Pattern Analysis and Machine Intelligence , 46(2): 1121–1133, 2023. Yongqin Xian, Christoph H. Lampert, Bernt Schiele, and Zeynep Akata. Zero-shot learning—a comprehensive evaluation of the good, the bad and the ugly. IEEE Transactions on Pattern Analysis and Machine Intelligence , 41(9):2251–2265, 2018. Yongqin Xian, Christoph H. Lampert, Bernt Schiele, and Zeynep Akata. Zero-shot learning—a comprehensive evaluation of the good, the bad and the ugly. IEEE Transactions on Pattern Analysis and Machine Intelligence , 41(9):2251–2265, 2019. doi: 10.1109/TPAMI.2018.2857768. Ji Xin, Raphael Tang, Yaoliang Yu, and Jimmy Lin. The art of abstention: Selective prediction and error regularization for natural language processing. In Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing (Volume 1: Long Papers) , pages 1040–1051, 2021. Sascha Xu, Nils Philipp Walter, and Jilles Vreeken. Neural rule lists: Learning discretizations, rules, and order in one go. Advances in Neural Information Processing Systems , 38:148617–148645, 2026. Bianca Zadrozny and Charles Elkan. Transforming classifier scores into accurate multiclass probability estimates. In Proceedings of the 8th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining , pages 694–699, 2002. Marco Zaffalon, Giorgio Corani, and Denis Mauá. Evaluating credal classifiers by utility-discounted predictive accuracy. International Journal of Approximate Reasoning , 53(8):1282–1301, 2012. 15 Evidential Rule Learning with Abstention Supplementary Material 
+
+# Supplementary Material 
+
+Supplementary Contents 
+
+A. Tree Construction Guarantees and a Confidence-Certified Band p. 16 B. Computational Complexity p. 18 C. Ablation Studies p. 20 D. Statistical Comparison on the Tabular Benchmarks p. 22 E. Where FERL Wins and Loses: A Per-Dataset Study p. 22 F. Coverage Under Covariate Shift p. 24 G. Reproducibility p. 24 
+
+# A Tree Construction Guarantees and a Confidence-Certified Band 
+
+The learned FERL tree uses the same greedy search pattern as a classical tree, but its fuzzy routing allows us to characterise its behaviour in different ways than a crisp tree like CART or C4.5. This section discusses these, while reasoning why they are relevant for FERL’s behaviour. 
+
+## A.1 Guaranteed Gini Improvement 
+
+Consider a node with non-negative incoming sample weights wi, total weight W = ∑ 
+
+> i
+
+wi > 0, and class distribution p. A complementary fuzzy split has left memberships μi ∈ [0 , 1] and right memberships 1 − μi.Let WL = ∑ 
+
+> i
+
+wiμi, WR = ∑ 
+
+> i
+
+wi(1 − μi), α = WL/W , and let pL, p R be the corresponding child class distributions. Write G(q) = 1 − ∥ q∥22 for Gini impurity. 
+
+Proposition 1 (descent of the construction objective). For every complementary fuzzy split with non-empty children, 
+
+G(p) − αG (pL) − (1 − α)G(pR) = α(1 − α)∥pL − pR∥22 ≥ 0. (6) The decrease is strict exactly when both children have positive weight and their class distributions differ. 
+
+Proof. Complementarity gives WL + WR = W and p = αp L + (1 − α)pR. Expanding the squared norm of this convex combination gives α∥pL∥22 + (1 − α)∥pR∥22 − ∥ p∥22 = α(1 − α)∥pL − pR∥22, which is Equation (6) . □
+
+Practical Implications. This property is relevant to guarantee that our splits will always get Gini improvement no matter the split technique used. This is different, for example, from CART, where its splitting method guarantees one-step optimality by checking all possible candidates. 
+
+## A.2 Routing-Mass Conservation 
+
+For a test point x, let ϕo(x) be the firing that reaches node o, with ϕroot (x) = 1 . The factor γo ∈ [0 , 1] 
+
+penalises the membership for being out of the known data manifold. At an internal node, write μo(x) for the left membership and 1 − μo(x) for the right membership. 
+
+Proposition 2 (support conservation in in-distribution samples). If every γ equals one for sample 
+
+x, then the leaf firings of a finite binary learned tree form a partition of unity: 
+
+∑ 
+
+> ℓ∈L (T)
+
+ϕℓ(x) = 1 . (7) 16 Evidential Rule Learning with Abstention Supplementary Material 
+
+Proof. The two children of o receive ϕoμo and ϕo(1 − μo), whose sum is ϕo. Replacing an internal-node firing by its two child firings therefore preserves the total. Recursing from the root proves Equation (7). □
+
+Note that in samples where some values are outside the known data manifold, at least some γ > 0. Then, there is a loss of mass in the routing that has this decomposition: 
+
+1 − ∑ 
+
+> ℓ∈L (T)
+
+ϕℓ(x) = ∑ 
+
+> o∈I (T)
+
+ϕo(x)(1 − γo(x)), (8) where I(T ) is the set of internal nodes and ϕo is the firing before applying γo. This follows by the same argument, because the children now sum to ϕoγo.
+
+Practical Implications. Equation (8) is what makes geometric novelty attributable to a feature: each summand names the node and split feature responsible for the loss of mass. 
+
+## A.3 Continuity and Local Prediction Stability 
+
+On an in-support region, we define: 
+
+PT (x) = ∑ 
+
+> ℓ∈L (T)
+
+ϕℓ(x)pℓ, (9) which is a probability vector. The ramp at node o is 1/(2 ho)-Lipschitz. For the ℓ∞ input norm and ℓ1 output norm, define 
+
+LT = max  
+
+> π∈paths( T)
+
+∑
+
+> o∈π
+
+1
+
+ho
+
+. (10) 
+
+Proposition 3 (local robustness certificate). On any region where the support gates remain one, 
+
+∥PT (x) − PT (x′)∥1 ≤ LT ∥x − x′∥∞. If c∗ = arg max c PT (x)c is unique and 
+
+∆( x) = PT (x)c∗ − max  
+
+> c̸=c∗
+
+PT (x)c, (11) then the predicted class is unchanged for every 
+
+∥x − x′∥∞ < ∆( x)2LT
+
+. (12) 
+
+Proof. At a node, the subtree prediction is P = μP L + (1 − μ)PR. Since probability vectors are at most 2
+
+apart in ℓ1, the change due to the ramp is bounded by 2 · (1 /(2 ho)) ∥x − x′∥∞.
+
+Full proof of the pignistic stability bound (Proposition 1 of the main paper). Let K = max x |A(x)|
+
+be the maximum number of evidence sources combined for one input. Each membership is λ-Lipschitz and depends on a single feature, so a firing strength ϕo, a product of at most D of them, has ℓ1 gradient norm at most Dλ (matching the ℓ∞ norm on the input) and lies in [0 , 1] . The unnormalised masses ˜m({c}) and 
+
+˜m(Θ) are products and differences of at most K factors of the form 1 − ϕo + ϕopo(c) ∈ [0 , 1] ; a product of K
+
+factors, each bounded by one and Dλ -Lipschitz, is KDλ -Lipschitz, hence both masses are O(KDλ )-Lipschitz. Now BetP (c) = ( ˜m({c}) + ˜m(Θ) /C )/Z is a ratio whose numerator is O(KDλ )-Lipschitz and bounded in 
+
+[0 , 1] , and whose denominator Z = ∑ 
+
+> c
+
+˜m({c}) + ˜m(Θ) is itself O(CKDλ )-Lipschitz and bounded in [τ, 1] on 
+
+Ωτ = {x : Z(x) ≥ τ }; the quotient rule then bounds each ∥∇ BetP (c)∥1 by O(KDλ/τ ) up to a C-dependent factor, and summing over the C classes yields the stated bound with the dependence on C absorbed into κ. □
+
+17 Evidential Rule Learning with Abstention Supplementary Material 
+
+Algorithm 1 FERL: fuzzy-tree growth and evidential inference.  
+
+> 1:
+
+Training input: data {(xi, y i)}Ni=1 , fuzzy partitions, budget R, depth D, patience, gain function and min. gain value δ 
+
+> 2:
+
+initialise T with a single root holding all samples at membership 1 
+
+> 3:
+
+while rules( T ) < R and best achievable coverage ≥ threshold do  
+
+> 4:
+
+for all nodes o in T with depth < D do  
+
+> 5:
+
+score every candidate split of o (feature × fuzzy set, or a learned threshold θ with band h) by its gain { θ: bootstrap median, h = γ·MAD}  
+
+> 6:
+
+end for  
+
+> 7:
+
+(o⋆, s ⋆, g ⋆) ← split with the largest gain  
+
+> 8:
+
+if g⋆ ≤ δ then  
+
+> 9:
+
+increment patience counter; break if exhausted  
+
+> 10:
+
+end if  
+
+> 11:
+
+install s⋆ at o⋆; update firings ϕo and consequents po 
+
+> 12:
+
+end while  
+
+> 13:
+
+optionally apply cost-complexity pruning  
+
+> 14:
+
+return fuzzy rule tree T 
+
+> 1:
+
+Inference input: sample x, tree T , inference mode (depending on compact / deep tree)  
+
+> 2:
+
+A(x) ← active leaves if deep, else all active nodes  
+
+> 3:
+
+for all o ∈ A(x) do  
+
+> 4:
+
+mo({c}) ← ϕo(x) po(c); mo(Θ) ← 1 − ϕo(x) 
+
+> 5:
+
+end for  
+
+> 6:
+
+˜m(Θ) ← ∏
+
+> o∈A(x)
+
+(1 − ϕo) {Dempster, commonality form}  
+
+> 7:
+
+˜m({c}) ← ∏
+
+> o∈A(x)
+
+(1 − ϕo + ϕopo(c)) − ˜m(Θ)  
+
+> 8:
+
+normalise by Z = ˜ m(Θ) + ∑ 
+
+> c
+
+˜m({c}) to obtain m 
+
+> 9:
+
+Bel( c) ← m({c}); Pl( c) ← m({c}) + m(Θ)  
+
+> 10:
+
+ˆy ← arg max c BetP( c); native set S(x) ← { c : Pl( c) ≥ max c′ Bel( c′)} 
+
+> 11:
+
+return ˆy; native set S(x); ignorance m(Θ) 
+
+Practical Implications. This proposition allows us to do two things. First, we can know how robust FERL is to noise. If LT is small we know that small changes are less likely to affect FERL. Second, we can use this property to know when two samples are going to have the same predictions. The most straightforward use of this proposition would be to build a cache-with-guarantees for FERL in order to save time in inferences for very large datasets or FERL models. 
+
+# B Computational Complexity 
+
+We analyse the time and space complexity of FERL for both training and inference. Table 6 separates the rule count reported in the experiments from the total number of stored nodes and from the number of nodes used as evidence. We treat one membership evaluation on one feature value as O(1) .
+
+## B.1 Tree Growth 
+
+FERL grows greedily: each iteration scores every possible candidate split at every node, executes the single best split, and repeats until the leaf/rule budget R, the depth limit D, the minimum coverage, or the patience counter is exhausted (Algorithm 1). A successful iteration creates one new node, so there are at most J − 1
+
+successful node creation steps. We use J for counts below. 18 Evidential Rule Learning with Abstention Supplementary Material                                   
+
+> Symbol Meaning
+> Ntraining samples
+> Nssamples used to score a split
+> nssplit-scoring subsample cap (default 10 ,000 )
+> nsamples in the inference batch
+> dfeatures
+> Cclasses
+> Rterminal leaves (rules), R≤max_rules
+> Jtotal stored nodes
+> Kmaximum evidence sources combined for one input
+> Dmaximum depth
+> Pmax maximum fuzzy sets on any feature (fixed-partition mode)
+> Bbootstrap resamples for the band width
+> Table 6: Notation used in the complexity analysis. If split subsampling is enabled and N> n s, then
+> Ns=min (N, n s); otherwise Ns=N. Under the default automatic policy, subsampling is enabled only when
+> N > 50 ,000 . Also K≤J; in leaves-only inference, K≤R.
+
+Before tree growth, the B bootstrap resamples are generated once and stored as multiplicity vectors over the split-scoring observations. The values of each feature are also sorted once, at a preprocessing cost of 
+
+O(dN s log Ns). Restricting a precomputed feature ordering to a node’s effective region preserves that ordering, while bootstrap multiplicities change only the observation weights and not their order. Consequently, neither the nodes nor the bootstrap replicates require additional sorting. For each node–feature pair, the cuts associated with the B bootstrap replicates are obtained by sweeping the fixed feature ordering and computing cumulative class weights. Each sweep costs O(NsC), giving 
+
+O(( B + 1) NsC) per node–feature pair and O(d(B + 1) NsC) per node. The bootstrap-generation cost is 
+
+O(BN s). Therefore, the total training cost is 
+
+T learned grow = O(dN s log Ns + BN s + Jd (B + 1) NsC) .
+
+For B ≥ 1, this simplifies to 
+
+T learned grow = O(dN s log Ns + JdBN sC) .
+
+## B.2 Space 
+
+The fitted model stores J nodes with a C-vector class distribution and split parameters, plus per-node diagonal statistics over up to d free features for the OOD score. Including the fixed fuzzy partitions, model space is therefore O(J(C + d) + dP max 
+
+); without the residual statistics it reduces to O(JC + dP max ). Inference allocates the activation matrix at O(nJ ) and output arrays at O(nC ).
+
+## B.3 Wall-Clock Runtime 
+
+Table 7 complements the asymptotic analysis with a fresh wall-clock scaling comparison. We fit every method from scratch on ten representative datasets using five seeded stratified train/test splits. The datasets span 
+
+178 –5,300 samples, 2–57 features, and 2–7 classes, and are ordered by the size of their input matrix. FERL-compact and FERL-medium remain below 0.15 and 0.40 seconds, respectively, on every dataset. FERL-deep grows more nodes and therefore takes up to 2.65 seconds. On the two largest input datasets ( segment and 
+
+spambase ), FERL-deep is much faster to fit than C4.5 and FURIA, while CART remains the fastest method overall. 19 Evidential Rule Learning with Abstention Supplementary Material 
+
+Table 7: Median fit time in seconds. Across 5 seeded stratified 70/30 train/test splits. Datasets are ordered by their size. FERL fit time (s) Baseline fit time (s) Dataset N d C compact medium deep CART C4.5 FIGS FURIA glass 205 9 5 0.022 0.023 0.178 0.001 0.141 0.074 0.365 wine 178 13 3 0.012 0.015 0.262 0.001 0.065 0.009 0.315 heart 270 13 2 0.016 0.018 0.105 0.001 0.049 0.135 0.166 australian 690 14 2 0.006 0.013 0.166 0.002 0.200 0.096 0.326 banana 5300 2 2 0.017 0.025 1.093 0.005 2.329 0.251 1.330 ionosphere 351 33 2 0.023 0.053 0.756 0.003 0.527 0.039 0.714 vehicle 846 18 4 0.070 0.073 1.021 0.003 1.326 0.142 1.130 german 1000 20 2 0.006 0.010 0.161 0.002 0.493 0.191 0.362 segment 2310 19 7 0.141 0.394 2.014 0.008 12.742 0.199 2.641 spambase 4597 57 2 0.142 0.188 2.652 0.036 21.061 0.718 5.476 
+
+Table 8: Evidence-source and combination-rule ablation for FERL-deep. All read-outs use the same fitted tree. The first two rows isolate all-node versus leaves-only evidence under Dempster’s rule; the last two isolate Dempster versus Denœux’s cautious rule over the same leaves (30 datasets, 5 folds). All entries except mean set size are on a 0–100 scale. Lower AURC/ECE is better; higher accuracy, coverage, and u65 is better.                                     
+
+> Evidence/read-out Acc. ↑AURC ↓ECE ↓Determ. Set cov. Size u65 ↑Ign. Dempster, all nodes 80.62 10.30 14.88 99.88 80.69 1.00 80.65 0.07 Dempster, leaves 83.18 10.14 15.83 74.26 92.31 1.70 79.50 22.93 Cautious, leaves 69.58 17.76 22.09 24.04 96.78 3.05 59.62 37.19
+
+# C Ablation Studies 
+
+## C.1 Evidence Sources and Combination Rule 
+
+The evidential decision involves two choices: which tree nodes provide evidence and how their masses are combined. We isolate both choices without refitting the tree. First, we compare all non-root nodes with leaves only under Dempster’s rule. Second, we also compare Dempster’s rule with Denœux’s cautious rule (Denoeux, 2008), which and was designed for non-distinct evidence sources (Denoeux, 2008). For a leaf o with firing ϕo
+
+and consequent po(c), its singleton canonical weight is 
+
+wo(c) = 1 − ϕo
+
+1 − ϕo + ϕopo(c) . (13) The cautious combination uses w(c) = min o wo(c), so repeated or dependent support does not compound. The pignistic point decision and interval-dominance set S(x) = {c : Pl (c) ≥ max j Bel (j)} are otherwise unchanged. Table 8 shows why FERL-deep uses leaves only. All-node Dempster combination drives mean ignorance to 0.07% and produces 99 .88% singleton sets, so its set coverage ( 80 .69% ) nearly reduces to point accuracy. Restricting the sources to leaves raises ignorance to 22 .93% and set coverage to 92 .31% , while also increasing accuracy from 80 .62% to 83 .18% and slightly lowering AURC. This non-degenerate credal output costs 0.95 
+
+ECE points and 1.15 u65 points relative to the collapsed all-node read-out. The cautious rule is more conservative still: relative to Dempster over the same leaves, coverage rises from 92 .31% to 96 .78% and ignorance from 22 .93% to 37 .19% . However, mean set size grows from 1.70 to 
+
+3.05 , determinacy falls from 74 .26% to 24 .04% , accuracy falls by 13 .60 points, and both AURC and ECE worsen. Leaves-only Dempster therefore provides the best balance here: it removes direct ancestor–descendant dependence, while cautious combination suppresses useful information. 20 Evidential Rule Learning with Abstention Supplementary Material 
+
+Table 9: Fuzzy bounded-support ablation. The fitted tree is unchanged; the gate is toggled only during inference. ID columns use 30 datasets and 3 folds; geometric-OOD columns use 7 datasets and 2 seeds. The bounded row uses the default margin of one node-local training range. All entries except mean set size are on a 0–100 scale. Higher AUROC is better; ¯ΦOOD is expected to be small for off-support inputs.                          
+
+> In distribution Geometric OOD Support gate Acc. ↑Set cov. Size Firing AUROC ↑Ign. AUROC ↑¯ΦID ¯ΦOOD
+> Unbounded 82.00 90.65 1.31 47.03 23.19 100.00 100.00 Bounded 81.99 90.65 1.31 99.29 98.62 99.67 7.28
+
+Table 10: Split-criterion ablation for FERL-deep. Weighted Gini vs. the Complete Classification Index. For the learned-threshold deep tree, CCI wins on only 6 of 30 datasets and is 0.71 points lower on average, on both the binary and multiclass subsets (Pearson r= − 0.07 between ∆ and class count C). Subset # Gini CCI ∆
+
+Binary ( C=2 ) 18 83.32 82.45 -0.87 Multiclass ( C> 2) 12 83.09 82.63 -0.46 
+
+All 30 83.23 82.52 -0.71 
+
+## C.2 Bounded-Support 
+
+FERL-deep bounds each membership using the feature range observed at that node. The gate equals one within the node-local training range and decays to zero over a margin of one such range on either side. Because this gate is applied only during inference, it can be switched on or off for the same fitted tree, isolating the effect of bounded support from tree induction. Table 9 separates in-distribution behaviour from geometric-OOD detection. Across 30 datasets and three folds, enabling the gate changes mean accuracy from 82 .00% to 81 .99% , while set coverage remains 90 .65% 
+
+and mean set size remains 1.31 . On the seven-dataset geometric-OOD study, firing-based AUROC rises from 
+
+47 .03% to 99 .29% and ignorance-based AUROC from 23 .19% to 98 .62% . Mean firing remains 99 .67% in distribution but falls to 7.28% for OOD inputs. Thus, the bounded gate adds an off-support signal without materially changing the in-distribution operating point. Note that this result concerns geometric support shift only. It does not imply detection of semantically novel classes that remain within the observed feature support. 
+
+## C.3 Split Criterion: Weighted Gini versus CCI 
+
+FERL-deep uses weighted Gini to select learned thresholds, whereas the compact fixed-partition variants use the Complete Classification Index (CCI). We refit FERL-deep under each criterion using the same five outer folds, the same 25% calibration reserve within each outer-training fold, and the same maximum depth. Only the split criterion changes. Weighted Gini obtains 83 .23% mean accuracy, compared with 82 .52% for CCI. CCI wins on six datasets, ties on one, and loses on 23. Its mean change is −0.87 points on binary datasets and −0.46 points on multiclass datasets. The advantage of CCI for compact fixed partitions therefore does not hold to this learned-threshold, depth-12 setting, supporting weighted Gini as the FERL-deep split metric. 
+
+## C.4 Prefixed and Split-Driven Fuzzy Partitions 
+
+FERL can use fixed fuzzy partitions for better interpretability, or when provided by an expert. This subsection tests when each choice is more suitable. For that, we fit a FERL-compact with a fixed partition scheme using trapezoidal fuzzy sets based on the quartiles of the distribution. Then, we freeze its topology and its node 21 Evidential Rule Learning with Abstention Supplementary Material 
+
+consequents, and optimise only the trapezoidal breakpoints by gradient descent on training cross-entropy. We report the change in test accuracy, the change in ECE, and the partition drift : the mean per-set breakpoint movement as a fraction of the feature range. Across all tabular datasets tested, the refit changes test accuracy by a mean of +0 .96 points and a median of 0.0 and it changes ECE by −0.002 on average. The partitions barely move: mean drift 1.3% of the feature range, median 0.2% . So, for the smallest configuration tested (FERL-compact), the pre-computed fixed partition already sits near a local optimum of the membership parameters: globally refitting them, even under favourable model selection, neither reliably helps accuracy nor improves calibration. 
+
+# D Statistical Comparison on the Tabular Benchmarks 
+
+The critical-difference diagram in the main paper summarises the global accuracy ranking. Table 11 provides the complementary pairwise analysis, comparing FERL-deep with each interpretable and rule-learning baseline across the 30 tabular datasets. The tests pair the five-fold mean for each method within each dataset; cross-validation folds are not treated as independent observations. The pairwise results refine this global view: FERL-deep is statistically indistinguishable in accuracy from LR, but significantly outperforms every other rule learner. 
+
+Table 11: Wilcoxon signed-rank comparisons on the tabular benchmark. Pairwise comparison of FERL-deep 
+
+against every interpretable and rule-learning baseline across 30 datasets. Entries are mean paired differences: ∆Acc. 
+
+> 0 and ∆AURC < 0 favour FERL. Accuracy p-values are Holm-corrected across the comparison family; AURC significance markers use unadjusted p-values. ∗p < 0.05 , ∗∗ p < 0.01 , ∗∗∗ p < 0.001 .vs. baseline ∆Acc. ↑ ∆AURC ↓
+
+CART +3.47 ∗∗∗ -10.68 ∗∗∗ 
+
+C4.5 +5.04 ∗∗∗ -8.87 ∗∗∗ 
+
+FIGS +2.60 ∗∗∗ -6.01 ∗∗∗ 
+
+Logistic reg. +2.09 -1.38 FURIA +4.72 ∗∗∗ -8.21 ∗∗∗ 
+
+FUCS (DS) +6.03 ∗∗ -9.17 ∗∗∗ 
+
+RRL +5.28 ∗∗ -4.68 ∗∗∗ 
+
+RL-Net +8.42 ∗∗∗ -11.59 ∗∗∗ 
+
+NeuRules +3.96 ∗∗∗ -4.87 ∗∗∗ 
+
+SamRuLe +12.70 ∗∗∗ -10.86 ∗∗∗ 
+
+FERL-compact +5.46 ∗∗∗ -8.13 ∗∗∗ 
+
+FERL-medium +4.02 ∗∗∗ -3.51 ∗∗∗ 
+
+# E Where FERL Wins and Loses: A Per-Dataset Study 
+
+We examine the aggregate tabular comparison in greater detail by focusing on FERL-deep, FERL-medium, LR, and FIGS. The Wilcoxon comparison in Table 11 finds no significant accuracy difference between FERL-deep and LR, despite their different inductive biases. Table 12 therefore reports their per-dataset accuracies, together with those of FERL-medium and FIGS, sorted by the FERL-deep −LR gap. This analysis identifies the datasets on which additive linear reasoning is better suited and those on which FERL’s rule-based nonlinear boundaries are advantageous. 
+
+The delta between FERL-deep / LR is structured. FERL-deep wins on 17 datasets, ties on 1 and loses on 12 ; the raw Wilcoxon p is 0.31 . But the sign of the gap is far from random with respect to dataset geometry. The per-dataset advantage ∆ = FERL-deep − LR correlates negatively with input dimensionality (Spearman ρ = −0.37 , p = 0 .05 ): FERL’s edge is largest on the low-dimensional problems at the top of the 22 Evidential Rule Learning with Abstention Supplementary Material 
+
+Table 12: Per-dataset accuracy on the 30-dataset tabular benchmark, four representative frontier methods. Mean over the 5 folds; n, d and C are the number of samples, raw features and classes. Rows are sorted by 
+
+∆ = FERL-deep − LR ( > 0 favours FERL).                                                                                                                                                                                                                                                              
+
+> FERL Dataset ndCdeep medium LR FIGS ∆
+> banana 5300 2289.8 77.0 57.1 89.1 +32.8 vowel 990 13 11 79.0 69.7 65.9 64.9 +13.1 ring 7400 20 288.4 82.1 75.8 88.4 +12.5 phoneme 5404 5286.5 80.2 75.3 83.7 +11.2 glass 214 9669.8 61.0 59.5 68.8 +10.2 ecoli 336 7882.6 80.1 75.2 78.9 +7.4 satimage 6435 36 687.1 80.6 80.0 84.7 +7.1 magic 19020 10 286.0 82.2 79.1 84.5 +6.9 contraceptive 1473 9353.5 50.2 50.8 53.5 +2.7 ionosphere 351 33 289.5 86.3 87.2 86.9 +2.3 penbased 10992 16 10 96.1 88.0 94.1 87.1 +2.0 bupa 345 6268.1 67.0 66.7 62.9 +1.4 australian 690 14 285.9 85.5 84.8 84.8 +1.2 wine 178 13 394.4 89.3 93.3 87.1 +1.1 mammographic 830 5283.1 82.4 82.2 80.8 +1.0 crx 653 15 286.4 86.4 86.1 84.5 +0.3 segment 2310 19 795.4 93.2 95.2 95.7 +0.2 pima 768 8276.3 74.5 76.3 74.5 +0.0 wisconsin 683 9295.8 94.4 96.6 94.4 -0.9 spectfheart 267 44 275.7 75.6 76.8 71.5 -1.1 spambase 4597 57 291.6 87.1 92.8 91.7 -1.2 wdbc 569 30 293.7 91.4 95.1 92.6 -1.4 german 1000 20 273.3 71.4 76.0 70.7 -2.7 balance 625 4383.4 76.6 87.0 83.4 -3.7 texture 5500 40 11 93.2 87.4 97.5 87.5 -4.3 saheart 462 9266.2 70.8 71.2 64.3 -5.0 optdigits 5620 64 10 90.9 77.5 96.1 82.8 -5.2 heart 270 13 277.8 76.7 83.3 74.8 -5.6 vehicle 846 18 471.9 68.3 79.6 70.6 -7.7 twonorm 7400 20 285.8 83.4 97.7 93.5 -11.9 Mean 83.2 79.2 81.1 80.6 +2.1
+
+table and turns into a deficit on the high-dimensional ones at the bottom. It is essentially uncorrelated with sample size ( ρ = 0 .11 ) and with the number of classes ( ρ = 0 .09 ; multiclass mean ∆ = +1 .9 vs. binary +2 .2,Mann–Whitney p = 0 .69 ), so the split is about the shape of the decision boundary, not the size of the task. This also creates room for improvement in FERL, for example, by doing feature selection beforehand. 
+
+FERL wins where the boundary is curved and low-dimensional. The top of the table is dominated by problems whose optimal boundary is strongly nonlinear in a handful of features. The extreme case is 
+
+banana (d=2): its two interleaved crescent clusters have no useful linear separator, so LR barely clears the base rate ( 57 .1) while FERL-deep reaches 89 .8. The same mechanism drives ring (+12 .5; nested-sphere, quadratic boundary), phoneme (+11 .2), and the small nonlinear multiclass sets vowel (+13 .1), glass (+10 .2)and ecoli (+7 .4), where soft membership lets a single feature contribute graded evidence to several classes at once. 
+
+LR wins on oblique, near-linearly-separable, high-dimensional data. The reverse also applies. The archetype is twonorm (∆ = − 11 .9): its optimal boundary is a single oblique hyperplane in 20 dimensions, exactly what LR represents natively ( 97 .7) and exactly what an axis-parallel partition can only approximate as a high-variance “staircase”. The remaining FERL losses share this pattern — vehicle (−7.7), optdigits 
+
+(−5.2), texture (−4.3). These are not FERL-specific errors, but an intrinsic limitation of any rule learning algorithm. 23 Evidential Rule Learning with Abstention Supplementary Material 0.0 0.5 1.0 1.5 2.0 
+
+> shift magnitude
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> coverage / accuracy
+
+Coverage under shift     
+
+> 0.0 0.5 1.0 1.5 2.0
+> shift magnitude
+> 2
+> 4
+> 6
+> 8
+> mean prediction-set size
+
+Set adaptation under shift    
+
+> FERL DS-conformal split conformal accuracy 90% target
+
+Figure 4: Prediction-set behaviour under graded covariate shift. Mean over seven tabular benchmarks after averaging three seeds per benchmark; shaded bands are 1.96 times the standard error across benchmarks. Both methods begin at the 90% target, but only the FERL DS-conformal plausibility set expands as the shift grows. 
+
+# F Coverage Under Covariate Shift 
+
+Here, we test whether the prediction sets react when the test distribution moves away from the calibration distribution, and compare the usefulness of the plausibility score of FERL’s decision against the baseline 
+
+1 − ˆpy . FERL DS-conformal thresholds true-class DS plausibility on the calibration fold, while global split conformal thresholds 1 − ˆpy on the same fold. Both wrap the same trained FERL predictor and are calibrated in-distribution at α = 0 .1.Across seven benchmarks and three seeds, we perturb every test feature independently as x′ 
+
+> f
+
+= xf + kσ f ϵf ,where σf is its training-set standard deviation, ϵf ∼ N (0 , 1) , and k ∈ { 0, 0.25 , 0.5, 1, 1.5, 2}. At k = 0 , both the FERL DS-conformal plausibility set and global split conformal attain approximately 90% coverage. At 
+
+k = 1 , predictive accuracy falls to 50 .2% : global conformal coverage falls to 55.0% while its mean set size remains nearly fixed at 1.09, whereas FERL retains 77.3% coverage by widening its mean set from 1.35 to 4.10 classes (Figure 4). We also evaluate a milder feature-domain shift on ten benchmarks: training uses the lower half of a held-out feature’s range and testing uses its upper half, after removing that feature from the predictors. FERL attains 
+
+69 .7% shifted coverage versus 66 .7% for global conformal and wins on eight of ten datasets, with mean set sizes 1.36 and 1.03 , respectively. 
+
+# G Reproducibility 
+
+Tabular benchmarks. We use thirty datasets from the KEEL repository (Alcalá-Fdez et al., 2011): They span 146 –19 ,020 instances, 6–64 features, and 2–11 classes. Categorical features are one-hot encoded and feature normalisation is applied. Every result is a stratified five-fold cross-validation. Tables report the mean and standard deviation over the thirty datasets, all on the 0–100 scale. Table 13 lists them alongside their number of instances, input features (after one-hot encoding of categoricals) and classes. 
+
+Concept-bottleneck benchmarks. CUB : Caltech–UCSD Birds (Wah et al., 2011) with the concepts of Koh et al. (2020) over 200 classes. Symbol extractor follows the same architecture as in Koh et al. (2020). 
+
+AwA2 : Animals with Attributes 2 (Xian et al., 2018) with 85 binary predicates over 50 classes: we use all classes (not the zero-shot split) with a per-image stratified 60 /20 /20 partition.Predicted concepts come from a detector we train ourselves: an ImageNet-initialised ResNet-50 with an 85 -way sigmoid head, optimised 24 Evidential Rule Learning with Abstention Supplementary Material                                                                                               
+
+> Table 13: The thirty tabular benchmark datasets used in the main results, with number of instances, input features (after one-hot encoding of categoricals) and classes. Dataset #Samples #Features #Classes australian 690 14 2balance 625 43banana 5300 22bupa 345 62contraceptive 1473 93crx 653 15 2ecoli 336 78german 1000 20 2glass 214 96heart 270 13 2ionosphere 351 33 2magic 19020 10 2mammographic 830 52optdigits 5620 64 10 penbased 10992 16 10 phoneme 5404 52pima 768 82ring 7400 20 2saheart 462 92satimage 6435 36 6segment 2310 19 7spambase 4597 57 2spectfheart 267 44 2texture 5500 40 11 twonorm 7400 20 2vehicle 846 18 4vowel 990 13 11 wdbc 569 30 2wine 178 13 3wisconsin 683 92
+
+with BCE for 15 epochs (Adam, learning rate 10 −4, batch 64 , cosine schedule). 
+
+FERL configurations. FERL-compact uses quantile three-set partitions (implemented as in (Fumanal Idocin and Andreu-Perez, 2024)), with soft inference and the consistent-CCI split criterion. FERL-deep and FERL-medium replaces the fixed partition with learned-threshold splits (bootstrap with 25 resamples) and grows to at most 50 and 150 rules, respectively, at maximum depth 5 and 12 respectively as well. 
+
+Evaluation protocol. Per-concept calibration is isotonic regression fit on the validation split. Conformal sets use split conformal at α = 0 .1. Risk-controlled abstention calibrates the acceptance threshold with a Bonferroni-corrected Clopper–Pearson bound at δ = 0 .05 . Selective-risk AURC integrates risk over coverage. Utility-discounted accuracy follows Zaffalon et al. (2012). 
+
+Compute and code. Symbol Extractors are trained on a single NVIDIA GTX 1080Ti. FERL experiments run on a conventional CPU. Code, configurations, and scripts will be regenerated once the paper is published. 25

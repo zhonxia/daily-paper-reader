@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-08-07 <!--dpr-date:20260807-->
+    * 精读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/07/2608.05859v1-evidential-rule-learning-for-interpretable-classification-with-abstention" data-sidebar-item="{&quot;title&quot;: &quot;Evidential Rule Learning for Interpretable Classification with Abstention&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.05859v1-evidential-rule-learning-for-interpretable-classification-with-abstention&quot;, &quot;score&quot;: &quot;8.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;brb-er&quot;}], &quot;evidence&quot;: &quot;面向可解释决策的证据模糊规则学习，输出置信与似然&quot;}">Evidential Rule Learning for Interpretable Classification with Abstention</a>
   * 2026-08-04 <!--dpr-date:20260804-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/04/2607.24582v1-cader-confidence-aware-dynamic-evidence-reasoning-for-long-video-understanding" data-sidebar-item="{&quot;title&quot;: &quot;CADER: Confidence-Aware Dynamic Evidence Reasoning for Long-Video Understanding&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2607.24582v1-cader-confidence-aware-dynamic-evidence-reasoning-for-long-video-understanding&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;brb-er&quot;}], &quot;evidence&quot;: &quot;将证据推理方法应用于长视频理解，通过置信度感知自适应收集证据&quot;}">CADER: Confidence-Aware Dynamic Evidence Reasoning for Long-Video Understanding</a>

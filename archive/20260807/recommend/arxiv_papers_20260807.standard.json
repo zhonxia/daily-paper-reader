@@ -1,16 +1,53 @@
 {
   "mode": "standard",
-  "generated_at": "2026-08-07T02:10:21.947405+00:00",
+  "generated_at": "2026-08-07T21:22:36.761694+00:00",
   "stats": {
     "mode": "standard",
     "tag_count": 1,
-    "deep_divecandidates": 0,
+    "deep_divecandidates": 1,
     "deep_cap": 6,
-    "deep_selected": 0,
+    "deep_selected": 1,
     "quick_candidates": 0,
     "quick_skim_target": 11,
     "quick_selected": 0
   },
-  "deep_dive": [],
+  "deep_dive": [
+    {
+      "id": "2608.05859v1",
+      "source": "arxiv",
+      "title": "Evidential Rule Learning for Interpretable Classification with Abstention",
+      "abstract": "Interpretable classification often requires more than accurate predictions for real-life deployment: models should be transparent about the evidence behind their decisions and abstain when they cannot decide reliably. We introduce Fast Evidential Rule Learning (FERL), a method that learns interpretable, accurate fuzzy rule models whose outputs are evidential. Unlike post-hoc calibration, FERL's belief, plausibility, and abstention capabilities arise directly from the fuzzy memberships in a single deterministic pass, with no auxiliary head, held-out set, or repeated inference. Our theoretical analysis further shows that FERL is Lipschitz stable, which means that its evidential outputs vary smoothly with the input. Against state-of-the-art rule learners, FERL is statistically significantly more accurate across a 30 tabular-dataset benchmark ($+2.6\\%$ average accuracy over the second best). Its native set predictions attain the best utility-discounted accuracy among credal classifiers ($u_{65}/u_{80}=0.80/0.83$ vs.\\ $0.79/0.80$ for the naive credal classifier), at higher set coverage ($0.92$ vs.\\ $\\le0.82$). FERL also matches dedicated out-of-distribution detectors on tabular near-OOD detection ($77.7$ vs.\\ $77.4$ AUROC for the strongest baseline). Under detector-class-disjoint concept-bottleneck evaluation, its it is within $2.3$ AUROC points of the strongest dedicated detector on both CUB and AwA2, while attaining the best AwA2 AUPR-Out ($68.3$) and novel-class rejection ($57.2$), while being able to name which attributes are anomalous.",
+      "authors": [
+        "Javier Fumanal-Idocin",
+        "Javier Andreu-Perez"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-08-06T10:39:48+00:00",
+      "link": "https://arxiv.org/pdf/2608.05859v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "evidential fuzzy rule learning with belief and plausibility for interpretable decision making",
+      "llm_evidence_cn": "面向可解释决策的证据模糊规则学习，输出置信与似然",
+      "llm_evidence": "面向可解释决策的证据模糊规则学习，输出置信与似然",
+      "canonical_evidence": "面向可解释决策的证据模糊规则学习，输出置信与似然",
+      "llm_tldr_en": "FERL learns interpretable fuzzy rule classifiers whose belief, plausibility, and abstention outputs arise directly from fuzzy memberships in one deterministic pass, with Lipschitz stability and strong accuracy.",
+      "llm_tldr_cn": "可解释分类不仅需要准确预测，还要求模型在决策时给出证据依据并在不可靠时弃权。该文提出快速证据规则学习（FERL），从模糊隶属度直接得到置信、似然和弃权能力，无需辅助头或重复推理。理论分析表明FERL具有Lipschitz稳定性，输出随输入平滑变化，并在多种规则学习器上取得领先性能。",
+      "llm_tldr": "可解释分类不仅需要准确预测，还要求模型在决策时给出证据依据并在不可靠时弃权。该文提出快速证据规则学习（FERL），从模糊隶属度直接得到置信、似然和弃权能力，无需辅助头或重复推理。理论分析表明FERL具有Lipschitz稳定性，输出随输入平滑变化，并在多种规则学习器上取得领先性能。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "rule based inference methodology using evidential reasoning",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
   "quick_skim": []
 }
