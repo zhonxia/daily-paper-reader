@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-08-10 <!--dpr-date:20260810-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/10/2608.03489v1-leveraging-system-level-observations-to-inform-bayesian-learning-of-model-parameters-for-quantitative-verification" data-sidebar-item="{&quot;title&quot;: &quot;Leveraging System-Level Observations to Inform Bayesian Learning of Model Parameters for Quantitative Verification&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.03489v1-leveraging-system-level-observations-to-inform-bayesian-learning-of-model-parameters-for-quantitative-verification&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;brb-er&quot;}], &quot;evidence&quot;: &quot;贝叶斯参数学习结合先验知识获取，适用于不确定性条件下的参数学习&quot;}">Leveraging System-Level Observations to Inform Bayesian Learning of Model Parameters for Quantitative Verification</a>
   * 2026-08-07 <!--dpr-date:20260807-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/07/2608.05859v1-evidential-rule-learning-for-interpretable-classification-with-abstention" data-sidebar-item="{&quot;title&quot;: &quot;Evidential Rule Learning for Interpretable Classification with Abstention&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.05859v1-evidential-rule-learning-for-interpretable-classification-with-abstention&quot;, &quot;score&quot;: &quot;8.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;brb-er&quot;}], &quot;evidence&quot;: &quot;面向可解释决策的证据模糊规则学习，输出置信与似然&quot;}">Evidential Rule Learning for Interpretable Classification with Abstention</a>

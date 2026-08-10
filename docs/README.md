@@ -6,22 +6,24 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-09
-- 运行时间：2026-08-09 20:29:10 UTC
+- 最新运行日期：2026-08-10
+- 运行时间：2026-08-10 21:08:40 UTC
 - 运行状态：成功
-- 本次总论文数：0
+- 本次总论文数：1
 - 精读区：0
-- 速读区：0
+- 速读区：1
 
 ### 今日简报（AI）
-> 今日无新推荐，系统未产出可展示论文。
-- 详情：[/202608/09/README](/202608/09/README)
+今日完成1篇速读，聚焦定量验证中的参数学习；《Leveraging System-Level Observations to Inform Bayesian Learning of Model Parameters for Quantitative Verification》值得关注，评分6.0。建议后续可精读该文，补充贝叶斯推断与验证框架的细节。
+- 详情：[/202608/10/README](/202608/10/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [Leveraging System-Level Observations to Inform Bayesian Learning of Model Parameters for Quantitative Verification](/202608/10/2608.03489v1-leveraging-system-level-observations-to-inform-bayesian-learning-of-model-parameters-for-quantitative-verification)  
+   标签：评分：6.0/10、query:brb-er
+   evidence：贝叶斯参数学习结合先验知识获取，适用于不确定性条件下的参数学习
 
 
 <div class="dpr-home-promo-card">

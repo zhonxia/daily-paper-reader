@@ -1,0 +1,24 @@
+{
+  "label": "2026-08-10",
+  "date": "2026-08-10",
+  "generated_at": "2026-08-10T21:08:45",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/10/2608.03489v1-leveraging-system-level-observations-to-inform-bayesian-learning-of-model-parameters-for-quantitative-verification",
+      "section": "quick",
+      "title_en": "Leveraging System-Level Observations to Inform Bayesian Learning of Model Parameters for Quantitative Verification",
+      "authors": "Simos Gerasimou, Xingyu Zhao",
+      "date": "2026-08-04",
+      "pdf": "https://arxiv.org/pdf/2608.03489v1",
+      "score": "6.0",
+      "evidence": "贝叶斯参数学习结合先验知识获取，适用于不确定性条件下的参数学习",
+      "tldr": "贝叶斯学习与定量验证结合时，先验知识（PK）的准确性显著影响验证结果，而传统方法依赖难以获取的转移参数先验。EPIK方法利用系统级可观测属性，通过双重优化推导未知转移参数分布，并嵌入验证新属性。实验评估显示该方法在多个真实案例中有效、灵活且通用。",
+      "tags": "query:brb-er",
+      "abstract_en": "Combining Bayesian learning and quantitative verification is a powerful toolset for analysing key quantitative properties of software systems, like reliability and response time. However, the accuracy and robustness of verification results strongly depend on the prior knowledge (PK) underlying Bayesian inference. This knowledge reflects original beliefs about the probability of events and typically depends on domain expertise. Using inaccurate or uninformative PK can negatively affect quantitative analysis, yielding incorrect verification results. Our EPIK approach tackles this important challenge by eliciting and embedding PK in quantitative verification equipped with Bayesian estimators. Unlike existing approaches that require PK on formal model transition parameters, EPIK leverages system-level properties that are directly observable and are linked to real-world semantics. EPIK formulates a twofold optimisation problem to derive the distributions of unknown transition parameters and then embeds these distributions to verify new or difficult-to-measure (elusive) properties. The detailed experimental evaluation using multiple variants of real-world case studies and diverse EPIK instantiations shows its effectiveness, flexibility and generality.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

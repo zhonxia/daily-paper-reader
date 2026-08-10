@@ -1,0 +1,731 @@
+Title: Leveraging System-Level Observations to Inform Bayesian Learning of Model Parameters for Quantitative Verification
+
+URL Source: https://arxiv.org/pdf/2608.03489v1
+
+Published Time: Wed, 05 Aug 2026 01:08:49 GMT
+
+Number of Pages: 14
+
+Markdown Content:
+# Leveraging System-Level Observations to Inform Bayesian Learning of Model Parameters for Quantitative Verification 
+
+# Simos Gerasimou 
+
+Cyprus University of Technology, Cyprus simos.gerasimou@cut.ac.cy 
+
+# Xingyu Zhao 
+
+Wuhan University, China xingyu.zhao@whu.edu.cn 
+
+## Abstract 
+
+Combining Bayesian learning and quantitative verification is a pow-erful toolset for analysing key quantitative properties of software systems, like reliability and response time. However, the accuracy and robustness of verification results strongly depend on the prior knowledge (PK) underlying Bayesian inference. This knowledge reflects original beliefs about the probability of events and typically depends on domain expertise. Using inaccurate or uninformative PK can negatively affect quantitative analysis, yielding incorrect verification results. Our EPIK approach tackles this important chal-lenge by eliciting and embedding PK in quantitative verification equipped with Bayesian estimators. Unlike existing approaches that require PK on formal model transition parameters, EPIK leverages system-level properties that are directly observable and are linked to real-world semantics. EPIK formulates a twofold optimisation problem to derive the distributions of unknown transition parameters and then embeds these distributions to verify new or difficult-to-measure (elusive) properties. The detailed experimental evaluation using multiple variants of real-world case studies and diverse EPIK instantiations shows its effectiveness, flexibility and generality. 
+
+## CCS Concepts 
+
+• Theory of computation → Probabilistic computation .
+
+## Keywords 
+
+quantitative verification, Markov models, Bayesian learning 
+
+ACM Reference Format: 
+
+Simos Gerasimou and Xingyu Zhao. 2026. Leveraging System-Level Ob-servations to Inform Bayesian Learning of Model Parameters for Quan-titative Verification. In Proceedings of the 41st IEEE/ACM International Conference on Automated Software Engineering (ASE ’26), October 12– 16, 2026, Munich, Germany. ACM, New York, NY, USA, 14 pages. https: //doi.org/10.1145/3832783.3837529 
+
+## 1 Introduction 
+
+Modern software-controlled systems, such as robotics, environmen-tal and healthcare monitoring applications, and cloud-based services, operate in complex and uncertain environments characterised by workloads, operational profiles, failures and resource availability that are stochastic in nature [24, 84]. Designing and analysing the performance, dependability and other nonfunctional properties of 
+
+> This work is licensed under a Creative Commons Attribution 4.0 International License.
+> ASE ’26, Munich, Germany
+> © 2026 Copyright held by the owner/author(s). ACM ISBN 979-8-4007-2882-2/2026/10 https://doi.org/10.1145/3832783.3837529
+
+such systems when deployed in these uncertain or, potentially, ad-versarial environments can be facilitated by rigorous model-based verification methods [59]. More specifically, probabilistic models, including Markov chains [43, 60], queueing networks [5, 22] and stochastic Petri nets [73, 78] can be leveraged to model and analyse the behaviour and operating environment of such systems. This paper focuses on probabilistic model checking (PMC), a formal method for automatically verifying quantitative aspects of stochastic systems [4]. PMC involves the construction of a Markov chain model that encodes the system’s behaviour over time, including states the system can reside in, the possible transitions between these states and information about the likelihood (probability) or timing (rate) of these transitions. Given properties of the required behaviour of these systems (e.g., reliability, performance) formally specified in temporal logic, the systematic analysis of the system model through automated algorithms enables assessing if the properties are sat-isfied [4]. Using mathematical reasoning to derive guarantees for achieving precisely defined levels of performance or efficiency is highly valuable for the design, analysis and adaptation of software-intensive cyber-physical systems [12, 14, 62]. Recent advances improve the PMC efficiency and scalability [31, 32, 36, 54], enabling the analysis of more complex models and prop-erties of software product lines [45], software architectures [67] and cyber-physical systems [90]. As a verification method, however, the verification results strongly depend on the veracity of the Markov model encoding the behaviour of the target system and, especially, the parameters (probability/rate) capturing the transitions between model states [60]. When these model parameters accurately reflect the current system behaviour, the verification results faithfully repre-sent quantitative system aspects. In contrast, inaccurate or outdated model parameter values yield misleading results that unavoidably lead to incorrect engineering and adaptation decisions [16]. Approaches to improve analysis and PMC reasoning use Bayesian methods to incorporate prior (domain) knowledge at design time [55] and update the Markov model using system observations at run-time [19, 29, 39]. Notwithstanding their benefits, a fundamental premise underpinning these Bayesian-based approaches is that prior knowledge about the transition probability/rate between two model states can be extracted from domain experts or past similar system executions [29]. While this may be desirable, demanding domain experts to define their knowledge about model transition parameters (e.g., the probability of a fruit-picking robot transitioning between the positioning and fruit picking states) is a challenging and non-trivial problem that needs fine-grained system knowledge [34]. Pro-viding biased or uninformative values for model transition parame-ters yields inaccurate analysis results, leading to design decisions that can be detrimental to the system’s reliability and performance [9]. arXiv:2608.03489v1 [cs.SE] 4 Aug 2026 ASE ’26, October 12–16, 2026, Munich, Germany Simos Gerasimou and Xingyu Zhao 
+
+Instead of enforcing the definition of values for transition param-eters of the underlying formal model, we propose employing the rich system-wide knowledge about properties of system behaviour typically possessed by domain experts [47]. These properties are directly observable and correspond to intuitive real-world semantics and actions. This can be expressed, for instance, as the reliability of the fruit-picking robot completing its task successfully [34] or the expected execution time of a service-based system that uses cloud-based services [43]. Since such system-wide knowledge embodies real-world semantics and is directly observable from past system executions, it aligns more naturally with the available domain exper-tise [66, 86]. Hence, this system-wide knowledge can be analysed to extract appropriate values for the model transition parameters. Driven by this insight, we introduce EPIK, a Bayesian-based PMC approach that leverages expert knowledge of system-wide properties (termed PK-informed ) for the systematic elicitation and embedding of model transition parameters. EPIK comprises the following key stages. First, during the knowledge elicitation stage, prior knowledge from domain experts, corresponding to past observations of system-wide properties (e.g., reliability, response time), each expressed as a probability distribution, initiates a multi-objective search-based elicitation problem [21]. The synthesised Pareto set signifies model transition parameters that best approximate the probability distribu-tions of the system-wide PK-informed properties. Then, during the 
+
+knowledge embedding stage, EPIK exploits the synthesised Pareto set of transition parameters for the verification of elusive system properties, i.e., system-wide properties that are novel or rare, or those for which gathering information is risky or expensive. We evaluate EPIK on multiple variants from two software-contro-lled systems from different application domains: (1) a fruit-picking robot (FPR) [34] and (2) a service-based system from foreign ex-change trading [41], demonstrating the accuracy and effectiveness of EPIK in extracting and embedding prior knowledge. To the best of our knowledge, EPIK is the first tool-supported solution that consid-ers the problem of extracting knowledge for the unknown transition parameters of a probabilistic model from system-wide properties. The real-world applicability of EPIK follows the broad adoption of similar work applying Bayesian learning in probabilistic anal-ysis [29, 39, 55, 89], and the various models of software systems available in the repositories of probabilistic model checkers [27, 61]. We also emphasise EPIK’s positioning with respect to downstream Bayesian learning approaches. EPIK is not a posterior inference approach that uses runtime observations. Instead, EPIK operates entirely during design-time (preparation phase) to systematically synthesise mathematically grounded prior distributions from ob-servable, high-level system properties. The elicited distributions produced by EPIK serve as the initial priors ( 𝑃𝐾 ) for downstream Bayesian estimators (e.g., KAMI [29]). This pipeline prevents the biased or inaccurate initialisations that frequently cause subsequent Bayesian approaches to fail or produce distorted verification results. The main contributions of our paper are: 
+
+• The EPIK approach to elicit and embed prior knowledge for Bayesian-based PMC that leverages PK-informed system-wide prop-erties and enables the verification of elusive properties; 
+
+• An extensive EPIK evaluation on several variants of two real-world problems, for a wide variety of PK-informed properties and a set of unknown transition parameters. 
+
+• A prototype open-source EPIK tool and case study repository, available at https://github.com/gerasimou/EPIK. The remainder of this paper is structured as follows: Section 2 presents the required background on PMC and Bayesian learning. Section 3 introduces a running example to illustrate EPIK, which is detailed in Section 4. Section 5 describes EPIK’s implementation and evaluation. Section 6 discusses related work, and Section 7 summarises our results and suggests future research directions. 
+
+## 2 Preliminaries 
+
+Probabilistic Model Checking. Probabilistic model checking (PMC) is a formal method for assessing quantitative properties, e.g., reliabil-ity, performance, cost, of systems exhibiting stochastic behaviour [4]. Markov chains capture the system’s stochastic behaviour, enabling the analysis of properties encoded as formal logic specifications. A Markov chain is a tuple 𝑀 = (𝑆, 𝑠 0, 𝛿, 𝐿 ), where 𝑆 is a finite set of states, 𝑠 0 ∈ 𝑆 is the initial state, 𝛿 is the state-transition function: 
+
+• 𝛿 : 𝑆 × 𝑆 → [ 0, 1] for discrete-time Markov chains (DTMCs), with 𝛿 (𝑠 𝑖 , 𝑠 𝑗 ) = 𝑝 𝑖 𝑗 giving the transition probability between states 𝑠 𝑖 , 𝑠 𝑗 ∈ 𝑆 , and Í𝑠 𝑗 ∈𝑆 𝛿 (𝑠 𝑖 , 𝑠 𝑗 ) = 1;
+
+• 𝛿 : 𝑆 × 𝑆 → R≥0 for continuous-time Markov chains (CTMCs); 
+
+𝛿 (𝑠 𝑖 , 𝑠 𝑗 ) = 𝑟 𝑖 𝑗 gives the rate of transition between states 𝑠 𝑖 , 𝑠 𝑗 ∈ 𝑆 .and 𝐿 : 𝑆 → 2𝐴𝑃 is a labelling function assigning to each state a set of atomic propositions from 𝐴𝑃 .PMC supports both DTMCs and CTMCs as modelling formalisms. DTMCs are widely used to represent systems with discrete, sequen-tial behaviour, where transitions occur at discrete time steps. CTMCs model systems with continuous, time-dependent behaviour, where transitions can occur at any point in time. PMC can analyse proper-ties in DTMCs/CTMCs by considering the probabilities of reaching safe/unsafe states and computing expected values (cost/rewards). Markov model states are labelled with atomic propositions that hold in those states. The properties to verify are expressed in tempo-ral logic over these atomic propositions, e.g., probabilistic temporal tree logic (PCTL) [8, 49] for DTMCs and continuous stochastic logic (CSL) [3] for CTMCs. State-of-the-art probabilistic model checkers (PRISM [61], Storm [27]) implement efficient PMC algorithms for verifying Markov chain models and properties [60]. 
+
+Parametric Model Checking. PMC based on DTMCs/CTMCs as-sumes that transition probabilities/rates are known constants, or can be estimated from existing data and experts at design time. Para-metric model checking (ParaMC) [23] can analyse DTMCs/CTMCs whose transition probabilities/rates are specified as functions over a set of parameters, termed parametric DTMCs/CTMCs. The property under verification is given as a closed-form rational function of these parameters [23]. This formulation brings a practical advantage by dividing the verification process into two steps. The computationally intensive symbolic analysis can be performed offline without strict computational constraints [54]. Then, the closed-form symbolic ex-pressions can be reused later, e.g., when new knowledge or data of the parameters is learned, without rerunning the PMC every time. EPIK leverages the closed-form expressions to efficiently derive PK for the unknown model transition parameters. 
+
+Bayesian Learning in Probabilistic Model Checking. Given the DTMC state 𝑠 𝑖 , the transition to the next state follows a categorical distribution [29]. Due to the Markov property, the choice of the Leveraging System-Level Observations to Learn Model Parameters for Quantitative Verification ASE ’26, October 12–16, 2026, Munich, Germany 
+
+next state only depends on the current state, and the categorical distributions per state are independent . The categorical process of repeated transitions from state 𝑖 , follows a multinomial distribution .Thus, learning the transition parameters reduces to the localised 
+
+learning of 𝑘 independent multinomial distributions, where 𝑘 is the number of DTMC states [40]. From a Bayesian inference perspective, the posterior estimation needs a statistical model (the likelihood function) and a prior distri-bution [6]. For the likelihood function, if we observe 𝑛 𝑖 𝑗 transitions from state 𝑠 𝑖 to state 𝑠 𝑗 out of 𝑛 𝑖 outgoing transitions from 𝑠 𝑖 (termed “data” in the equations below), the binomial likelihood is (omitting the combinatorial factor that cancels out in the Bayes formula): 
+
+Pr (data | 𝑝 𝑖 𝑗 ) = 𝑝 𝑛 𝑖 𝑗  
+
+> 𝑖 𝑗
+
+(1 − 𝑝 𝑖 𝑗 )𝑛 𝑖 −𝑛 𝑖 𝑗 (1) Typically, for mathematical convenience in Bayesian inference, a conjugate Beta prior distribution 1 is used for the likelihood [29]. Specifically, the canonical parameterisation 2
+
+Beta  𝑛 (0) 
+
+> 𝑖
+
+, 𝑝 (0)
+
+> 𝑖 𝑗
+
+ (2) of the Beta distribution allows an intuitive interpretation of 𝑝 (0) 
+
+> 𝑖 𝑗
+
+as the “best prior probability guess” and of 𝑛 (0) 
+
+> 𝑖
+
+as the sample size (strength) on which the prior estimation 𝑝 (0) 
+
+> 𝑖 𝑗
+
+is based on [29, 83]. After applying the Bayes rule and leveraging the conjugacy and canonical reparameterisation [40], the posteriors are again a 
+
+Beta  𝑛 (𝑛 𝑖 ) 
+
+> 𝑖
+
+, 𝑝 (𝑛 𝑖 )
+
+> 𝑖 𝑗
+
+ distribution with the updated parameters: 
+
+𝑛 (𝑛 𝑖 ) 
+
+> 𝑖
+
+=𝑛 (0) 
+
+> 𝑖
+
++𝑛 𝑖 , 𝑝 (𝑛 𝑖 ) 
+
+> 𝑖 𝑗
+
+= 𝑛 (0)
+
+> 𝑖
+
+𝑛 (0) 
+
+> 𝑖
+
++ 𝑛 𝑖 
+
+·𝑝 (0) 
+
+> 𝑖 𝑗
+
++ 𝑛 𝑖 
+
+𝑛 (0) 
+
+> 𝑖
+
++ 𝑛 𝑖 
+
+· 𝑛 𝑖 𝑗 
+
+𝑛 𝑖 
+
+(3) where the superscript ‘ (0)’ is the prior knowledge (before any ob-servations), and the superscript ‘ (𝑛 𝑖 )’ gives the posterior parameters after observing 𝑛 𝑖 outgoing transitions from state 𝑠 𝑖 .Eq. (3) demonstrates that, upon observing 𝑛 𝑖 𝑗 transitions out of 𝑛 𝑖 
+
+total transitions, the posterior 𝑝 (𝑛 𝑖 ) 
+
+> 𝑖 𝑗
+
+is the weighted sum of the prior estimate 𝑝 (0) 
+
+> 𝑖 𝑗
+
+and the new observations 𝑛 𝑖 𝑗  
+
+> 𝑛 𝑖
+
+(encoding the frequency of transitions from 𝑠 𝑖 to 𝑠 𝑗 ). The weights are proportional to 𝑛 (0)
+
+> 𝑖
+
+(the prior sample size – strength) and 𝑛 𝑖 (the “actual count” of data sample size). Smaller 𝑛 (0) 
+
+> 𝑖
+
+values indicate lower confidence in the priors, allowing the runtime data to influence the posteriors more. When 𝑛 (0) 
+
+> 𝑖
+
+≃ 0, Eq. (3) simplifies to the Maximum Likelihood Esti-mation [29]. For CTMCs, where the Gamma-Poisson setup typically applies [7], Bayesian estimators for CTMC transition rates entail replacing the Beta priors with Gamma priors [36]. 
+
+## 3 Motivating Example 
+
+We illustrate EPIK using an autonomous robot executing a fruit-picking task adapted from [34]. The robot should perform the fol-lowing operations: (i) position itself to collect the next fruit in its vicinity; (ii) use its arm to collect the fruit; and (iii) when fruit col-lection is unsuccessful, decide whether to retry the collection by repositioning itself or abandon the task and move to the next fruit. Fig. 1 shows the DTMC model of this robotic fruit-picking task (FPR). Starting from state 𝑠 0, the robot takes the appropriate position                     
+
+> 1A Dirichlet distribution, which is a multivariate generalisation of the Beta distribution, can be used to model the prior of the 𝑖 -th transition matrix row.
+> 2The shape parameters 𝛼 ,𝛽 are replaced by 𝑛 (0)
+> 𝑖 =𝛼 +𝛽 ,𝑝 (0)
+> 𝑖 𝑗 =𝛼 /( 𝛼 +𝛽 )S0S1S2S4S3S5positioning picking decision picking success picking abandoned done e1t1e0t0e2t2p0,1 1-p 0,1 1-p 1,2 p1,2 p2,0 1-p 2,0 111
+
+Figure 1: DTMC of a robot executing a fruit-picking task; ( 𝑝 𝑖,𝑗 :unknown transition probabilities between states.) Table 1: System-level requirements and formalised temporal logic properties for the fruit-picking robot. 
+
+ID Description PCTL 
+
+R1 What is the probability for completing the fruit-picking process successfully? 
+
+P=? [F “success" ]
+
+R2 What is the expected time for completing the fruit-picking process? 
+
+R“time ” 
+
+> =?
+
+[F“done" ]
+
+R3 What is the expected energy consumption for completing the fruit-picking process? 
+
+R“energy ” 
+
+> =?
+
+[F“done" ]
+
+(e.g., using its onboard camera and Lidar perception devices) close to the next fruit. The positioning operation succeeds with probability 
+
+𝑝 0,1, and the robot moves to state 𝑠 1, where it performs the picking operation. Conversely, the positioning operation fails with probabil-ity 1 − 𝑝 0,1, the robot moves to state 𝑠 3, and the task execution ends (state 𝑠 5). From state 𝑠 1, the picking operation is successful with probability 1−𝑝 1,2, the robot moves to state 𝑠 4 and then terminates its execution by moving to state 𝑠 5. In contrast, the picking is unsuccess-ful with probability 𝑝 1,2, and the robot moves to state 𝑠 2. In this state, the robot needs to decide whether to reposition itself (state 𝑠 0) and retry the entire process or to abandon the picking operation (state 𝑠 3)and end the process (state 𝑠 5); this decision is shown probabilistically with transitions 𝑝 2,0 and 1 − 𝑝 2,0, respectively. The DTMC model is annotated with two reward functions, illus-trated as rectangular boxes linked to states 𝑠 0, 𝑠 1 and 𝑠 2 (Fig. 1). The “time” reward function associates mean operation execution times 𝑡 0,
+
+𝑡 1 and 𝑡 2 with the three operations performed by the robot. Likewise, an “energy” reward function associates mean energy consumption 𝑒 0,
+
+𝑒 1 and 𝑒 2 with the same operations. Finally, the robot must validate the three system-level requirements from Table 1. 
+
+## 4 EPIK 4.1 Problem Formulation 
+
+Although the canonical parameterisation of priors (e.g., the Beta in Eq. (2)) provides an intuitive mechanism for incorporating prior knowledge from domain experts and historical data, it still targets individual parameters of a Markov model. Such formal abstraction makes it challenging for experts to specify and accurately express the knowledge from historical data. For instance, specifying the probability 𝑝 1,2 of failing to complete the picking operation entails a detailed understanding and expertise of the Markov model under-pinning the FPR system. To address this issue, EPIK incorporates a novel concept that simplifies the elicitation of prior knowledge. Instead of requesting experts to express knowledge about model ASE ’26, October 12–16, 2026, Munich, Germany Simos Gerasimou and Xingyu Zhao 
+
+Figure 2: High-level EPIK workflow showing its main stages for algebraic formulae extraction of system-level properties via parametric model checking, and knowledge elicitation and embedding via solving a multi-objective optimisation problem. 
+
+transition parameters, we ask them to express their knowledge about the observable system properties . Hence, EPIK seamlessly integrates with existing Bayesian estimators [30, 37, 88] and strengthens the practical use of Bayesian learning for probabilistic model checking. DEFINITION 1 (PK-INFORMED AND ELUSIVE PROPERTIES ). 
+
+We categorise system-level properties into two types: 
+
+• PK-informed properties for which domain experts possess (sub-stantial) prior knowledge (PK) often gained via empirical obser-vations of their value distributions in past executions of the same system or other systems exhibiting similar behaviour; 
+
+• Elusive properties signifying properties that are unusual or novel or even properties that are expensive or risky to observe, making them challenging to gather knowledge about. 
+
+Domain experts may feel more comfortable and be more willing to provide prior knowledge for properties of the former type. How-ever, acquiring an understanding of elusive properties is crucial for establishing the overall trustworthiness of the subject system. EXAMPLE 1 (PK-INFORMED VERSUS ELUSIVE PROPERTIES ). 
+
+Consider the fruit-picking robot (Section 3) and its formalised re-quirements (Table 1). Assume that domain experts have accumulated rich prior knowledge about requirements R1 and R2 from historical robotic missions, i.e., “based on the past (previous and similar) 200 FPR missions, we estimate that the average probability of a success-ful mission is 0.8 and the expected mission time is 4.75 seconds”. However, no battery usage information was recorded, signifying that no knowledge about requirement R3 is available. In this scenario, R1 and R2 are PK-informed properties, and R3 is the elusive property. 
+
+We introduce the notations: 𝑋 ={𝑥 1, ..., 𝑥 𝐾 } is the set of unknown model transition parameters, 𝑌 ={𝑦 1, ..., 𝑦 𝐼 } is the set of PK-informed properties and 𝑍 = {𝑧 1, ..., 𝑧 𝐽 } is the set of elusive properties, with cardinality 𝐾 , 𝐼 and 𝐽 , respectively. For each PK-informed property 𝑦 𝑖 ∈ 𝑌 , we assume that domain experts define a probability distribution 𝑃𝐾 𝑖 (𝑦 𝑖 ) as their prior knowl-edge. Each unknown parameter 𝑥 𝑘 can be estimated as a probability distribution 𝑑 𝑘 (𝑥 𝑘 ; 𝜃 𝑘 ) where 𝜃 𝑘 is the vector of parameters charac-terising distribution 𝑑 𝑘 . For instance, for a Beta distribution, 𝜃 𝑘 is a vector comprising the two parameters from Eq. (2), used in [29] for transition probabilities, and, similarly, a Gamma distribution for transition rates [36]. The boldface 𝜃 𝜃 𝜃 = [𝜃 1,. . ., 𝜃 𝐾 ] defines a vector. EXAMPLE 2 (PK-I NFORMED PROPERTIES ). We build on Ex-ample 1 where R1 and R2 are PK-informed and R3 is the elusive property, denoted as 𝑦 1, 𝑦 2 and 𝑧 1 respectively (i.e., 𝑌 = {𝑦 1, 𝑦 2 }
+
+and 𝑍 = {𝑧 1 }). Then, using the experts’ knowledge “based on pre-vious and similar 200 fruit-picking missions, we know the average probability of a successful mission is 0.8 and the expected mission time is 4.75 seconds”, we can formalise the PK-informed prop-erties 𝑃𝐾 𝑅 1 and 𝑃𝐾 𝑅 2, using the canonical parameterisation, as 
+
+𝑦 1 ∼ Beta (200 , 0.8) and 𝑦 2 ∼ Gamma (200 , 4.75 ). Since 𝑦 1 is a prob-ability and 𝑦 2 is a reward, we use Beta and Gamma , respectively, to match their support [0, 1] and [0, +∞] .
+
+## 4.2 Algebraic Formulae Extraction 
+
+EPIK, whose high-level workflow is shown in Fig. 2, comprises three stages: first, extracting algebraic expressions for the PK-informed 𝑌 
+
+and elusive 𝑍 properties; then, eliciting knowledge about transition parameters 𝑋 through the PK-informed properties 𝑌 ; and, finally, embedding the derived knowledge to verify the elusive properties 𝑍 .The first EPIK stage leverages ParaMC (Section 2) to derive closed-form rational functions 𝑓 𝑖 and 𝑔 𝑗 for the PK-informed 𝑌 and elusive properties 𝑍 such that 𝑦 𝑖 = 𝑓 𝑖 (𝑥 1,. . ., 𝑥 𝐾 ), ∀𝑖 = 1..𝐼 , and 
+
+𝑧 𝑗 = 𝑔 𝑗 (𝑥 1,. . ., 𝑥 𝐾 ), ∀𝑗 = 1..𝐽 . Extracting these algebraic formulae facilitates the accelerated execution of the other EPIK stages. Since we can transform the knowledge elicitation and embedding stages into optimisation problems that can be solved independently, we avoid the repeated invocation of the PMC in the loop during the optimisation process. By avoiding the expensive PMC invocation, EPIK avoids both the concrete model construction and model ver-ification against the selected set of 𝑌 PK-informed properties for each parameter instantiation. If, however, extracting the algebraic formulae is impossible due to the complexity of the Markov model or the property [33, 54], invoking the probabilistic model checker (e.g., PRISM) iteratively would yield the same outputs, albeit much slower. Accordingly, EPIK’s algebraic formulae extraction step is recommended, as it enables faster execution of knowledge elicitation described next, but it is not mandatory. Nevertheless, if a probabilis-tic model checker is used in the loop, EPIK would operate equally well and yield the same output. EXAMPLE 3 (FPR F ORMULAE EXTRACTION ). Assume 𝑝 1,2
+
+and 𝑝 2,0 of the FPR DTMC (Fig. 1) are the unknown transition Leveraging System-Level Observations to Learn Model Parameters for Quantitative Verification ASE ’26, October 12–16, 2026, Munich, Germany 
+
+parameters denoted as 𝑥 1 and 𝑥 2 (i.e. 𝑋 = {𝑥 1, 𝑥 2 }), with known parameters 𝑝 0,1 = 0.9, 𝑒 0=𝑒 1=𝑒 2 = 1, 𝑡 0=1, 𝑡 1=2 and 𝑡 2=3. Then, the derived algebraic formulae are: 
+
+𝑦 1 = 𝑓 𝑅 1 (𝑥 1, 𝑥 2) = (0.9 − 0.9𝑥 1)/( 1 − 0.9𝑥 1𝑥 2)
+
+𝑦 2 = 𝑓 𝑅 2 (𝑥 1, 𝑥 2) = (2.7𝑥 1 + 2.8)( 1 − 0.9𝑥 1𝑥 2)
+
+𝑧 1 = 𝑔 𝑅 3 (𝑥 1, 𝑥 2) = (1.9 + 0.9𝑥 1)( 1 − 0.9𝑥 1𝑥 2)
+
+The unknown transition parameters 𝑥 1 and 𝑥 2 conform to Beta dis-tributions as commonly used [29] with optimisable parameters 
+
+𝜃 𝜃 𝜃 = [𝜃 1, 𝜃 2] such that 𝜃 1 is a vector of the two Beta distribution parameters, i.e., 𝜃 1 = [𝑛 (0) 
+
+> 1
+
+, 𝑝 (0) 
+
+> 1,2
+
+] and 𝜃 2 = [𝑛 (0) 
+
+> 2
+
+, 𝑝 (0) 
+
+> 2,0
+
+] (cf. Eq. (2) ). 
+
+## 4.3 Knowledge Elicitation 
+
+During this stage, EPIK aims to find the values 𝜃 1, .., 𝜃 𝐾 that best approximate the distribution of the unknown model parameters 
+
+𝑥 1, . . . , 𝑥 𝐾 such that the distance between the properties distribu-tion provided by domain experts and the distribution produced using 
+
+𝜃 1, .., 𝜃 𝐾 is minimised. Formally, 
+
+min 
+
+> 𝜃 1
+> ... 𝜃 𝐾
+
+
+
+𝐷 𝐾𝐿 
+
+
+
+𝑃𝐾 𝑖 (𝑌 𝑖 )|| P𝑋 1∼𝑑 (𝑥 1;𝜃 1 )    
+
+> ... 𝑋 𝐾 ∼𝑑 (𝑥 𝐾 ;𝜃 𝐾 )
+
+𝑓 𝑖 (𝑋 1, .., 𝑋 𝐾 )=𝑌 𝑖 
+
+
+
+,∀𝑖 = 1..𝐼 
+
+
+
+(4) where 𝐷 𝐾𝐿 (𝑃 || 𝑄 ) is the Kullback–Leibler (KL) divergence [58] of the probability distributions 𝑃 and 𝑄 , often used in information theory and interpreted as the amount of information lost when us-ing 𝑄 to approximate 𝑃 . Here we present the case where the 𝐾 
+
+unknown transition parameters 𝑥 1,.., 𝑥 𝐾 are independent, assuming they are outgoing transition parameters from 𝐾 different states of a Markov model. If, however, 𝑥 1 and 𝑥 2 are outgoing transition parameters from the same DTMC state, then they cannot be as-sumed to be independent. Instead a joint prior distribution like a 
+
+Dirichlet (x1,x2,1−x1−x2 ; 𝛼 1, 𝛼 2, 𝛼 3) (where 𝜃 1 and 𝜃 2 collectively be-come 𝛼 1, 𝛼 2, 𝛼 3) should be used. EPIK naturally supports such cases of optimising joint prior distributions. While KL divergence aligns naturally with information-theoretic objectives, alternative statistical divergence measures such as Jensen-Shannon (JS) divergence or Wasserstein distance can be employed to further support or refine knowledge elicitation [11]. For instance, using the JS divergence offers a symmetric, bounded alternative that eliminates numerical instabilities in regions where the support of the transition distributions does not perfectly overlap. Alternatively, the Wasserstein distance (Earth Mover’s Distance) could be integrated to exploit the underlying geometric structure of the state space, providing stable, non-vanishing gradients even when comparing disjoint probability distributions. Performing a robustness analysis of these alternative measures with respect to the accurate extraction of the 𝐾 transition parameters 𝑋 , particularly under varying constraints of data sparsity or noise, is an interesting future work direction. For multiple PK-informed properties ( 𝐼 > 1), Eq. (4) produces a multi-objective optimisation problem (MOOP) that involves finding the Pareto-optimal set of solutions 𝑃𝑆 𝑠 1={𝜃 𝜃 𝜃 ∈ Θ𝐾 |𝜃 𝜃 𝜃 = [𝜃 1, . . . , 𝜃 𝐾 ]} 
+
+that are on the Pareto front of the MOOP. The Pareto front is a well-established concept [72] describing an optimal solution set where each solution cannot be improved further in one objective without worsening its performance in another objective. 
+
+Algorithm 1: EPIK Elicitation Stage 
+
+Input: 
+
+𝑃𝐾 𝑖 (𝑦 𝑖 ),∀𝑖 =1. . .𝐼 : PK-informed properties prior knowledge 
+
+𝑓 𝑖 , ∀𝑖 =1. . .𝐼 : PK-informed properties algebraic expressions 
+
+𝑑 𝑘 (𝑥 𝑘 ;𝜃 𝑘 ),∀𝑘 =1. . .𝐾 : distributions for model parameters 
+
+𝑛 : sample size 
+
+Output: 
+
+𝑃𝐹 𝑠 1 = {𝑜𝑏 𝑗𝑒𝑐𝑡𝑖𝑣𝑒𝑠 (𝜃 𝜃 𝜃 ) ∈ R𝐼 ∀ 𝜃 𝜃 𝜃 ∈ 𝑃𝑆 𝑠 1 }
+
+𝑃𝑆 𝑠 1 = {𝜃 𝜃 𝜃 ∈ Θ𝐾 |𝜃 𝜃 𝜃 = [𝜃 1, .., 𝜃 𝐾 ] is Pareto-optimal } 
+
+> 12
+
+Function ElicitKnowledge( ... ): 
+
+> 3
+
+𝑃𝐹 𝑠 1 ← ∅ , 𝑃𝑆 𝑠 1 ← ∅  
+
+> 4
+
+while ¬TERMINATE (𝑃𝑆 𝑠 1,𝜃 𝜃 𝜃 ) do  
+
+> 5
+
+ΘΘΘ′ ← GET CANDIDATE PARAM VECTORS (𝜃 𝜃 𝜃, 𝑃𝑆 𝑠 1 ) 
+
+> 6
+
+foreach 𝜃 𝜃 𝜃 ′ ∈ ΘΘΘ′ do  
+
+> 7
+
+𝑂𝐵𝐽 𝑆 𝜃 ′ ← ∅  
+
+> 8
+
+for 𝑖 = 1 to 𝐼 do  
+
+> 9
+
+sample 𝑖 ← ∅  
+
+> 10
+
+for 𝑘 = 1 to 𝐾 do  
+
+> 11
+
+sample 𝑥 𝑘 ← RANDOM (𝑑 𝑘 (𝑥 𝑘 ; 𝜃 𝑘 ), 𝑛 ) 
+
+> 12
+
+sample 𝑖 ← sample 𝑖 ⌢ sample 𝑥 𝑘  
+
+> 13
+
+sample 𝑦 ← 𝑓 𝑖 (sample 𝑖 1, . . . , sample 𝑖𝑘 ) 
+
+> 14
+
+fitted 𝑃𝐾 𝑖 ← FIT DISTRIBUTION (sample 𝑦 ) 
+
+> 15
+
+𝑜𝑏 𝑗 ← GET KL (𝑃𝐾 𝑖 (𝑦 𝑖 ), fitted 𝑃𝐾 𝑖 ) 
+
+> 16
+
+𝑂𝐵𝐽 𝑆 𝜃 ′ ← 𝑂𝐵𝐽 𝑆 𝜃 ′ ⌢ 𝑜𝑏 𝑗  
+
+> 17
+
+dom 𝑂𝐵𝐽 𝑆 𝜃 ′ ← GET DOMINATED (𝑂𝐵𝐽 𝑆 𝜃 ′ ,𝑃𝐹 𝑠 1 ) 
+
+> 18
+
+if |dom 𝑂𝐵𝐽 𝑆 𝜃 ′ | > 0 then  
+
+> 19
+
+𝑃𝐹 𝑠 1 =𝑃𝐹 𝑠 1 \ dom 𝑂𝐵𝐽 𝑆 𝜃 ′ 
+
+> 20
+
+𝑃𝑆 𝑠 1 =𝑃𝑆 𝑠 1 \ { 𝜃 𝜃 𝜃 | 𝑂𝐵𝐽 𝑆 𝜃 ∈ dom 𝑂𝐵𝐽 𝑆 𝜃 ′ } 
+
+> 21
+
+if |GET DOMINATED (𝑃𝐹 𝑠 1, 𝑂𝐵𝐽 𝑆 𝜃 ′ ) | = 0 then  
+
+> 22
+
+𝑃𝐹 𝑠 1 = 𝑃𝐹 𝑠 1 ∪ { 𝑂𝐵𝐽 𝑆 𝜃 ′ } 
+
+> 23
+
+𝑃𝑆 𝑠 1 = 𝑃𝑆 𝑠 1 ∪ { 𝜃 𝜃 𝜃 ′ } 
+
+> 24
+
+𝑃𝐹 𝑠 1, 𝑃𝑆 𝑠 1 = DIVERSIFY (𝑃𝐹 𝑠 1, 𝑃𝑆 1 ) 
+
+> 25
+
+return 𝑃𝐹 𝑠 1, 𝑃𝑆 𝑠 1
+
+EXAMPLE 4 (E LICITATION STAGE ). Following from the previ-ous examples, the MOOP of EPIK’s elicitation stage is given by: 
+
+min       
+
+> 𝑛 (0)
+> 1,𝑝 (0)
+> 1,2,𝑛 (0)
+> 2,𝑝 (0)
+> 2,0
+
+(
+
+𝐷 𝐾𝐿 
+
+
+
+𝑃𝐾 𝑅 1 (𝑌 1)|| P𝑥 1∼Beta (𝑛 (0)       
+
+> 1,𝑝 (0)
+> 1,2)
+> 𝑥 2∼Beta (𝑛 (0)
+> 2,𝑝 (0)
+> 2,0)
+
+(𝑓 𝑅 1 (𝑥 1, 𝑥 2) = 𝑌 1)
+
+
+
+,𝐷 𝐾𝐿 
+
+
+
+𝑃𝐾 𝑅 2 (𝑌 2)|| P𝑥 1∼Beta (𝑛 (0)       
+
+> 1,𝑝 (0)
+> 1,2)
+> 𝑥 2∼Beta (𝑛 (0)
+> 2,𝑝 (0)
+> 2,0)
+
+(𝑓 𝑅 2 (𝑥 1, 𝑥 2) = 𝑌 2)
+
+)
+
+(5) 
+
+where 𝑃𝐾 𝑅 1 (𝑌 1) and 𝑃𝐾 𝑅 2 (𝑌 2) are the distributions of the PK-informed properties. 
+
+We solve the MOOP from Eq. (4) by transforming it into a search-based optimisation problem and leveraging the capabilities of evolu-tionary algorithms. At the core of the solution lies a multi-objective genetic algorithm driving the synthesis of the Pareto Front 𝑃𝐹 𝑠 1 and its corresponding Pareto set 𝑃𝑆 𝑠 1. Algorithm 1 shows the high-level steps of the solution which receives as inputs the distributions of the PK-informed system properties based on the prior knowledge from ASE ’26, October 12–16, 2026, Munich, Germany Simos Gerasimou and Xingyu Zhao 
+
+domain experts, the algebraic expressions for these properties and information related to the distribution type of each unknown model transition parameter 𝜃 𝑘 . Then, the evolutionary loops are executed (lines 4–25) that involve the generation of candidate solutions (line 5) and the evaluation of each solution (lines 6–23) during which the solution values are used to instantiate the distribution of un-known model parameters (lines 10–13); distribution fitting occurs for each 𝑓 𝑖 outcome (line 14) and the KL divergence is calculated for all PK-informed properties (lines 15–16). Next, the normal Pareto dominance is executed to remove inferior solutions and add non-dominated solutions (lines 17–23). The D IVERSIFY function (line 24) employs evolutionary algorithm strategies for diversity preser-vation to reduce the possibility of premature convergence and also to select the solutions that will participate in the next generation. Once the loop terminates, the Pareto-optimal solutions set 𝑃𝑆 𝑠 1 and its corresponding Pareto front 𝑃𝐹 𝑠 1 are returned. 
+
+## 4.4 Knowledge Embedding 
+
+Given the Pareto-optimal set of solutions 𝑃𝑆 𝑠 1 as the outcome of the elicitation stage, EPIK executes the knowledge embedding stage to establish the verification results for the elusive properties 𝑍 and select the most appropriate solution from 𝑃𝑆 𝑠 1. To achieve this, EPIK solves another optimisation problem. If 𝐽 =1 (one elusive property), the problem is single-objective; otherwise (if 𝐽 > 1), the problem is multi-objective, meaning that a reduced Pareto set 𝑃𝑆 𝑠 2 ⊆ 𝑃𝑆 𝑠 1 will be derived. Deciding the estimates (e.g., quantiles, moments) to use and solve the optimisation problem should align with the expecta-tions of decision-makers. Similarly, the adoption of a conservative or optimistic stance prescribes whether optimising the elusive prop-erties 𝑍 involves their maximisation or minimisation. Without loss of generality, the following formulation assumes the minimisation of the expected value for all elusive properties: 
+
+min  
+
+> [𝜃 1,..,𝜃 𝐾 ] ∈ 𝑃𝑆 𝑠 1
+
+
+
+E 𝑋 1∼𝑑 (𝑥 1;𝜃 1 )    
+
+> ... 𝑋 𝐾 ∼𝑑 (𝑥 𝐾 ;𝜃 𝐾 )
+
+[𝑔 𝑗 (𝑋 1, . . . , 𝑋 𝐾 )] , ∀𝑗 = 1..𝐽 
+
+
+
+(6) The algorithm for extracting the Pareto set 𝑃𝑆 𝑠 2 and its correspond-ing Pareto front 𝑃𝐹 𝑠 2 is similar to Algorithm 1. The key differ-ence pertains to the main loop (lines 4–5) where the G ET CANDI -
+
+> DATE
+
+PARAM VECTORS function retrieves solutions from 𝑃𝑆 𝑠 1 (in-stead of synthesising new) and the T ERMINATE function holds when all solutions in 𝑃𝑆 𝑠 1 have been examined. We omit this algorithm for brevity reasons. EXAMPLE 5 (E MBEDDING STAGE ). Given the Pareto-optimal set from the elicitation stage (Example 4) and elusive property R3 that will be maximised (for conservative purposes), the single-objective problem during EPIK’s embedding stage is given by: 
+
+max        
+
+> [𝑛 (0)
+> 1,𝑝 (0)
+> 1,2,𝑛 (0)
+> 2,𝑝 (0)
+> 2,0] ∈ 𝑃𝑆 𝑠 1
+
+E𝑥 1∼Beta (𝑛 (0)      
+
+> 1,𝑝 (0)
+> 1,2)
+> 𝑥 2∼Beta (𝑛 (0)
+> 2,𝑝 (0)
+> 2,0)
+
+[𝑔 𝑅 3 (𝑥 1, 𝑥 2)] (7) 
+
+Complexity Analysis. In EPIK’s elicitation stage (Algorithm 1), since the time complexity of simple random sampling is generally 
+
+𝑂 (𝑛 ), lines 10–12 together yield time complexity 𝑂 (𝑛 ∗ 𝐾 ). Since 
+
+𝑓 𝑖 is a closed-form rational function with 𝑂 (1) and each sample has a size of 𝑛 , the time complexity of line 13 is 𝑂 (𝑛 ). Regarding F IT -DISTRIBUTION (line 14), while the time complexity for distribution fitting can vary (it depends on the specific algorithm and the char-acteristics of the distribution being fitted), it is often 3 represented as 𝑂 (𝑛 ) where 𝑛 is the number of data points used for the fitting. The time complexity of the KL divergence calculation (line 15) 
+
+𝐷 𝐾𝐿 (𝑃 || 𝑄 ) = Í𝑖 𝑃 (𝑖 ) log 𝑃 (𝑖 )   
+
+> 𝑄 (𝑖 )
+
+is 𝑂 (𝑛 ) by definition, due to the need to iterate through all 𝑛 elements to compute 𝑃 (𝑖 ) and 𝑄 (𝑖 ). Since this is executed for all 𝐼 PK-informed properties, the total time complex-ity is for evaluating a candidate solution 𝜃 ′𝜃 ′
+
+𝜃 ′ is 𝑂 (𝑛 ∗𝐾 ∗𝐼 ). Concerning the evolution loop itself, this is computationally intensive and the complexity really depends on the chosen evolutionary algorithm. For example, EPIK instrumented with a multi-objective genetic algo-rithm has a general complexity 𝑂 (𝐼 ∗ 𝐺 ∗ 𝑆 2) where 𝐼 is the number of objective functions, 𝑆 is the population size and 𝐺 is the number of generations 4. Consequently, the time complexity of the whole Algorithm 1 to the size of various inputs is 𝑂 (𝐼 2 ∗ 𝐾 ∗ 𝑛 ∗ 𝐺 ∗ 𝑆 2).The key differences to note for EPIK’s knowledge embedding algorithm are: (1) the set of objectives becomes a set of statistics (that are of practical interest in the given application) on the distributions of the 𝐽 elusive properties as encoded in Eq. (6); and (2) the search space of the multi-objective optimisation problem is the result of the elicitation stage, i.e., the variables to be optimised are constrained in 𝑃𝑆 𝑠 1. Accordingly, the time complexity is 𝑂 (𝐽 2 ∗ 𝐾 ∗ 𝑛 ∗ 𝐺 ∗ 𝑆 2);since similar time analysis steps apply for this algorithm too, we omit the details for brevity. 
+
+## 5 Evaluation 5.1 Research Questions 
+
+RQ1 (Accuracy): How closely can EPIK approximate the true distribution of PK-informed properties? We analyse if EPIK can derive the distributions of unknown transition parameters, thus yield-ing distributions of PK-informed properties that closely approximate the ground truth of those properties. 
+
+RQ2 (Effectiveness): How do different optimisation approaches affect the effectiveness of EPIK? We examine the impact of differ-ent multi-objective optimisation algorithms in EPIK’s performance. We study the quality of EPIK-derived model transition parame-ters using the established evolutionary algorithms NSGA-II [26], SPEA2 [94] and CMA-ES [53]. 
+
+RQ3 (Conformance): How does using knowledge of PK-informed properties of varying levels of conformance affect EPIK? Decid-ing unknown transition parameters depends on the prior knowledge encapsulated in the set of PK-informed properties. Since the encoded prior knowledge about these properties can be conflicting, with this research question, we examine its impact on EPIK’s convergence. 
+
+RQ4 (Knowledge Embedding): Can EPIK support verifying elu-sive properties for which prior knowledge is absent? Supporting decision-making entails providing useful insights into the trade-offs between transition parameter distributions elicited using EPIK. Thus, we explore how EPIK supports the verification of elusive properties.                                   
+
+> 3Specifically, in Section 5, we first calculate the mean (in 𝑂 (𝑛 )time complexity) and variance (in 𝑂 (𝑛 )time by calculating the sum of squared differences, in addition to the mean) of the sample with size 𝑛 , then derive the two distribution parameters for Beta/Gamma from them (in 𝑂 (1)constant time). Thus, the total time complexity is
+> 𝑂 (𝑛 ) + 𝑂 (𝑛 ) + 𝑂 (1)=𝑂 (𝑛 ).
+> 4A genetic algorithm like NSGA-II [26] has time complexity 𝑂 (𝐼 ∗𝑆 2)per genera-tion [74, Chapter 10.4]. Over 𝐺 generations, the total time complexity is 𝑂 (𝐺 ∗𝐼 ∗𝑆 2).Leveraging System-Level Observations to Learn Model Parameters for Quantitative Verification ASE ’26, October 12–16, 2026, Munich, Germany
+
+Table 2: FX system-level requirements and properties         
+
+> ID Description PCTL
+> R1 What is the probability that FX will complete the workflow successfully?
+> P=?[F“success" ]
+> R2 What is the expected response time for complet-ing workflow execution?
+> R“time ”
+> =?[F“done" ]
+> R3 What is the total cost of the third-party services used for a workflow execution?
+> R“cost ”
+> =?[F“done" ]
+
+Table 3: FPR and FX system variants analysed using EPIK                    
+
+> Variant Details Size
+> FPRc Y={R1}; Z={R2,R3}; X={ 𝑝 2,0}1E+08 FPR1 Y={R1,R2}; Z={R3}; X={ 𝑝 2,0}1E+08 FPR2 Y={R1,R2}; Z={R3}; X={ 𝑝 1,2, 𝑝 2,0}1E+16 FPR3 Y={R1,R2}; Z={R3}; X={ 𝑝 0,1, 𝑝 1,2, 𝑝 2,0}1E+24 FX1 Y={R1,R2}; Z={R3}; X={ 𝑝 𝑂𝑟 1}1E+8 FX2 Y={R1,R2}; Z={R3}; X={ 𝑝 𝑂𝑟 1, 𝑝 𝐹𝐴 2}1E+16 FX3 Y={R1,R2}; Z={R3}; X={ 𝑝 𝑂𝑟 1, 𝑝 𝐹𝐴 2, , 𝑝 𝑇𝐴 1}1E+24
+
+## 5.2 Evaluation Methodology 
+
+Software Systems. We evaluated EPIK using several variants of two software-controlled systems from different application domains: (1) the fruit-picking robot (FPR) [34] (Section 3); and (2) a service-based system for foreign exchange trading (FX) presented in [43]. 
+
+FX Description (FX). An FX trader can use the system in two modes. Using the expert mode, FX iteratively analyses market activity, iden-tifies patterns that satisfy the trader’s objectives, and automatically carries out trades. To this end, a Market watch operation extracts real-time exchange rates (bid/ask price) of selected currency pairs, which is used by a Technical analysis operation to assess the current trading conditions, predict future price movement, and decide if the trader’s objectives are: (i) “met” (causing the invocation of an Order service to carry out a trade); (ii) “not met” (resulting in a new Market watch 
+
+invocation); or (iii) an error occurred (triggering an Alarm operation to notify the trader about discrepancies/opportunities not covered by the trading objectives). Using the normal mode, FX assesses the eco-nomic prospects of a country via a Fundamental analysis operation that collects, analyses and evaluates information (e.g., news reports, economic data and political events), and provides an assessment on the country’s outlook. If satisfied with this assessment, the trader can use the Order operation to sell/buy currency; then, a Notification 
+
+operation confirms the trade completion. Finally, FX engineers are interested in analysing the system-level requirements in Table 2. 
+
+Experimental Setup. We executed a diverse set of experiments using the FPR and FX system variants from Table 3. The ‘Details’ column indicates the PK-informed properties set ( 𝑌 ), the elusive properties set ( 𝑍 ) and the unknown model transition parameters ( 𝑋 ). The ’Size’ column reports the analysis cost an exhaustive search would incur, assuming two-decimal precision for each double-valued parameter needed to encode an unknown parameter 𝑥 𝑘 . We equipped the optimisation algorithm of EPIK using the established multi-objective genetic algorithms NSGA-II [26] and SPEA2 [94] and CMA-ES [53], a state-of-the-art derivative-free evolution strategy based on covariance matrix adaptation. Unlike NSGA-II and SPEA2, that employ crossover and mutations, CMA-ES models the search space as a multivariate normal distribution and continuously learns the correlation between decision variables (parameters) and adapts its search to steer the population toward optimal regions. All algo-rithms leverage the DEAP Python package [25]. We also used the following configuration to evaluate our approach: 2,000 evaluations with an initial population of 100 individuals (i.e., 20 generations in total), and default values for single-point crossover probability 
+
+𝑝 𝑐 = 0.9 and uniform polynomial mutation probability 𝑝 𝑚 = 0.8. We selected these values after carrying out a set of preliminary experi-ments and following the standard practice in the field of search-based software engineering [2, 43, 50]. For problem variants with ≥ 2 objec-tives (PK-informed properties), i.e., |𝑌 | > 2, we use standard Pareto dominance (4) to construct the Pareto front approximation [21]. To reduce the potential impact of non-deterministic behaviour affecting EPIK’s performance (e.g., when choosing the crossover point for the genetic algorithms), we adopted the established proce-dure in search-based software engineering [50]. Thus, we performed 30 independent runs per system variant from Table 3 and each multi-objective optimisation algorithm [2]. All experiments were run on a MacBook Pro with Apple M2 Max processor and 64GB of memory. 
+
+Statistical Analysis. Since the actual Pareto front for the real-world systems from our experimental evaluation is unknown and its exact computation is typically impossible, we used the standard prac-tice [93]. For each system variant, we extract the reference front comprising the nondominated Pareto front approximation from all the runs across all EPIK instances. We used this reference front and the Pareto front quality indicators below to quantify the ‘goodness of fit’ of Pareto front approximations produced by EPIK. We use a boxplot to show the central tendency and distribution per indicator. 
+
+• 𝐼 𝐻𝑉 (Hypervolume) : measures the objective space volume con-sumed by a Pareto front approximation compared to a reference front. It shows diversity and convergence, and is strictly Pareto compli-ant [93]. Larger 𝐼 𝐻𝑉 values give better Pareto front approximations. 
+
+• 𝐼 𝜖 (Unary additive epsilon) : measures the minimum value needed by a Pareto front approximation to dominate the reference front. 𝐼 𝜖 shows convergence to the reference front and is Pareto com-pliant. Smaller 𝐼 𝜖 values denote better Pareto front approximations. 
+
+• 𝐼 𝐼𝐺𝐷 (Inverted Generational Distance) : the Euclidean distance in the objective space between the Pareto front approximation and the reference front. 𝐼 𝐼𝐺𝐷 shows diversity and convergence to the reference front. A smaller 𝐼 𝐼𝐺𝐷 gives better Pareto approximations. Adopting the recommended practice [2], we employed inferential statistics to compare the quality indicator values obtained by EPIK variants. Thus, we confirmed that the quality indicator values do not follow a normal distribution using the Shapiro-Wilk test. Then, we used the Mann-Whitney and Kruskal-Wallis non-parametric tests with 95% confidence level ( 𝛼 = 0.05 ) to analyse the results with-out making assumptions about the data distribution or the variance homogeneity. Where appropriate, we did a post-hoc analysis with pairwise comparisons between the algorithms, using the conservative Bonferroni correction 𝑝 𝑐𝑟𝑖𝑡 = 𝛼 /𝑘 (k is the number of comparisons) to control the family-wise error rate. When statistical significance exists, we use Cohen’s d to quantify the importance of the observed effect [2]. Cohen’s d score summarises the difference between two groups as the number of standard deviations: 𝑑 = 0.2, 𝑑 = 0.5 and 
+
+𝑑 = 0.8 denote a small, medium and large effect size, respectively. ASE ’26, October 12–16, 2026, Munich, Germany Simos Gerasimou and Xingyu Zhao 0.5 Density 0.4 0.3 0.2 0.1 0.0 0.65 0.70 0.75 0.80 0.85 0.08 0.07 0.06 0.05 0.04 0.03 0.02 0.01 0.00 3.8 4.0 4.2 4.4 4.6 4.8                         
+
+> 0.14 0.12 0.10 0.08 0.06 0.04 0.02 0.00 2.2 2.3 2.4 2.5 2.6 2.7 2.8 2.9 3.0 R1 (PK-informed) Beta(200, 0.8) R2 (Elusive) Ground truth = 4.584 R3 (Elusive) Ground truth = 2.755
+> Density 0.5 0.4 0.3 0.2 0.1 0.0 0.6 0.65 0.70 0.75 0.80 0.85 0.08 0.06 0.04 0.02 0.00 0.10 3.6 3.8 4.0 4.2 4.4 4.6 4.8 5.0 0.025 0.00 0.050 0.075 0.100 0.125 0.150 0.175 2.2 2.4 2.6 2.8 3.0 R1 (PK-informed) Beta(200, 0.8) R2 (PK-informed) Gamma(200, 4.584) R3 (Elusive) Ground truth = 2.755
+> FPRc FPR1
+
+Figure 3: Distributions for the PK-informed and elusive properties for the FPRc controlled variant (1 PK-informed property) and FPR1 (2 PK–informed properties) over 30 independent runs, where ground truth R1=0.80, R2=4.584 and R3=2.755. 
+
+## 5.3 Results and Discussion 
+
+RQ1 (Accuracy). First, we performed a controlled experiment to establish if the resulting estimates for elusive properties are accurate. Figure 3 shows the resulting distributions for the PK-informed (grey box) and elusive (yellow box) properties for the FPRc (left) and FPR1 (right) variants over 30 independent runs. The ground truth values for the elusive properties (R2=4.584 and R3=2.755 for FPRc; R3=2.755 for FPR1) were calculated using the PK-informed prop-erties information, solving the system of linear equations to extract the expected value for the unknown model transition parameter 𝑝 2,0
+
+and using the value for the elusive properties. Then, we used EPIK to extract values for the Beta distribution of 𝑝 2,0 and sampled from the distribution to construct the distribution of the PK-informed and elusive properties. As shown, the derived distributions closely ap-proximate the ground truth; the delta between the distributions’ mean and (assumed) ground truth is < 0.00389 , signifying EPIK’s ability to retrieve meaningful and accurate elusive property estimates. Also, we establish whether EPIK can accurately approximate the distributions of PK-informed properties by determining realistic distributions for the unknown transition parameters of the subject system models. Fig. 4 (top) shows example Pareto fronts for the FPR variants FPR1, FPR2 and FPR3 generated during the elicitation stage of EPIK. Irrespective of the evolutionary algorithm underpinning our approach (NSGA-II or SPEA2), EPIK is capable of producing Pareto front approximations with diversified KL divergence values ( 𝐷 𝐾𝐿 )for the considered PK-informed properties R1 and R2. In particular, the Pareto fronts for FPR1 comprise many non-dominated solutions, demonstrating smooth end-to-end coverage of the objective space. Thus, they yield diverse parameter value pairs for the unknown transition parameters and offer decision-makers a detailed overview of the tradeoffs between the system requirements. The Pareto front approximations produced for FPR2 and FPR3, albeit sparser, also cover the objective space satisfactorily, with the majority of the solutions clustered at the bottom left of the graph (where the total 𝐷 𝐾𝐿 is around 1). As expected, however, the range of 𝐷 𝐾𝐿 values per PK-informed property increases with solutions exceeding 3.5 (2.0) and 6 (2.5) for property R1 (R2) for FPR2 and FPR3, respectively. Increasing the number of unknown transition parameters in FPR instances FPR2 and FPR3 unavoidably expands the search space (Table 3) considerably and reshapes the landscape of the objective space. Consequently, EPIK identifies solutions at the extremes of the objective space with very small 𝐷 𝐾𝐿 for one property and very large 𝐷 𝐾𝐿 for another. We visualise the distribution of PK-informed properties R1 (Fig. 4 middle) and R2 (Fig. 4 bottom) using EPIK-derived Pareto front solutions against the prior knowledge provided by domain experts for these properties. Evidently, the EPIK-produced distributions are 
+
+Figure 4: Pareto fronts (top) and sample distributions of re-quirements R1 (middle) and R2 (bottom) estimated by EPIK for different numbers of unknown model transition parameters of the fruit-picking robot use case (variants FPR1, FPR2, FPR3) FPRc: p 2,0    
+
+> Ιε⬇
+> ΙIGD ⬇
+> ΙHV ⬆
+> Ιε⬇
+> ΙIGD ⬇
+> ΙHV ⬆
+> FPRc: p 1,2 p2,0
+> GA GA RANDOM RANDOM
+> FPR1: p 2,0 FPR2: p 1,2 p2,0
+> KL Divergence
+
+Figure 5: KL divergence between EPIK solutions and Random search against ground truth for FPRc (left); and quality indica-tor boxplots for NSGAII and Random for FPR variants (right) 
+
+good approximations of the target distributions. The FPR1 solution produces distributions that accurately match the target distributions (total 𝐷 𝐾𝐿 =0.08), while the FPR2 and FPR3 are close enough but with higher total 𝐷 𝐾𝐿 ≈0.27 (given the extra ’degrees of freedom’). We obtained similar Pareto front approximations and sampled dis-tributions for the PK-informed properties using EPIK for the FX problem instances FX1, FX2 and FX3; due to space constraints, these results are available on the project webpage. These results cor-roborate our findings and demonstrate EPIK’s capabilities to extract combinations of unknown transition parameter values that closely approximate the properties distributions given by domain experts. 
+
+RQ2 (Effectiveness). First, Fig. 5 shows the KL result between EPIK and Random search against ground truth for FPRc (left); and quality Leveraging System-Level Observations to Learn Model Parameters for Quantitative Verification ASE ’26, October 12–16, 2026, Munich, Germany FPR1: p 2,0 FPR2: p 1,2 p2,0 FPR2: p 0,1 p1,2 p2,0               
+
+> Ιε⬇Ιε⬇Ιε⬇
+> ΙIGD ⬇ΙIGD ⬇ΙIGD ⬇
+> ΙHV ⬆ΙHV ⬆ΙHV ⬆FX1: p Or1 FX2: p Or1 ,p FA2 FX3: p Or1 ,p FA2 ,p TA1
+> Ιε⬇Ιε⬇Ιε⬇
+> ΙIGD ⬇ΙIGD ⬇ΙIGD ⬇
+> ΙHV ⬆ΙHV ⬆ΙHV ⬆
+
+Figure 6: Boxplots comparing EPIK with multi-objective evolu-tionary algorithms for the FPR (top) and FX (bottom) systems 
+
+indicator boxplots for NSGAII and Random for FPR variants (right). These results show a clear gap between EPIK-derived solutions and Random, signifying that the optimisation problem addressed by EPIK is non-trivial, mandating the use of sophisticated evolutionary algorithms underpinning EPIK. Next, we investigate EPIK’s effectiveness in eliciting admissi-ble values for encoding the distributions of the unknown transition parameters using diverse multi-objective optimisation algorithms. Fig. 6 depicts boxplots, over 30 independent runs, of the quality indicators 𝐼 𝜖 , 𝐼 𝐼𝐺𝐷 and 𝐼 𝐻𝑉 for the various FPR and FX system instances when EPIK is instrumented with the widely-used evolu-tionary algorithms NSGA-II [26], SPEA2 [94] and CMA-ES [53]. We observed that, despite EPIK’s flexibility, the CMA-ES-based EPIK underperformed compared to the other EPIK instances across all problem variants and for all quality indicators. The statistical analysis using Kruskal-Wallis yielded a statistically significant dif-ference for all problem variants and quality indicator combinations (p-value < 0.0002), substantiating the performance difference that is evident in the boxplots. Through the post-hoc analysis, involving pairwise comparisons using Mann-Whitney and Cohen’s d effect size, we established a statistically significant difference (p-value <
+
+Figure 7: Distribution of EPIK results for various conformance levels of FPR PK-informed properties 
+
+1.205E-10) with a very large effect size (d >1.21) for all NSGA-II and SPEA2 comparisons against CMA-ES. In contrast, we found no statistically significant difference between EPIK using NSGA-II or SPEA2; the p-value for all problem variants and indicators was [0.051, 0.79], exceeding the significance level 𝛼 = 0.05 .These findings clearly evidence that EPIK employing NSGA-II and SPEA2 can produce Pareto front approximations that yield significantly better quality indicators than CMA-ES. Furthermore, these results establish EPIK’s generality in identifying effective distributions for the unknown transition parameters by leveraging different multi-objective evolutionary algorithms. 
+
+RQ3 (Conformance). We examine EPIK’s convergence when the PK-informed properties incorporate conflicting prior knowledge. This conflict can occur when domain experts have differing opinions about the PK-informed properties, leading to divergent accumulated knowledge. A similar conflicting situation can occur when the same expert has strong knowledge about one PK-informed property but weak or contradictory knowledge about the other properties. We investigated this situation through four different conformance scenarios for the PK-informed properties of system FPR1. Each scenario encodes a different conformance level, ranging from high conformance to high conflict. Fig. 7 shows the resulting distributions of the best solution with the lowest total 𝐷 𝐾𝐿 (given equal weight to objectives) found by the NSGA-II-based EPIK. The solutions produced by EPIK for the conformance and low-conflict scenarios yielded distributions that closely approximate the distributions of PK-informed properties from domain experts. Unavoidably, the higher the conflict level, the more divergent the distributions (especially for the medium and high conflict scenarios), indicating that such conflicting knowledge prevents EPIK from finding solutions that further reduce the total 𝐷 𝐾𝐿 values. The boxplots in Fig. 8 (left), generated over 30 independent runs, clearly show the distance between the total 𝐷 𝐾𝐿 values for the different conformance scenarios. Through the execution of the Kruskal-Wallis and Mann-Whitney inferential tests, we established statistically significant differences (p ≪ 0.05 and very large effect size) for all pairwise comparisons, including the conformance sce-narios. The narrow width of all boxplots confirms that the resulting gap is not due to randomness in EPIK’s generalisation or opera-tion. Lastly, Fig. 8 (right) shows the median 𝐷 𝐾𝐿 evolution for each population per generation for a specific EPIK run across all confor-mance scenarios. The evident fluctuation in the medium and high conflict scenarios illustrates the difficulty in finding stable Pareto front approximations that yield low 𝐷 𝐾𝐿 values. This observation is ASE ’26, October 12–16, 2026, Munich, Germany Simos Gerasimou and Xingyu Zhao 2.00 1.75 1.50 1.25 1.00 0.75 0.50 0.25 Conformance Low Medium Conflict High 0.250 ±0.001 0.332 ±0.003 1.111 ±0.003 1.863 ±0.004 
+
+Figure 8: Boxplots for conformance comparison on FPR (left) and KL Evolution (median per generation) for a specific run and various conformance levels (right) 
+
+Figure 9: Elusive property R3 distribution for 3 FPR1 Pareto-optimal solutions from EPIK’s knowledge embedding stage 
+
+corroborated by the evident gap against the conformance and low conflict scenarios. These results provide strong empirical evidence that EPIK’s abil-ity to synthesise effective distributions for the unknown parameter values depends on the conformance level of the prior knowledge of the PK-informed properties. Identifying conflicting prior knowledge would be an interesting direction for future work to avoid wasting resources and to involve humans in the loop to resolve such conflicts. 
+
+RQ4 (Knowledge Embedding). We employed the Pareto-optimal approximation solutions set synthesised during EPIK’s elicitation stage to perform knowledge embedding by solving the optimisation problem in Eq. (6) and quantifying elusive property R3 (Table 1). Fig. 9 shows the distributions of the verification results of elusive property R3 and the estimated quantiles 𝑞 = {0.05 , 0.5, 0.95 } for three FPR1 Pareto-optimal solutions 𝑝 2,0 = 𝐵𝑒𝑡𝑎 (8.07 , 1.6), 𝑝 2,0 =
+
+𝐵𝑒𝑡𝑎 (9.83 , 1.75 ) and 𝑝 2,0 =𝐵𝑒𝑡𝑎 (10 .67 , 3.16 ). The different Pareto-optimal solutions (signifying different 𝑝 2,0 instantiations) enable deriving elusive property distributions, which, albeit looking similar, yield different quantile values and density shapes. Decision-makers can leverage this information to examine the shape of the elusive property’s distribution. Since no information existed for the unknown transition parameter values of the consid-ered system, without EPIK’s embedding stage, this analysis could not have been performed at all or would involve a biased guess of the transition parameters, incurring the risk of inaccurate outcomes. EPIK instead leverages the prior knowledge about the PK-informed properties to perform a well-reasoned analysis, enabling decision-makers also to select, as per Eq. (6), an appropriate solution that conforms to the system and elusive property semantics. For instance, adopting a conservative approach for quantile 𝑞 = 0.5, and since the elusive property R3 quantifies the expected energy consumption for completing the fruit-picking process, decision-makers would select the middle solution 𝑝 2,0=𝐵𝑒𝑡𝑎 (9.83 , 1.75 ) that yields the maximum median value. The selected solution can then drive runtime quantita-tive verification [38, 89] and instrument self-adaptation [12, 39]. 
+
+EPIK Discussion & Guidelines. 
+
+1) Encoding summary statistics as distributions: When experts provide only a summary statistic (e.g., “reliability is 0.8"), EPIK maps it to a canonical Beta/Gamma parameterisation (Eq. (2)). The point estimate serves as the “best guess” ( 𝑝 (0) 
+
+> 𝑖,𝑗
+
+or Gamma mean), while confidence is encoded via the sample size 𝑛 (0) 
+
+> 𝑖
+
+. Setting 𝑛 (0) 
+
+> 𝑖
+
+≈ 1
+
+yields a near-uninformative prior, allowing subsequent Bayesian es-timators [29] to be driven primarily by runtime data; setting 𝑛 (0)
+
+> 𝑖
+
+to historical observations (e.g., 𝑛 (0) 
+
+> 𝑖
+
+= 200 for 200 past missions) encodes a strong, concentrated belief. This supports a continuous spectrum from uninformative to highly informative priors without requiring experts to specify a distribution shape by hand. 2) Conflict detection : Because EPIK’s elicitation stage (Section 4.3) minimises KL divergence (Eq. (4)), the Pareto front diagnoses con-flicting prior knowledge. Adopters can monitor two indicators (RQ3): (i) the magnitude of total 𝐷 𝐾𝐿 achieved by Pareto-optimal solutions, where values clustering far from 0 indicate that no candidate distri-bution can simultaneously satisfy all properties; and (ii) the gener-ational stability of the median 𝐷 𝐾𝐿 (Fig. 8, right), where sustained oscillation rather than smooth convergence signals contradictory ob-jectives. Either symptom prompts users to reconcile the PK-informed properties with experts before trusting the resulting priors. 3) Managing Non-Identifiability and Epistemic Ambiguity : In inverse problems, multiple distinct transition parameter distributions can yield identical system-level property distributions. EPIK treats this non-identifiability as a feature: the synthesised Pareto set ( 𝑃𝑆 𝑠 1)is not a single “correct” parameter recovery, nor is any 𝜃 ∈ 𝑃𝑆 𝑠 1 the absolute ground truth. The Pareto set represents the family of admis-sible priors consistent with the formal model and domain knowledge. 4) Conditional Soundness of Elusive Properties : Elusive proper-ties cannot be validated directly at design time due to missing prior data. We stress that EPIK’s soundness in verifying these properties is strictly conditional: it assumes that PK-informed properties are accu-rate and the underlying model structure is correct. If expert-provided priors are biased, the resulting parameters, and consequently, the elu-sive property evaluations, will also be biased. This is an unavoidable epistemic limitation of all Bayesian elicitation techniques. 5) Performance & Scalability Trade-offs. Practitioners should configure EPIK based on the model’s complexity. Offline algebraic formula extraction has a high upfront cost (seconds to ∼ 8 minutes for the systems evaluated) but enables millisecond-level evaluations; this is recommended for DTMC/CTMC models where closed-form rational functions can be symbolically computed. If model scale or property complexity prevents symbolic extraction, adopters should fall back to iterative PMC, which guarantees correct results but incurs high continuous overhead by running PMC in-the-loop. 
+
+## 5.4 Threats to Validity 
+
+We limit construct validity threats that may occur due to simplifi-cations and assumptions in the evaluation by using formal models and properties of systems from real-world case studies from the literature (e.g., FPR [34], FX [43]). Also, EPIK employs KL for comparing the candidate and ground truth distributions, thus leverag-ing its asymmetric property and optimising the candidate distribution Leveraging System-Level Observations to Learn Model Parameters for Quantitative Verification ASE ’26, October 12–16, 2026, Munich, Germany 
+
+to the ground truth. Experimenting with other distance metrics (e.g., Jensen–Shannon divergence) would help in further validating EPIK. We reduce internal validity threats that may introduce bias in es-tablishing cause-effect relationships in our experiments by reporting results over 30 independent runs per experiment, and using statistical tests to check for statistical significance. Also, since EPIK depends on the prior knowledge from experts for PK-informed properties, we examine (RQ3) the EPIK’s ability to cope with inaccurate and/or con-flicting prior knowledge. Finally, we enable replication by making all experimental results publicly available on our project webpage. We limit external validity threats that may reduce the EPIK’s generalisability by leveraging knowledge from experts to build the PK-informed properties. The strength of prior knowledge can be eas-ily encoded into the PK-informed properties as well as the incorpo-ration of prior knowledge from multiple experts (i.e., the cumulative knowledge encoded in the parameters of the corresponding distribu-tion, e.g., Gamma) for the PK-informed property. Although we used established case studies, doing more experiments in domains and applications with different characteristics than those from our evalu-ation would further validate EPIK’s applicability and scalability. 
+
+## 6 Related Work 
+
+Applications of quantitative verification in software engineer-ing . PMC-based quantitative verification has been widely applied in various domains, including self-adaptive systems [16, 20] and, more recently, autonomous systems [62, 81]. Accordingly, there has been a significant focus of research and publications within the soft-ware engineering community. The QoSMOS framework [17] is an illustrative example for developing adaptive service-based systems, using PRISM to compute quality-of-service properties. Similarly, the application in [38] is a typical web-based self-adaptive system that comprises an HTTP Proxy server, a web server and an applica-tion server. A low-power wireless bus system is studied in [39] to be efficiently verified at run time as soon as changes occur, while dynamic power management systems are also investigated [12, 43]. Interested readers can find further examples of PMC applications in software engineering for self-adaptive systems in [82]. For autonomous systems, PMC-based quantitative verification has been applied to a range of scenarios, including spacecraft re-configuration [68], motion planning [64, 65], controller synthe-sis for unmanned underwater vehicles and unmanned aerial vehi-cles [13, 44, 46, 90], and safety/reliability assurance in harsh envi-ronments [20, 28, 42, 89, 91]. Additional applications include task allocation and planning for mobile robots [44, 63, 80] and their battery charge scheduling [79, 90]. While this is not an exhaustive list of practical applications for quantitative verification, all of these scenarios can benefit from EPIK when integrated with Bayesian learning methods to develop more accurate probabilistic models. 
+
+Parameter estimation in quantitative verification. Despite progress in quantitative verification [62], a key challenge persists: quantitative verification assumes that the models accurately reflect real software behaviour. This is often true for model structures, but transition probabilities/rates are harder to estimate correctly [16]. Relying on point estimates provided by domain experts, inferred through model fitting [77] or updated at runtime [35] incurs unquan-tified estimation errors, which are propagated and compounded in later verification steps in ways that are unknown but likely to be sig-nificant [16]. Although recent research [15] synthesises bounds for unknown transition parameters via confidence intervals, it considers solely operational data, disregarding any prior human knowledge. This limitation motivates the use of Bayesian estimators [35]. 
+
+Bayesian learning for runtime quantitative verification. The KAMI framework [29] introduced Bayesian learning to estimate the transition probabilities of DTMCs. The framework was later retrofitted for CTMCs [36] and extended with ageing factors to capture time-varying transition probabilities [19] and with a light-weight adaptive filter to reduce the noise [37]. Robust Bayesian estimators yielding interval estimates for DTMCs and CTMCs have been introduced in [89, 91], while [30, 88] devised Bayesian-based change-point detectors to determine change points during the sys-tem operation. EPIK is unique as it facilitates the elicitation and embedding of prior knowledge required by these techniques. 
+
+Domain knowledge elicitation and embedding. This topic is studied across software engineering [71, 85], including requirements engineering [48, 69], where knowledge can help clarify the needs of stakeholders and the system boundaries so as to improve software design [1, 75]. Likewise, in software testing, domain knowledge aids in test case prioritisation and selection [56], while leveraging prior knowledge in safety-critical systems testing can significantly accel-erate the testing process, even when the PK is partial and vague [92]. Incorporating domain prior knowledge is also gaining attention in machine learning testing and verification [10, 57, 76, 86], backdoor attack/defence [52], and explainability [51]. To the best of our knowledge, only [18, 70, 87] combine domain knowledge with PMC-based quantitative verification. The Web On-tology Language is used to describe service behaviours as domain knowledge and then generate stochastic formal models [70]. Simi-larly, a YAML-based domain-specific language is used to express system specifications that can be compiled into PCTL properties and verified by a model checker [87]. Domain-specific modelling pat-terns in [18] and fragmentation techniques [33] speed up the analysis of parametric Markov chains, enabling the extraction of closed-form expressions for properties of such patterns. This research devises formal models and properties exploiting other explicit formalisms. EPIK is unique and innovative as it is natively designed to elicit and embed prior knowledge into model parameters without relying on external semantics or domain-specific languages. 
+
+## 7 Conclusion & Future Work 
+
+We introduced EPIK, the first work for eliciting and embedding prior knowledge in Bayesian learning for quantitative verification. EPIK leverages expert knowledge of observable system-level properties to formulate a two-fold optimization problem, extracting Pareto-optimal approximation sets of unknown transition parameters whose Pareto fronts closely match expert expectations. Decision-makers can use these fronts to quantify elusive (rare, novel, or expensive) system properties. Through a comprehensive experimental evalua-tion using multiple variants of real-world case studies and diverse EPIK instantiations, we demonstrated the effectiveness, flexibility and generality of our approach. Our future work includes (1) en-abling knowledge elicitation and embedding for interval Bayesian verification [89]; (2) investigating parallelisation methods to improve ASE ’26, October 12–16, 2026, Munich, Germany Simos Gerasimou and Xingyu Zhao 
+
+EPIK’s scalability; (3) evaluating EPIK to other case studies and scenarios. 
+
+Data Availability . The open-source EPIK replication package is available at https://doi.org/10.5281/zenodo.19337648. 
+
+## References 
+
+[1] Beth Adelson and Elliot Soloway. 1986. A model of software design. International Journal of Intelligent Systems 1, 3 (1986), 195–213. [2] Andrea Arcuri and Lionel Briand. 2011. A practical guide for using statistical tests to assess randomized algorithms in software engineering. In 2011 33rd International Conference on Software Engineering (ICSE) . IEEE, 1–10. [3] Adnan Aziz, Kumud Sanwal, Vigyan Singhal, and Robert Brayton. 1996. Verifying continuous time Markov chains. In Computer Aided Verification (LNCS, Vol. 1102) ,Rajeev Alur and Thomas A. Henzinger (Eds.). Springer, 269–276. [4] Christel Baier and Joost-Pieter Katoen. 2008. Principles of model checking . MIT press. [5] Simonetta Balsamo, Vittoria De Nitto Personè, and Paola Inverardi. 2003. Areview on queueing network models with finite capacity queues for software architectures performance prediction. Performance Evaluation 51, 2-4 (2003), 269–288. [6] James O Berger, Elías Moreno, Luis Raul Pericchi, M Jesús Bayarri, José M Bernardo, Juan A Cano, Julián De la Horra, Jacinto Martín, David Ríos-Insúa, Bruno Betrò, et al. 1994. An overview of robust Bayesian analysis. Test 3, 1 (1994), 5–124. [7] Jose M. Bernardo and Adrian F. M. Smith. 1994. Bayesian theory . Wiley. [8] Andrea Bianco and Luca de Alfaro. 1995. Model checking of probabilistic and nondeterministic systems. In Foundations of Software Technology and Theoretical Computer Science (LNCS, Vol. 1026) , P. S. Thiagarajan (Ed.). Springer Berlin Heidelberg, 499–513. [9] Peter Bishop, Robin Bloomfield, Bev Littlewood, Andrey Povyakalo, and David Wright. 2011. Toward a formalism for conservative claims about the dependability of software-based systems. IEEE Transactions on Software Engineering 37, 5 (2011), 708–717. doi:10.1109/TSE.2010.67 [10] Houssem Ben Braiek and Foutse Khomh. 2020. On testing machine learning programs. Journal of Systems and Software 164 (2020), 110542. [11] Yuhang Cai and Lek-Heng Lim. 2022. Distances between probability distributions of different dimensions. IEEE Transactions on Information Theory 68, 6 (2022), 4020–4031. [12] Radu Calinescu, Marco Autili, Javier Cámara, Antinisca Di Marco, Simos Gerasi-mou, Paola Inverardi, Alexander Perucci, Nils Jansen, Joost-Pieter Katoen, Marta Kwiatkowska, et al. 2017. Synthesis and verification of self-aware computing systems. In Self-Aware Computing Systems . Springer, 337–373. [13] Radu Calinescu, Simos Gerasimou, and Alec Banks. 2015. Self-adaptive software with decentralised control loops. In Fundamental Approaches to Software Engi-neering (LNCS, Vol. 9033) , Alexander Egyed and Ina Schaefer (Eds.). Springer Berlin Heidelberg, 235–251. [14] Radu Calinescu, Simos Gerasimou, Kenneth Johnson, and Colin Paterson. 2017. Using runtime quantitative verification to provide assurance evidence for self-adaptive software. In Software Engineering for Self-Adaptive Systems III. Assur-ances . Springer, 223–248. [15] Radu Calinescu, Carlo Ghezzi, Kenneth Johnson, Pezzé Mauro, Yasmin Rafiq, and Giordano Tamburrelli. 2016. Formal verification with confidence intervals to establish quality of service properties of software systems. IEEE Transactions on Reliability 65, 1 (2016), 107–125. [16] Radu Calinescu, Carlo Ghezzi, Marta Kwiatkowska, and Raffaela Mirandola. 2012. Self-adaptive software needs quantitative verification at runtime. Communication of the ACM 55, 9 (2012), 69–77. [17] R. Calinescu, L. Grunske, M. Kwiatkowska, R. Mirandola, and G. Tamburrelli. 2011. Dynamic QoS management and optimization in service-based systems. 
+
+IEEE Transactions on Software Engineering 37, 3 (May 2011), 387–409. [18] Radu Calinescu, Colin Paterson, and Kenneth Johnson. 2021. Efficient Parametric Model Checking Using Domain Knowledge. IEEE Transactions on Software Engineering 47, 6 (2021), 1114–1133. doi:10.1109/TSE.2019.2912958 [19] Radu Calinescu, Yasmin Rafiq, Kenneth Johnson, and Mehmet Emin Bakır. 2014. Adaptive model learning for continual verification of non-functional properties. In 
+
+Proc. of the 5th ACM/SPEC Int. Conference on Performance Engineering (ICPE ’14) . ACM, New York, NY, USA, 87–98. [20] Radu Calinescu, Danny Weyns, Simos Gerasimou, Muhammad Usman Iftikhar, Ibrahim Habli, and Tim Kelly. 2017. Engineering trustworthy self-adaptive soft-ware with dynamic assurance cases. IEEE Transactions on Software Engineering 
+
+44, 11 (2017), 1039–1069. [21] Carlos A Coello Coello. 2007. Evolutionary algorithms for solving multi-objective problems . Springer. [22] Vittorio Cortellessa, Antinisca Di Marco, and Paola Inverardi. 2011. Model-based software performance analysis . Vol. 980. Springer. [23] Conrado Daws. 2005. Symbolic and parametric model checking of discrete-time markov chains. In Theoretical Aspects of Computing . Springer, 280–294. [24] Rogério De Lemos, Holger Giese, Hausi A Müller, Mary Shaw, Jesper Andersson, Marin Litoiu, Bradley Schmerl, Gabriel Tamura, Norha M Villegas, Thomas Vogel, et al. 2013. Software engineering for self-adaptive systems: A second research roadmap. In Software Engineering for Self-Adaptive Systems II: International Seminar, Dagstuhl Castle, Germany, October 24-29, 2010 Revised Selected and Invited Papers . Springer, 1–32. [25] François-Michel De Rainville, Félix-Antoine Fortin, Marc-André Gardner, Marc Parizeau, and Christian Gagné. 2012. Deap: A python framework for evolutionary algorithms. In Proceedings of the 14th Annual Conference Companion on Genetic and Evolutionary Computation . 85–92. [26] Kalyanmoy Deb, Amrit Pratap, Sameer Agarwal, and TAMT Meyarivan. 2002. A fast and elitist multiobjective genetic algorithm: NSGA-II. IEEE Transactions on Evolutionary Computation 6, 2 (2002), 182–197. [27] Christian Dehnert, Sebastian Junges, Joost-Pieter Katoen, and Matthias Volk. 2017. A Storm is coming: A modern probabilistic model checker. In Computer Aided Verification (LNCS, Vol. 10427) , Rupak Majumdar and Viktor Kunˇ cak (Eds.). Springer, Cham, 592–600. [28] Yi Dong, Xingyu Zhao, and Xiaowei Huang. 2022. Dependability analysis of deep reinforcement learning based robotics and autonomous systems through probabilistic model checking. In 2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 5171–5178. [29] Ilenia Epifani, Carlo Ghezzi, Raffaela Mirandola, and Giordano Tamburrelli. 2009. Model evolution by run-time parameter adaptation. In the 31st Int. Conference on Software Engineering (ICSE’09) . IEEE, Washington, DC, USA, 111–121. [30] Ilenia Epifani, Carlo Ghezzi, and Giordano Tamburrelli. 2010. Change-point detection for black-box services. In Proc. of the 18th ACM SIGSOFT Int. Symp. on Foundations of Software Engineering (FSE’10) . ACM, New York, NY, USA, 227–236. [31] Alexandros Evangelidis, Gricel Vázquez, and Simos Gerasimou. 2026. Accelerat-ing Policy Synthesis in Large-Scale MDPs via Hierarchical Adaptive Refinement. 
+
+Proceedings of the ACM on Software Engineering 3, FSE (2026), 4459–4481. [32] Xinwei Fang, Radu Calinescu, Simos Gerasimou, and Faisal Alhwikem. 2021. Fast parametric model checking through model fragmentation. In 2021 IEEE/ACM 43rd Int. Conference on Software Engineering (ICSE) . IEEE, 835–846. [33] Xinwei Fang, Radu Calinescu, Simos Gerasimou, and Faisal Alhwikem. 2023. Fast parametric model checking with applications to software performability analysis. IEEE Transactions on Software Engineering 49, 10 (2023), 4707–4730. [34] Xinwei Fang, Radu Calinescu, Colin Paterson, and Julie Wilson. 2022. PRESTO: predicting system-level disruptions through parametric model checking. In Pro-ceedings of the 17th Symposium on Software Engineering for Adaptive and Self-Managing Systems . 91–97. [35] Antonio Filieri, Carlo Ghezzi, and Giordano Tamburrelli. 2011. Run-time efficient probabilistic model checking. In Proc. of the 33rd International Conference on Software Engineering (ICSE ’11) . ACM, New York, NY, USA, 341–350. doi:10. 1145/1985793.1985840 [36] Antonio Filieri, Carlo Ghezzi, and Giordano Tamburrelli. 2012. A formal ap-proach to adaptive software: Continuous assurance of non-functional requirements. 
+
+Formal Aspects of Computing 24, 2 (2012), 163–186. [37] Antonio Filieri, Lars Grunske, and Alberto Leva. 2015. Lightweight adaptive filtering for efficient learning and updating of probabilistic models. In Proc. of the 37th Int. Conference on Software Engineering (ICSE ’15) . IEEE, Florence, Italy, 200–211. [38] Antonio Filieri and Giordano Tamburrelli. 2013. Probabilistic verification at runtime for self-adaptive systems. In Assurances for Self-Adaptive Systems: Principles, Models, and Techniques , Javier Cámara, Rogério de Lemos, Carlo Ghezzi, and Antónia Lopes (Eds.). LNCS, Vol. 7740. Springer Berlin Heidelberg, Berlin, Heidelberg, 30–59. [39] A. Filieri, G. Tamburrelli, and C. Ghezzi. 2016. Supporting self-adaptation via quantitative verification and sensitivity analysis at run time. IEEE Transactions on Software Engineering 42, 1 (2016), 75–99. [40] Andrew Gelman, John B Carlin, Hal S Stern, David B Dunson, Aki Vehtari, and Donald B Rubin. 2014. Bayesian data analysis (3rd ed.). CRC press. [41] Simos Gerasimou, Radu Calinescu, and Giordano Tamburrelli. 2018. Synthesis of probabilistic models for quality-of-service software engineering. Automated Software Engineering 25, 4 (2018), 785–831. [42] Simos Gerasimou, Javier Cámara, Radu Calinescu, Naif Alasmari, Faisal Alh-wikem, and Xinwei Fang. 2021. Evolutionary-guided synthesis of verified Pareto-optimal MDP policies. In 2021 36th IEEE/ACM Int. Conference on Automated Software Engineering (ASE) . IEEE, 842–853. [43] Simos Gerasimou, Giordano Tamburrelli, and Radu Calinescu. 2015. Search-based synthesis of probabilistic models for Quality-of-Service software engineering. In 2015 30th IEEE/ACM Int. Conference on Automated Software Engineering (ASE’15) . IEEE, Lincoln, NE, USA, 319–330. [44] Sinem Getir Yaman, Pedro Ribeiro, Ana Cavalcanti, Radu Calinescu, Colin Pater-son, and Beverley Townsend. 2025. Specification, validation and verification of social, legal, ethical, empathetic and cultural requirements for autonomous agents. 
+
+Journal of Systems and Software (2025). Leveraging System-Level Observations to Learn Model Parameters for Quantitative Verification ASE ’26, October 12–16, 2026, Munich, Germany 
+
+[45] Carlo Ghezzi and Amir Molzam Sharifloo. 2013. Model-based verification of quantitative non-functional properties for software product lines. Information and Software Technology 55, 3 (2013), 508–524. [46] Ruben Giaquinta, Ruth Hoffmann, Murray Ireland, Alice Miller, and Gethin Norman. 2018. Strategy synthesis for autonomous agents using PRISM. In 10th NASA Formal Methods Symposium (NFM’18) . Springer, 220–236. [47] Raymonde Guindon. 1990. Knowledge exploited by experts during software system design. International Journal of Man-Machine Studies 33, 3 (1990), 279–304. [48] Irit Hadar, Pnina Soffer, and Keren Kenzi. 2014. The role of domain knowledge in requirements elicitation via interviews: an exploratory study. Requirements Engineering 19 (2014), 143–159. [49] Hans Hansson and Bengt Jonsson. 1994. A logic for reasoning about time and reliability. Formal Aspects of Computing 6, 5 (Sept. 1994), 512–535. [50] Mark Harman, S Afshin Mansouri, and Yuanyuan Zhang. 2012. Search-based software engineering: Trends, techniques and applications. ACM Computing Surveys (CSUR) 45, 1 (2012), 1–61. [51] Howard Heaton and Samy Wu Fung. 2023. Explainable AI via learning to optimize. 
+
+Scientific Reports 13, 1 (2023), 10103. [52] Wei Huang, Xingyu Zhao, and Xiaowei Huang. 2022. Embedding and extraction of knowledge in tree ensemble classifiers. Machine Learning 111, 5 (2022), 1925–1958. doi:10.1007/s10994-021-06068-6 [53] Christian Igel, Nikolaus Hansen, and Stefan Roth. 2007. Covariance matrix adaptation for multi-objective optimization. Evolutionary computation 15, 1 (2007), 1–28. [54] Nils Jansen, Florian Corzilius, Matthias Volk, Ralf Wimmer, Erika Abraham, Joost-Pieter Katoen, and Bernd Becker. 2014. Accelerating parametric probabilistic verification. In Quantitative Evaluation of Systems . Springer, Cham, 404–420. [55] Sumit K Jha, Edmund M Clarke, Christopher J Langmead, Axel Legay, André Platzer, and Paolo Zuliani. 2009. A bayesian approach to model checking bio-logical systems. In 7th Int. Conf. on Computational Methods in Systems Biology .Springer, 218–234. [56] Tiancheng Jin, Qingshun Wang, Lihua Xu, Chunmei Pan, Liang Dou, Haifeng Qian, Liang He, and Tao Xie. 2019. FinExpert: Domain-specific test generation for FinTech systems. In Proc. of the 27th ACM Joint Meeting on European Soft-ware Engineering Conference and Symposium on the Foundations of Software Engineering . 853–862. [57] Daniel Kerrigan, Jessica Hullman, and Enrico Bertini. 2021. A survey of domain knowledge elicitation in applied machine learning. Multimodal Technologies and Interaction 5, 12 (2021), 73. [58] S. Kullback and R. A. Leibler. 1951. On Information and Sufficiency. The Annals of Mathematical Statistics 22, 1 (1951), 79 – 86. [59] Marta Kwiatkowska, Gethin Norman, and David Parker. 2004. Modelling and verification of probabilistic systems. Mathematical Techniques for Analyzing Concurrent and Probabilistic Systems. CRM Monograph Series 23 (2004), 93– 215. [60] Marta Kwiatkowska, Gethin Norman, and David Parker. 2007. Stochastic model checking. Formal Methods for Performance Evaluation: 7th International School on Formal Methods for the Design of Computer, Communication, and Software Systems, SFM 2007, Bertinoro, Italy, May 28-June 2, 2007, Advanced Lectures 7 
+
+(2007), 220–270. [61] Marta Kwiatkowska, Gethin Norman, and David Parker. 2011. PRISM 4.0: Verification of probabilistic real-time systems. In Computer Aided Verification (LNCS, Vol. 6806) , Ganesh Gopalakrishnan and Shaz Qadeer (Eds.). Springer, Berlin, Heidelberg, 585–591. [62] Marta Kwiatkowska, Gethin Norman, and David Parker. 2022. Probabilistic Model Checking and Autonomy. Annual Review of Control, Robotics, and Autonomous Systems 5, 1 (2022), 385–410. doi:10.1146/annurev-control-042820-010947 [63] Bruno Lacerda, Fatma Faruq, David Parker, and Nick Hawes. 2019. Probabilistic planning with formal performance guarantees for mobile service robots. The International Journal of Robotics Research 38, 9 (2019), 1098–1123. [64] Morteza Lahijanian, Sean B Andersson, and Calin Belta. 2011. Temporal logic motion planning and control with probabilistic satisfaction guarantees. IEEE Transactions on Robotics 28, 2 (2011), 396–409. [65] Morteza Lahijanian, Sean B Andersson, and Calin Belta. 2015. Formal verification and synthesis for discrete-time stochastic systems. IEEE Trans. Automat. Control 
+
+60, 8 (2015), 2031–2045. [66] Nianyu Li, Sridhar Adepu, Eunsuk Kang, and David Garlan. 2020. Explanations for human-on-the-loop: A probabilistic model checking approach. In Proceedings of the IEEE/ACM 15th International Symposium on Software Engineering for Adaptive and Self-Managing Systems . 181–187. [67] Javier Cámara Moreno, Antónia Lopes, David Garlan, and Bradley Schmerl. 2014. Impact models for architecture-based self-adaptive systems. In Int. Conference on Formal Aspects of Component Software . Springer, 89–107. [68] Vittoria Nardone, Antonella Santone, Massimo Tipaldi, and Luigi Glielmo. 2016. Probabilistic model checking applied to autonomous spacecraft reconfiguration. In 2016 IEEE Metrology for Aerospace (MetroAeroSpace) . IEEE, 556–560. [69] Bashar Nuseibeh and Steve Easterbrook. 2000. Requirements engineering: a roadmap. In Proc. of the Conference on the Future of Software Engineering .35–46. [70] Giti Oghabi, Jamal Bentahar, and Abdelghani Benharref. 2011. On the verification of behavioral and probabilistic web services using transformation. In IEEE Int. Conf. on Web Services . IEEE, 548–555. [71] A. O’Hagan, C. E. Buck, A. Daneshkhah, J. R. Eiser, P. H. Garthwaite, D. J. Jenkinson, J. E. Oakley, and T. Rakow. 2006. Uncertain judgements: Eliciting experts’ probabilities . John Wiley & Sons. [72] Vilfredo Pareto. 1964. Cours d’économie politique . Vol. 1. Librairie Droz. [73] Diego Perez-Palacin and José Merseguer. 2010. Performance evaluation of self-reconfigurable service-oriented software with stochastic Petri nets. Electronic Notes in Theoretical Computer Science 261 (2010), 181–201. [74] Kumara Sastry, David Goldberg, and Graham Kendall. 2005. Genetic Algorithms .Springer US, Boston, MA, 97–125. [75] Sabine Sonnentag. 1998. Expertise in professional software design: A process study. Journal of applied psychology 83, 5 (1998), 703. [76] Russell Stewart and Stefano Ermon. 2017. Label-free supervision of neural networks with physics and domain knowledge. In Proceedings of the AAAI Con-ference on Artificial Intelligence , Vol. 31. [77] Guoxin Su and David S Rosenblum. 2013. Asymptotic bounds for quantitative verification of perturbed probabilistic systems. In International Conference on Formal Engineering Methods . Springer, 297–312. [78] Samir Tigane, Laid Kahloul, Nadia Hamani, Mohamed Khalgui, and Ma-sood Ashraf Ali. 2022. On quantitative properties preservation in reconfigurable generalized stochastic Petri nets. IEEE Transactions on Systems, Man, and Cyber-netics: Systems (2022). [79] Milan Tomy, Bruno Lacerda, Nick Hawes, and Jeremy L Wyatt. 2020. Battery charge scheduling in long-life autonomous mobile robots via multi-objective decision making under uncertainty. Robotics and Autonomous Systems 133 (2020), 103629. [80] Gricel Vázquez, Alexandros Evangelidis, Sepeedeh Shahbeigi, Radu Calinescu, and Simos Gerasimou. 2026. Mind the Prompt: Self-adaptive Generation of Task Plan Explanations via LLMs. In Proceedings of the 21st International Conference on Software Engineering for Adaptive and Self-Managing Systems . 162–175. [81] Gricel Vázquez, Alexandros Evangelidis, Sepeedeh Shahbeigi, and Simos Gerasi-mou. 2025. Adaptive human-robot collaborative missions using hybrid task plan-ning. In 2025 IEEE/ACM 20th Symposium on Software Engineering for Adaptive and Self-Managing Systems (SEAMS) . IEEE, 73–84. [82] Thomas Vogel. [n. d.]. Self-Adaptive Systems Exemplars. https://www.hpi.uni-potsdam.de/giese/public/selfadapt/exemplars. [83] Gero Walter and Thomas Augustin. 2009. Imprecision and prior-data conflict in generalized Bayesian inference. Journal of Statistical Theory and Practice 3, 1 (2009), 255–271. [84] Danny Weyns, Radu Calinescu, Raffaela Mirandola, Kenji Tei, Maribel Acosta, Nelly Bencomo, Amel Bennaceur, Nicolas Boltz, Tomas Bures, Javier Camara, et al. 2023. Towards a research agenda for understanding and managing uncertainty in self-adaptive systems. ACM SIGSOFT Software Engineering Notes 48, 4 (2023), 20–36. [85] George Wright and Peter Ayton. 1987. Eliciting and modelling expert knowledge. 
+
+Decision Support Systems 3, 1 (1987), 13–26. [86] Xiaozheng Xie, Jianwei Niu, Xuefeng Liu, Zhengsu Chen, Shaojie Tang, and Shui Yu. 2021. A survey on incorporating domain knowledge into deep learning for medical image analysis. Medical Image Analysis 69 (2021), 101985. [87] Fokion Zervoudakis, David S Rosenblum, Sebastian Elbaum, and Anthony Finkel-stein. 2013. Cascading verification: an integrated method for domain-specific model checking. In Proc. of the 9th Joint Meeting on Foundations of Software Engineering . 400–410. [88] Xingyu Zhao, Radu Calinescu, Simos Gerasimou, Valentin Robu, and David Flynn. 2020. Interval Change-Point Detection for Runtime Probabilistic Model Checking. In Proc. of the 35th IEEE/ACM Int. Conf. on Automated Software Engineering (ASE’20) . ACM, 163–174. doi:10.1145/3324884.3416565 [89] Xingyu Zhao, Simos Gerasimou, Radu Calinescu, Calum Imrie, Valentin Robu, and David Flynn. 2024. Bayesian learning for the robust verification of au-tonomous robots. Communications Engineering 3, 1 (2024), 18. [90] Xingyu Zhao, Matt Osborne, Jenny Lantair, Valentin Robu, David Flynn, Xiaowei Huang, Michael Fisher, Fabio Papacchini, and Angelo Ferrando. 2019. Towards integrating formal verification of autonomous robots with battery prognostics and health management. In Software Engineering and Formal Methods (LNCS, Vol. 11724) , Peter Csaba Ölveczky and Gwen Salaün (Eds.). Springer, 105–124. [91] Xingyu Zhao, Valentin Robu, David Flynn, Fateme Dinmohammadi, Michael Fisher, and Matt Webster. 2019. Probabilistic model checking of robots deployed in extreme environments. In Proc. of the 33rd AAAI Conference on Artificial Intelligence , Vol. 33. Honolulu, Hawaii, USA, 8076–8084. [92] Xingyu Zhao, Kizito Salako, Lorenzo Strigini, Valentin Robu, and David Flynn. 2020. Assessing safety-critical systems from operational testing: A study on autonomous vehicles. Information and Software Technology 128 (2020), 106393. [93] Eckart Zitzler, Joshua Knowles, and Lothar Thiele. 2008. Quality assessment of Pareto set approximations. Multiobjective optimization (2008), 373–404. ASE ’26, October 12–16, 2026, Munich, Germany Simos Gerasimou and Xingyu Zhao 
+
+[94] Eckart Zitzler, Marco Laumanns, and Lothar Thiele. 2001. SPEA2: Improving the strength Pareto evolutionary algorithm. In Evolutionary Methods for Design Opti-mization and Control with Applications to Industrial Problems (EUROGEN’01) .95–100.

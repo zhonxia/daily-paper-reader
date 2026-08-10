@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-10T21:07:53.923400+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.03489v1",
+      "source": "arxiv",
+      "title": "Leveraging System-Level Observations to Inform Bayesian Learning of Model Parameters for Quantitative Verification",
+      "abstract": "Combining Bayesian learning and quantitative verification is a powerful toolset for analysing key quantitative properties of software systems, like reliability and response time. However, the accuracy and robustness of verification results strongly depend on the prior knowledge (PK) underlying Bayesian inference. This knowledge reflects original beliefs about the probability of events and typically depends on domain expertise. Using inaccurate or uninformative PK can negatively affect quantitative analysis, yielding incorrect verification results. Our EPIK approach tackles this important challenge by eliciting and embedding PK in quantitative verification equipped with Bayesian estimators. Unlike existing approaches that require PK on formal model transition parameters, EPIK leverages system-level properties that are directly observable and are linked to real-world semantics. EPIK formulates a twofold optimisation problem to derive the distributions of unknown transition parameters and then embeds these distributions to verify new or difficult-to-measure (elusive) properties. The detailed experimental evaluation using multiple variants of real-world case studies and diverse EPIK instantiations shows its effectiveness, flexibility and generality.",
+      "authors": [
+        "Simos Gerasimou",
+        "Xingyu Zhao"
+      ],
+      "primary_category": "cs.SE",
+      "categories": [
+        "cs.SE",
+        "cs.AI",
+        "cs.LO"
+      ],
+      "published": "2026-08-04T11:25:44+00:00",
+      "link": "https://arxiv.org/pdf/2608.03489v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Bayesian learning of model parameters with prior knowledge elicitation, applicable to parameter learning under uncertainty",
+      "llm_evidence_cn": "贝叶斯参数学习结合先验知识获取，适用于不确定性条件下的参数学习",
+      "llm_evidence": "贝叶斯参数学习结合先验知识获取，适用于不确定性条件下的参数学习",
+      "canonical_evidence": "贝叶斯参数学习结合先验知识获取，适用于不确定性条件下的参数学习",
+      "llm_tldr_en": "Presents EPIK to elicit and embed prior knowledge in Bayesian estimators for quantitative verification, improving robustness of parameter learning from system observations.",
+      "llm_tldr_cn": "针对定量验证中贝叶斯参数学习对先验知识敏感的问题，本文提出EPIK方法，通过系统级观测获取并嵌入先验知识。该方法结合贝叶斯估计器来估计可靠性等定量属性，减少不准确先验对分析结果的影响。实验表明EPIK能提高参数学习的鲁棒性。该思路可迁移到置信规则库的参数优化与学习问题中。",
+      "llm_tldr": "针对定量验证中贝叶斯参数学习对先验知识敏感的问题，本文提出EPIK方法，通过系统级观测获取并嵌入先验知识。该方法结合贝叶斯估计器来估计可靠性等定量属性，减少不准确先验对分析结果的影响。实验表明EPIK能提高参数学习的鲁棒性。该思路可迁移到置信规则库的参数优化与学习问题中。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "BRB optimization and parameter learning methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
