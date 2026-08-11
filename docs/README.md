@@ -6,24 +6,26 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-10
-- 运行时间：2026-08-10 21:08:40 UTC
+- 最新运行日期：2026-08-11
+- 运行时间：2026-08-11 21:08:58 UTC
 - 运行状态：成功
 - 本次总论文数：1
 - 精读区：0
 - 速读区：1
 
 ### 今日简报（AI）
-今日完成1篇速读，聚焦定量验证中的参数学习；《Leveraging System-Level Observations to Inform Bayesian Learning of Model Parameters for Quantitative Verification》值得关注，评分6.0。建议后续可精读该文，补充贝叶斯推断与验证框架的细节。
-- 详情：[/202608/10/README](/202608/10/README)
+今日速读1篇论文，无精读。  
+值得关注的是《Fixed-Point Characterisations of Extremal Distributions under Partial Distributional Constraints》（6.0/10），聚焦部分分布约束下极值分布的不动点刻画。  
+建议可进一步精读该文或追查其引用，以理解该方向核心结论。
+- 详情：[/202608/11/README](/202608/11/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Leveraging System-Level Observations to Inform Bayesian Learning of Model Parameters for Quantitative Verification](/202608/10/2608.03489v1-leveraging-system-level-observations-to-inform-bayesian-learning-of-model-parameters-for-quantitative-verification)  
+1. [Fixed-Point Characterisations of Extremal Distributions under Partial Distributional Constraints](/202608/11/2608.04315v1-fixed-point-characterisations-of-extremal-distributions-under-partial-distributional-constraints)  
    标签：评分：6.0/10、query:brb-er
-   evidence：贝叶斯参数学习结合先验知识获取，适用于不确定性条件下的参数学习
+   evidence：通过部分约束下的极值分布不动点刻画，为BRB中的信念分布推断与不确定性建模提供可迁移方法
 
 
 <div class="dpr-home-promo-card">

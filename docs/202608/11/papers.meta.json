@@ -1,0 +1,24 @@
+{
+  "label": "2026-08-11",
+  "date": "2026-08-11",
+  "generated_at": "2026-08-11T21:09:04",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202608/11/2608.04315v1-fixed-point-characterisations-of-extremal-distributions-under-partial-distributional-constraints",
+      "section": "quick",
+      "title_en": "Fixed-Point Characterisations of Extremal Distributions under Partial Distributional Constraints",
+      "authors": "Kizito Salako, Rabiu Tsoho Muhammad",
+      "date": "2026-08-05",
+      "pdf": "https://arxiv.org/pdf/2608.04315v1",
+      "score": "6.0",
+      "evidence": "通过部分约束下的极值分布不动点刻画，为BRB中的信念分布推断与不确定性建模提供可迁移方法",
+      "tldr": "针对参数空间可测子集上部分指定的分布族，提出求解鲁棒推断极值问题的统一框架。目标函数为期望之比，允许解析、连续、分段连续及其一致极限。通过固定点条件刻画极值分布的支撑位置，并证明极值可由 admissible 分布序列逼近。建立收敛性与渐近性质，提供实用计算方法，将极值分布约简、固定点刻画与近似分析相结合，扩展了鲁棒贝叶斯推断等方法。",
+      "tags": "query:brb-er",
+      "abstract_en": "We present a methodological framework for solving robust inference problems with partially specified distributions over measurable subsets of a parameter space. Partial specifications define a set of admissible distributions. The goal is to determine extremal values (over these admissible distributions) for statistical quantities, where these quantities---these objective functions---are ratios of expectations of analytic functions, continuous functions, piecewise continuous functions, and uniform limits of piecewise continuous functions. We show that extremal values are approached by sequences of admissible distributions, whose limiting extremal distributions are characterised by fixed-point conditions on their support locations. This characterises where extremal distributions place probability mass and yields a practical computational framework for solving the corresponding optimisation problems. We establish convergence and asymptotic properties of the resulting extremal distributions and extremal objective function values. This work extends robust inference methods (e.g. robust Bayesian inference) by combining extremal-distribution reduction, fixed-point characterisation, and approximation-based analysis within a unified framework.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
