@@ -1,0 +1,54 @@
+{
+  "label": "2026-08-12",
+  "date": "2026-08-12",
+  "generated_at": "2026-08-12T19:54:00",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202608/12/2608.10650v1-decision-aware-approximation-of-belief-functions-for-evidential-combinatorial-optimization",
+      "section": "deep",
+      "title_en": "Decision-Aware Approximation of Belief Functions for Evidential Combinatorial Optimization",
+      "authors": "Sohaib Afifi",
+      "date": "2026-08-11",
+      "pdf": "https://arxiv.org/pdf/2608.10650v1",
+      "score": "8.0",
+      "evidence": "面向决策的信念函数近似与证据组合优化",
+      "tldr": "针对证据组合优化中质量函数近似仅关注表征距离而忽视决策质量的问题，提出决策感知近似方法，以决策遗憾为目标。在最短路径上证明距离最优近似会翻转决策，而决策感知合并可保留。给出单点界、精确动态规划及在线剪枝扩展，实验表明决策感知压缩更少翻转决策。",
+      "tags": "query:brb-er",
+      "abstract_en": "Reducing the number of focal elements of a mass function is classically driven by an intrinsic distance, such as Jaccard or Jousselme, that keeps the approximation close to the original as a body of evidence. We consider instead the case where the mass function feeds a linear combinatorial optimisation problem with evidential costs. What should then be preserved is not the closeness of the two mass functions, but the quality of the decision they induce. We introduce a decision-aware approximation that targets the regret of the decision: one decides with the cheaper approximation and is evaluated under the true mass function. On a minimal shortest path, the distance-optimal approximation flips the decision while a decision-aware merge preserves it, and this occurs on a non-negligible fraction of random instances. We prove a one-point bound that localises the regret at the true optimum, turn it into an exact dynamic program for the scalar case, and extend it to an online version that prunes focal elements before the final cost is known. In experiments the decision-aware compressor flips the decision less often than representation-aware compression, for both the linear criterion and a non-linear proxy read-out.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/12/2608.10398v1-elvae-evidential-learning-based-variational-autoencoder-for-uncertainty-aware-generation",
+      "section": "quick",
+      "title_en": "ELVAE: Evidential Learning-Based Variational Autoencoder for Uncertainty-Aware Generation",
+      "authors": "Ge Wang",
+      "date": "2026-08-11",
+      "pdf": "https://arxiv.org/pdf/2608.10398v1",
+      "score": "7.0",
+      "evidence": "基于证据学习的正态逆伽马后验进行不确定性感知生成",
+      "tldr": "标准VAE生成时无法区分潜在位置不确定性与固有变异，ELVAE采用证据学习，为每个潜在坐标赋予输入相关的正态-逆伽马后验，从而得到显式锚点不确定性。MNIST冻结分类器实验中，该不确定性清晰分层了生成数字的语义可靠性；零位移控制显示主要效应来自锚点可重生成性，扰动贡献其次。这一机制使不确定性成为生成阶段可控变量，既能提升低不确定锚点的可靠性，也可用于高不确定性压力测试。",
+      "tags": "query:brb-er",
+      "abstract_en": "Variational autoencoders generate samples from probabilistic latent representations but do not distinguish uncertainty about the latent location from variability around it. We formulate ELVAE, an evidential learning-based VAE in which each latent coordinate is governed by an input-dependent normal-inverse-gamma posterior. This hierarchy yields an explicit latent-location uncertainty that can be used during generation, not merely reported after inference: low-uncertainty anchors support more reliable synthetic samples, while high-uncertainty anchors can be deliberately exploited for stress testing. The objective is an exact evidence lower bound, and we show that direct regularization of the full hierarchy is required, since the marginalized latent law alone cannot identify the uncertainty decomposition. In an MNIST generation pilot with a frozen external classifier, this uncertainty clearly stratified the semantic reliability of generated digits. A zero-displacement control revealed that most of the effect reflects how reliably an anchor can be re-generated, while a smaller but distinct component is attributable to uncertainty-scaled perturbation itself. The effect holds only under within-class uncertainty ranking, and its magnitude varies across seeds. These findings support the learned latent-location uncertainty as a practical control variable for uncertainty-aware generation, separating anchor reliability from perturbation-induced failure.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/12/2608.09190v1-structure-preserving-uncertainty-propagation-in-first-order-proof-search",
+      "section": "quick",
+      "title_en": "Structure-Preserving Uncertainty Propagation in First-Order Proof Search",
+      "authors": "Tanel Tammet",
+      "date": "2026-08-10",
+      "pdf": "https://arxiv.org/pdf/2608.09190v1",
+      "score": "6.0",
+      "evidence": "一阶证明搜索结合数值置信度与默认规则，体现了不确定条件下的规则推理，与置信规则库和证据推理的复合主题一致",
+      "tldr": "现有证明搜索缺乏对不确定性传播和默认规则异常的结构化定量报告。本文在GK一阶证明器上引入保结构定量机制，基于保留证明历史重建不确定基前提，并计算至少一个证明可用的概率且不重复计数共享前提；同时解析中间原子的正负支持以评估异常条件。实现无需全局接地，能区分正支持、负支持、冲突与无知。与概率逻辑、ASP等对比，明确了一致性、语义差异、不支持翻译和不完整计算情形。",
+      "tags": "query:brb-er",
+      "abstract_en": "GK is a query-directed first-order prover that extends ordinary resolution-based proof search with explicit positive and negative claims, numerical confidence values, and prioritized default rules with exceptions. It works directly with non-ground clauses, including equality and function terms. Candidate proofs are found by bounded first-order proof search; exception conditions of defaults are checked by further bounded searches, recursively when exceptions themselves depend on defaults. This avoids requiring a finite global grounding, while allowing incomplete searches to be reported as such.   This paper adds structure-preserving quantitative reporting to that framework. Retained proof histories are used in two calculations. The first reconstructs the uncertain ground premises used by each proof and computes the probability that at least one retained proof is available, without counting shared premises independently. The second resolves positive and negative support at intermediate atoms before that support is propagated through later rules; the same calculation evaluates uncertain exception conditions for individual rule applications. Reports separate positive support, negative support, conflict, and ignorance and identify detected incomplete calculations or fallbacks. The implementation performs bounded reconstruction and dependency traversal after proof search and still requires no global grounding. Analytic examples and independent simulators reproduce the reference calculations on their stated fragments. Comparisons with probabilistic logic, probabilistic ASP, default logic, and goal-directed ASP identify cases of agreement, semantic difference, unsupported translation, and incomplete computation.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
