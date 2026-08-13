@@ -6,29 +6,36 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-12
-- 运行时间：2026-08-12 19:53:55 UTC
+- 最新运行日期：2026-08-13
+- 运行时间：2026-08-13 21:21:43 UTC
 - 运行状态：成功
-- 本次总论文数：3
-- 精读区：1
-- 速读区：2
+- 本次总论文数：5
+- 精读区：0
+- 速读区：5
 
 ### 今日简报（AI）
-今日精读1篇、速读2篇，聚焦“证据组合优化”与“不确定性建模”两大主题。最值得关注的是《Decision-Aware Approximation of Belief Functions for Evidential Combinatorial Optimization》（8.0分），它探讨了决策感知下置信函数近似，对组合优化中的证据推理有直接启发。若想快速上手，可先泛读ELVAE和结构保持的不确定性传播，再深入精读这篇高分论文。
-- 详情：[/202608/12/README](/202608/12/README)
+今日速读5篇论文，聚焦深度学习中不确定性量化与概率逻辑推理方向。重点关注认知不确定性估计（线性化估计器）及不完整信息下的医学诊断推理（中风检测）。建议优先精读这两篇，可为理论与实践结合提供参考。
+- 详情：[/202608/13/README](/202608/13/README)
 
 ### 精读区论文标签
-1. [Decision-Aware Approximation of Belief Functions for Evidential Combinatorial Optimization](/202608/12/2608.10650v1-decision-aware-approximation-of-belief-functions-for-evidential-combinatorial-optimization)  
-   标签：评分：8.0/10、query:brb-er
-   evidence：面向决策的信念函数近似与证据组合优化
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [ELVAE: Evidential Learning-Based Variational Autoencoder for Uncertainty-Aware Generation](/202608/12/2608.10398v1-elvae-evidential-learning-based-variational-autoencoder-for-uncertainty-aware-generation)  
-   标签：评分：7.0/10、query:brb-er
-   evidence：基于证据学习的正态逆伽马后验进行不确定性感知生成
-2. [Structure-Preserving Uncertainty Propagation in First-Order Proof Search](/202608/12/2608.09190v1-structure-preserving-uncertainty-propagation-in-first-order-proof-search)  
+1. [Tracing sources of epistemic uncertainty in deep learning predictions: homo- and hetero-scedastic linearized estimators](/202608/13/2608.07630v1-tracing-sources-of-epistemic-uncertainty-in-deep-learning-predictions-homo--and-hetero-scedastic-linearized-estimators)  
    标签：评分：6.0/10、query:brb-er
-   evidence：一阶证明搜索结合数值置信度与默认规则，体现了不确定条件下的规则推理，与置信规则库和证据推理的复合主题一致
+   evidence：分解预测中认知与偶然不确定性的来源
+2. [Deep probabilistic logic programming for diagnostic reasoning from incomplete information: A case study in stroke detection](/202608/13/2608.08561v1-deep-probabilistic-logic-programming-for-diagnostic-reasoning-from-incomplete-information-a-case-study-in-stroke-detection)  
+   标签：评分：6.0/10、query:brb-er
+   evidence：利用深度概率逻辑编程进行规则推理与不确定性建模
+3. [ELVAE: Evidential Learning-Based Variational Autoencoder for Uncertainty-Aware Generation](/202608/13/2608.10398v1-elvae-evidential-learning-based-variational-autoencoder-for-uncertainty-aware-generation)  
+   标签：评分：6.0/10、query:brb-er
+   evidence：基于证据学习的变分自编码器不确定性建模，可迁移到置信规则库的不确定性建模中
+4. [CLEAR: Class-wise Expert Aggregation with Structured Sampling for Long-Tailed Classification](/202608/13/2608.11287v1-clear-class-wise-expert-aggregation-with-structured-sampling-for-long-tailed-classification)  
+   标签：评分：6.0/10、query:brb-er
+   evidence：与证据推理组合类似的可靠性感知专家聚合
+5. [Adaptive Bregman Proximal Stochastic Gradient with a Stabilized Barzilai--Borwein Step Size](/202608/13/2608.12009v1-adaptive-bregman-proximal-stochastic-gradient-with-a-stabilized-barzilai--borwein-step-size)  
+   标签：评分：6.0/10、query:brb-er
+   evidence：该随机梯度优化方法可应用于置信规则库参数学习
 
 
 <div class="dpr-home-promo-card">

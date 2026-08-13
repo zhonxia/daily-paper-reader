@@ -1,0 +1,208 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-13T21:17:10.764877+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.07630v1",
+      "source": "arxiv",
+      "title": "Tracing sources of epistemic uncertainty in deep learning predictions: homo- and hetero-scedastic linearized estimators",
+      "abstract": "We adapt two classical statistical estimators for quantifying uncertainty to modern deep learning, in order to provide clearer insights into uncertainty attributable to two sources : aleatoric uncertainty, or locally scarce data. Our approach leverages recent advances in approximate Fisher Information Matrices, to enable scaling to actual architectures. Experimental results demonstrate how each test points is differentially impacted by both sources, highlighting the practical utility of our estimators in improving the robustness of real-world applications.",
+      "authors": [
+        "Pierre Nodet",
+        "Thomas George"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-08-07T12:18:52+00:00",
+      "link": "https://arxiv.org/pdf/2608.07630v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Decomposes epistemic vs aleatoric uncertainty sources in predictions",
+      "llm_evidence_cn": "分解预测中认知与偶然不确定性的来源",
+      "llm_evidence": "分解预测中认知与偶然不确定性的来源",
+      "canonical_evidence": "分解预测中认知与偶然不确定性的来源",
+      "llm_tldr_en": "This paper adapts statistical estimators to deep learning for quantifying and tracing epistemic uncertainty, separating aleatoric and epistemic sources via approximate Fisher Information. These methods provide tools for understanding uncertainty composition, which can inform uncertainty modeling in belief rule base systems.",
+      "llm_tldr_cn": "深度学习中现有不确定性量化方法往往难以区分认知不确定性和偶然不确定性，也难扩展到实际模型。该文利用近似Fisher信息矩阵，结合同方差与异方差线性化估计量，为现代深度模型提供了可扩展的不确定性来源追踪方法。实验显示不同测试点受两类不确定性影响存在差异，有助于理解不确定性构成。该技术可为置信规则库中精细化的不确定性建模提供方法论支持。",
+      "llm_tldr": "深度学习中现有不确定性量化方法往往难以区分认知不确定性和偶然不确定性，也难扩展到实际模型。该文利用近似Fisher信息矩阵，结合同方差与异方差线性化估计量，为现代深度模型提供了可扩展的不确定性来源追踪方法。实验显示不同测试点受两类不确定性影响存在差异，有助于理解不确定性构成。该技术可为置信规则库中精细化的不确定性建模提供方法论支持。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "uncertainty modeling in belief rule base",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.08561v1",
+      "source": "arxiv",
+      "title": "Deep probabilistic logic programming for diagnostic reasoning from incomplete information: A case study in stroke detection",
+      "abstract": "In medical applications, raw data is frequently associated with significant privacy concerns, lending particular importance to the encoding of summary statistics from the literature. On the other hand, deep learning has become an invaluable tool for assessing symptoms based on visual or auditory sensor data. DeepProbLog allows for an extensible neuro-symbolic approach that accommodates connectionist components to analyse patient images within a transparent and rigorous probabilistic framework, namely probabilistic logic programming under the distribution semantics. Framed as a case study in stroke detection from multimodal data, this contribution explores the pathway from summary statistics available in the literature to a DeepProbLog-based diagnostic system. It suggests a workflow using established maximum entropy techniques to complete available probabilistic information and the probabilistic logic programming system ProbLog 2 to move from the entropy-maximising causal model to a discriminative neuro-symbolic model expressible within DeepProbLog. The relative performance of models derived from less complete data is analysed alongside the potential of the probabilistic inductive logic programming system ProbFOIL 2 for compressing large discriminative models, and the perspectives and implications of using DeepProbLog for diagnostic reasoning are discussed.",
+      "authors": [
+        "Felix Weitkämper",
+        "Monchito Avila",
+        "Elizabeth Nanjala",
+        "Siska",
+        "Grace Zawadi"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-09T08:04:14+00:00",
+      "link": "https://arxiv.org/pdf/2608.08561v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Rule-based inference via deep probabilistic logic programming under uncertainty",
+      "llm_evidence_cn": "利用深度概率逻辑编程进行规则推理与不确定性建模",
+      "llm_evidence": "利用深度概率逻辑编程进行规则推理与不确定性建模",
+      "canonical_evidence": "利用深度概率逻辑编程进行规则推理与不确定性建模",
+      "llm_tldr_en": "DeepProbLog integrates deep learning with probabilistic logic programming for transparent, rigorous diagnostic reasoning from incomplete information in stroke detection.",
+      "llm_tldr_cn": "该论文提出将深度概率逻辑编程DeepProbLog应用于医学诊断推理，通过分布语义下的概率逻辑编程融合连接主义组件，可分析患者图像，并在不完整信息下提供透明且严谨的推理框架。以中风检测为例，探索了从文献汇总统计到多模态证据的推理路径，展示了神经符号方法在不确定性诊断中的潜力，为规则驱动的智能决策系统提供了可借鉴的推理机制。",
+      "llm_tldr": "该论文提出将深度概率逻辑编程DeepProbLog应用于医学诊断推理，通过分布语义下的概率逻辑编程融合连接主义组件，可分析患者图像，并在不完整信息下提供透明且严谨的推理框架。以中风检测为例，探索了从文献汇总统计到多模态证据的推理路径，展示了神经符号方法在不确定性诊断中的潜力，为规则驱动的智能决策系统提供了可借鉴的推理机制。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "rule based inference methodology using evidential reasoning",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.10398v1",
+      "source": "arxiv",
+      "title": "ELVAE: Evidential Learning-Based Variational Autoencoder for Uncertainty-Aware Generation",
+      "abstract": "Variational autoencoders generate samples from probabilistic latent representations but do not distinguish uncertainty about the latent location from variability around it. We formulate ELVAE, an evidential learning-based VAE in which each latent coordinate is governed by an input-dependent normal-inverse-gamma posterior. This hierarchy yields an explicit latent-location uncertainty that can be used during generation, not merely reported after inference: low-uncertainty anchors support more reliable synthetic samples, while high-uncertainty anchors can be deliberately exploited for stress testing. The objective is an exact evidence lower bound, and we show that direct regularization of the full hierarchy is required, since the marginalized latent law alone cannot identify the uncertainty decomposition. In an MNIST generation pilot with a frozen external classifier, this uncertainty clearly stratified the semantic reliability of generated digits. A zero-displacement control revealed that most of the effect reflects how reliably an anchor can be re-generated, while a smaller but distinct component is attributable to uncertainty-scaled perturbation itself. The effect holds only under within-class uncertainty ranking, and its magnitude varies across seeds. These findings support the learned latent-location uncertainty as a practical control variable for uncertainty-aware generation, separating anchor reliability from perturbation-induced failure.",
+      "authors": [
+        "Ge Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-08-11T02:45:59+00:00",
+      "link": "https://arxiv.org/pdf/2608.10398v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Evidential learning for uncertainty-aware generation; transferable to belief rule base uncertainty modeling",
+      "llm_evidence_cn": "基于证据学习的变分自编码器不确定性建模，可迁移到置信规则库的不确定性建模中",
+      "llm_evidence": "基于证据学习的变分自编码器不确定性建模，可迁移到置信规则库的不确定性建模中",
+      "canonical_evidence": "基于证据学习的变分自编码器不确定性建模，可迁移到置信规则库的不确定性建模中",
+      "llm_tldr_en": "ELVAE extends VAEs with evidential learning, using input-dependent normal-inverse-gamma posteriors to explicitly capture latent-location uncertainty. It provides an exact ELBO, showing that direct regularization of the full hierarchy is necessary, and enables uncertainty-aware sample generation or stress testing.",
+      "llm_tldr_cn": "该论文提出ELVAE，一种基于证据学习的变分自编码器，通过为每个潜在坐标赋予输入相关的正态-逆伽马后验，显式区分潜在位置的不确定性与周围变异性。这种方法能够利用低不确定性锚点生成更可靠的样本，也可故意利用高不确定性进行压力测试。实验表明直接正则化整个层级是必要的，因为边际化后会丢失关键信息。该工作为证据推理框架下的不确定性建模提供了一种新的生成式工具。",
+      "llm_tldr": "该论文提出ELVAE，一种基于证据学习的变分自编码器，通过为每个潜在坐标赋予输入相关的正态-逆伽马后验，显式区分潜在位置的不确定性与周围变异性。这种方法能够利用低不确定性锚点生成更可靠的样本，也可故意利用高不确定性进行压力测试。实验表明直接正则化整个层级是必要的，因为边际化后会丢失关键信息。该工作为证据推理框架下的不确定性建模提供了一种新的生成式工具。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "uncertainty modeling in belief rule base",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.11287v1",
+      "source": "arxiv",
+      "title": "CLEAR: Class-wise Expert Aggregation with Structured Sampling for Long-Tailed Classification",
+      "abstract": "Long-tailed classification poses a reliability challenge because models trained on imbalanced data are unevenly reliable across frequent and underrepresented classes. While existing methods address imbalance through re-balancing, adjustment, representation learning, or multi-expert modeling, they rarely estimate which expert should be trusted for each class. This paper proposes CLEAR (Class-wise reLiability-aware Expert Aggregation for long-tailed Recognition), a modular ensemble framework for long-tailed classification. CLEAR generates diverse experts through threshold-based structured sampling while preserving the full label space, then estimates a class-wise trust score for each expert using a smoothed class-wise precision formulation. During inference, expert predictions are combined through class-wise generalized product-of-experts aggregation, allowing different experts to be emphasized for different classes. Experiments on CIFAR-100-LT, ImageNet-LT, and Places-LT across multiple backbones show that CLEAR achieves competitive overall accuracy and particularly strong few-shot performance. These results support class-wise expert reliability as a useful design principle for long-tailed ensemble learning.",
+      "authors": [
+        "Gawon Lim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-08-11T15:45:09+00:00",
+      "link": "https://arxiv.org/pdf/2608.11287v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Reliability-aware expert aggregation similar to evidential reasoning combination",
+      "llm_evidence_cn": "与证据推理组合类似的可靠性感知专家聚合",
+      "llm_evidence": "与证据推理组合类似的可靠性感知专家聚合",
+      "canonical_evidence": "与证据推理组合类似的可靠性感知专家聚合",
+      "llm_tldr_en": "CLEAR proposes a modular ensemble framework for long-tailed classification that estimates class-wise trust scores for experts and aggregates them via structured sampling. The reliability-aware aggregation is conceptually aligned with evidential reasoning, offering a transferable method for combining belief distributions in BRB.",
+      "llm_tldr_cn": "长尾分类中不同类别上的专家可靠性不均衡，以往方法很少估计每个专家在各类别上的可信度。该文提出CLEAR框架，通过阈值结构采样生成多样专家，并用平滑的类级精度估计每类的信任得分，再按信任加权聚合。其可靠性感知聚合思路与证据推理中的证据组合方式高度相似，可为置信规则库的多专家或多规则融合提供方法论参考。",
+      "llm_tldr": "长尾分类中不同类别上的专家可靠性不均衡，以往方法很少估计每个专家在各类别上的可信度。该文提出CLEAR框架，通过阈值结构采样生成多样专家，并用平滑的类级精度估计每类的信任得分，再按信任加权聚合。其可靠性感知聚合思路与证据推理中的证据组合方式高度相似，可为置信规则库的多专家或多规则融合提供方法论参考。",
+      "llm_tags": [
+        "query:brb-er:composite"
+      ],
+      "matched_query_tag": "query:brb-er:composite",
+      "matched_query_text": "Papers central to 请你帮我找有关置信规则库（BRB）和证据推理（E-R）的相关论文，或者是其他领域有助于这个研究的论文。, especially work that connects or combines: belief rule base inference methodology; evidential reasoning approach decision making; belief rule base expert system uncertainty; rule based inference methodology using evidential reasoning; uncertainty modeling in belief rule base; belief distribution inference in BRB; Belief rule base and evidential reasoning for uncertain decision making; BRB optimization and parameter learning methods; Evidence reasoning theory applications in expert systems; Comparative studies of belief rule base with other rule based systems.",
+      "matched_requirement_id": "req-composite-brb-er",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.12009v1",
+      "source": "arxiv",
+      "title": "Adaptive Bregman Proximal Stochastic Gradient with a Stabilized Barzilai--Borwein Step Size",
+      "abstract": "Bregman proximal stochastic gradient (BPSG) methods bring variance-reduced composite optimization to objectives whose geometry is poorly captured by Euclidean smoothness. Their performance, however, remains sensitive to the step size: raw stochastic curvature estimates can fluctuate sharply, whereas line searches add repeated proximal evaluations. We introduce Ada-BPSG, a line-search-free BPSG method that couples the SAGA gradient table with a stabilized Barzilai--Borwein (BB) candidate. A mediant aggregates incremental secant information so that nearly singular local ratios receive little weight, and an explicit safeguard translates the resulting curvature estimate into the bounded step-size sequence required for convergence. This design yields a direct analytical chain from relative smoothness and component-wise variance control to convergence in finite-dimensional normed spaces. We prove an $O(n/K)$ ergodic rate for convex objectives, a restarted linear rate under relative quadratic growth, and an $O(1/K)$ bound for a Bregman proximal residual in the nonconvex setting. On logistic regression and sparse nonnegative matrix factorization, Ada-BPSG combines low objective values with substantially less sensitivity to the initial step size than standard variance-reduced baselines, while avoiding line search.",
+      "authors": [
+        "Chenhan Jin",
+        "Shengze Xu",
+        "Binghui Xie",
+        "Kaiwen Zhou",
+        "Fan Jia",
+        "James Cheng",
+        "Tieyong Zeng"
+      ],
+      "primary_category": "math.OC",
+      "categories": [
+        "math.OC",
+        "cs.LG"
+      ],
+      "published": "2026-08-12T12:46:05+00:00",
+      "link": "https://arxiv.org/pdf/2608.12009v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "stochastic gradient optimization method applicable to BRB parameter learning",
+      "llm_evidence_cn": "该随机梯度优化方法可应用于置信规则库参数学习",
+      "llm_evidence": "该随机梯度优化方法可应用于置信规则库参数学习",
+      "canonical_evidence": "该随机梯度优化方法可应用于置信规则库参数学习",
+      "llm_tldr_en": "The paper presents Ada-BPSG, a line-search-free Bregman proximal stochastic gradient method with a stabilized Barzilai-Borwein step size, improving convergence for composite optimization, which can serve as a parameter learning algorithm for belief rule base optimization.",
+      "llm_tldr_cn": "针对Bregman近端随机梯度方法对步长敏感的问题，本文提出Ada-BPSG，将SAGA梯度表与稳定化的Barzilai-Borwein步长结合，避免线搜索且保证收敛。实验验证了该算法在复合优化上的有效性，所提出的步长稳定化技术可为置信规则库的参数学习与优化提供新的工具。",
+      "llm_tldr": "针对Bregman近端随机梯度方法对步长敏感的问题，本文提出Ada-BPSG，将SAGA梯度表与稳定化的Barzilai-Borwein步长结合，避免线搜索且保证收敛。实验验证了该算法在复合优化上的有效性，所提出的步长稳定化技术可为置信规则库的参数学习与优化提供新的工具。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "BRB optimization and parameter learning methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
