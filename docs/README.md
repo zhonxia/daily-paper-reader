@@ -6,36 +6,35 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-13
-- 运行时间：2026-08-13 21:21:43 UTC
+- 最新运行日期：2026-08-14
+- 运行时间：2026-08-14 20:21:42 UTC
 - 运行状态：成功
-- 本次总论文数：5
-- 精读区：0
-- 速读区：5
+- 本次总论文数：4
+- 精读区：1
+- 速读区：3
 
 ### 今日简报（AI）
-今日速读5篇论文，聚焦深度学习中不确定性量化与概率逻辑推理方向。重点关注认知不确定性估计（线性化估计器）及不完整信息下的医学诊断推理（中风检测）。建议优先精读这两篇，可为理论与实践结合提供参考。
-- 详情：[/202608/13/README](/202608/13/README)
+- 今日共生成 4 篇推荐（精读 1 篇，速读 3 篇）
+- 精读：《Robust Dempster-Shafer Evidence Fusion with Chaos-Conflict Measurement and Historical-Experience Weighting》（9.0/10）
+- 速读：《HyperANFIS: Enhancing Rule Representation and Interpretability in Adaptive Neuro-Fuzzy Systems via Hyperbolic Geometry》（7.0/10）, 《Policy-as-logic for robust reasoning over rules》（7.0/10）, 《CLEAR: Class-wise Expert Aggregation with Structured Sampling for Long-Tailed Classification》（6.0/10）
+- 这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。
+- 详情：[/202608/14/README](/202608/14/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [Robust Dempster-Shafer Evidence Fusion with Chaos-Conflict Measurement and Historical-Experience Weighting](/202608/14/2608.13108v1-robust-dempster-shafer-evidence-fusion-with-chaos-conflict-measurement-and-historical-experience-weighting)  
+   标签：评分：9.0/10、query:brb-er
+   evidence：Dempster-Shafer证据融合与冲突度量，面向不确定决策
 
 ### 速读区论文标签
-1. [Tracing sources of epistemic uncertainty in deep learning predictions: homo- and hetero-scedastic linearized estimators](/202608/13/2608.07630v1-tracing-sources-of-epistemic-uncertainty-in-deep-learning-predictions-homo--and-hetero-scedastic-linearized-estimators)  
+1. [HyperANFIS: Enhancing Rule Representation and Interpretability in Adaptive Neuro-Fuzzy Systems via Hyperbolic Geometry](/202608/14/2608.11768v1-hyperanfis-enhancing-rule-representation-and-interpretability-in-adaptive-neuro-fuzzy-systems-via-hyperbolic-geometry)  
+   标签：评分：7.0/10、query:brb-er
+   evidence：双曲空间中的可解释规则基系统，可与置信规则库对比
+2. [Policy-as-logic for robust reasoning over rules](/202608/14/2608.11905v1-policy-as-logic-for-robust-reasoning-over-rules)  
+   标签：评分：7.0/10、query:brb-er
+   evidence：策略即逻辑的符号化规则推理方法，可用于规则基推理系统
+3. [CLEAR: Class-wise Expert Aggregation with Structured Sampling for Long-Tailed Classification](/202608/14/2608.11287v1-clear-class-wise-expert-aggregation-with-structured-sampling-for-long-tailed-classification)  
    标签：评分：6.0/10、query:brb-er
-   evidence：分解预测中认知与偶然不确定性的来源
-2. [Deep probabilistic logic programming for diagnostic reasoning from incomplete information: A case study in stroke detection](/202608/13/2608.08561v1-deep-probabilistic-logic-programming-for-diagnostic-reasoning-from-incomplete-information-a-case-study-in-stroke-detection)  
-   标签：评分：6.0/10、query:brb-er
-   evidence：利用深度概率逻辑编程进行规则推理与不确定性建模
-3. [ELVAE: Evidential Learning-Based Variational Autoencoder for Uncertainty-Aware Generation](/202608/13/2608.10398v1-elvae-evidential-learning-based-variational-autoencoder-for-uncertainty-aware-generation)  
-   标签：评分：6.0/10、query:brb-er
-   evidence：基于证据学习的变分自编码器不确定性建模，可迁移到置信规则库的不确定性建模中
-4. [CLEAR: Class-wise Expert Aggregation with Structured Sampling for Long-Tailed Classification](/202608/13/2608.11287v1-clear-class-wise-expert-aggregation-with-structured-sampling-for-long-tailed-classification)  
-   标签：评分：6.0/10、query:brb-er
-   evidence：与证据推理组合类似的可靠性感知专家聚合
-5. [Adaptive Bregman Proximal Stochastic Gradient with a Stabilized Barzilai--Borwein Step Size](/202608/13/2608.12009v1-adaptive-bregman-proximal-stochastic-gradient-with-a-stabilized-barzilai--borwein-step-size)  
-   标签：评分：6.0/10、query:brb-er
-   evidence：该随机梯度优化方法可应用于置信规则库参数学习
+   evidence：类别级专家可信度聚合，类似证据推理中的证据组合
 
 
 <div class="dpr-home-promo-card">

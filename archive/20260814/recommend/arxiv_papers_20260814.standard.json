@@ -1,0 +1,176 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-14T20:18:36.420741+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2608.13108v1",
+      "source": "arxiv",
+      "title": "Robust Dempster-Shafer Evidence Fusion with Chaos-Conflict Measurement and Historical-Experience Weighting",
+      "abstract": "Multi-source evidence fusion under Dempster-Shafer theory faces two persistent challenges: existing conflict measures assess inter-evidence inconsistency and intra-evidence uncertainty independently, yielding incomplete evaluations, and current fusion methods evaluate evidence sources exclusively through instantaneous comparisns without exploiting their long-term reliability across diverse decision contexts. This paper proposes a unified evidence reasoning framework that addresses both limitations. Specifically, a chaos-conflict measurement is introduced to jointly quantify cross-evidence conflict and intra-evidence non-specificity, with five formally proven properties ensuring consistent assessment. A historical experience driven weighting scheme partitions the decision space via spectral clustering and applies regret theory to compute context-specific reliability profiles from past fusion outcomes. These mechanisms feed into a hybrid combination rule that adaptively balances uncertainty preservation against weighted consensus, controlled by the global conflict level, followed by a belief-interval decision strategy that enables robust classification without discarding epistemic uncertainty. Experiments on 16 real-world benchmark datasets demonstrate that the proposed framework achieves an average F1 score of 85.78 and a mean AUC of 93.30, outperforming eight DST-based baselines and three gradient boosting methods. Ablation analysis confirms the contribution of each component we proposed. The framework offers an effective approach for adaptive evidence fusion in multi-source decision making.",
+      "authors": [
+        "Huiyu Li",
+        "Weibo Liu",
+        "Xinru Xu",
+        "Dongchen Gao",
+        "Meng Zhang",
+        "Junhua Hu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-13T11:35:34+00:00",
+      "link": "https://arxiv.org/pdf/2608.13108v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Dempster-Shafer evidence fusion with conflict and uncertainty handling for decision making",
+      "llm_evidence_cn": "Dempster-Shafer证据融合与冲突度量，面向不确定决策",
+      "llm_evidence": "Dempster-Shafer证据融合与冲突度量，面向不确定决策",
+      "canonical_evidence": "Dempster-Shafer证据融合与冲突度量，面向不确定决策",
+      "llm_tldr_en": "Addresses conflict and uncertainty in multi-source evidence fusion; proposes a unified evidential reasoning framework with chaos-conflict measurement and historical-experience weighting, improving reliability across decision contexts.",
+      "llm_tldr_cn": "针对Dempster-Shafer多源证据融合中冲突度量不全面和忽视证据长期可靠性的问题，提出统一的证据推理框架。引入混沌-冲突度量联合量化跨证据冲突与内部非特异性，并通过历史经验加权刻画证据在不同决策场景下的可靠性。理论性质证明了度量的一致性，实验显示融合结果更稳健。该工作为不确定环境下的证据推理与决策提供了更可靠的融合手段。",
+      "llm_tldr": "针对Dempster-Shafer多源证据融合中冲突度量不全面和忽视证据长期可靠性的问题，提出统一的证据推理框架。引入混沌-冲突度量联合量化跨证据冲突与内部非特异性，并通过历史经验加权刻画证据在不同决策场景下的可靠性。理论性质证明了度量的一致性，实验显示融合结果更稳健。该工作为不确定环境下的证据推理与决策提供了更可靠的融合手段。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "evidential reasoning approach decision making",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.11768v1",
+      "source": "arxiv",
+      "title": "HyperANFIS: Enhancing Rule Representation and Interpretability in Adaptive Neuro-Fuzzy Systems via Hyperbolic Geometry",
+      "abstract": "The adaptive neuro-fuzzy inference system (ANFIS) is an interpretable reasoning framework capable of generating explicit IF-THEN fuzzy rules, making it suitable for tasks requiring transparent reasoning. However, existing ANFIS models generally construct rule antecedents and perform inference in Euclidean space, limiting their representational capacity and predictive performance. To address this issue, we propose Hyperbolic ANFIS (HyperANFIS), a hyperbolic extension of ANFIS. HyperANFIS preserves the fuzzy semantics and core architecture of conventional ANFIS while performing rule-prototype learning, rule activation, and consequent aggregation in hyperbolic space. It also retains the ability to generate interpretable IF-THEN rules. By exploiting the representational properties of hyperbolic geometry, HyperANFIS strengthens the fuzzy inference process, thereby improving predictive accuracy, inter-rule collaboration, and the credibility of its interpretable rules. Experimental results show that HyperANFIS consistently outperforms the standard ANFIS baseline and various ANFIS variants across all datasets, while also generating higher-quality fuzzy rules.",
+      "authors": [
+        "Haoran Pei",
+        "Zhao Su",
+        "Zetao Lin",
+        "Haoran Li",
+        "Jun Shen",
+        "Qi Zhu",
+        "Lan Guo",
+        "Qingguo Zhou",
+        "Binbin Yong"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-12T08:10:02+00:00",
+      "link": "https://arxiv.org/pdf/2608.11768v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "hyperbolic extension of ANFIS, an interpretable rule-based system comparable to belief rule bases",
+      "llm_evidence_cn": "双曲空间中的可解释规则基系统，可与置信规则库对比",
+      "llm_evidence": "双曲空间中的可解释规则基系统，可与置信规则库对比",
+      "canonical_evidence": "双曲空间中的可解释规则基系统，可与置信规则库对比",
+      "llm_tldr_en": "HyperANFIS enhances adaptive neuro-fuzzy rule-based inference by moving rule learning, activation and aggregation to hyperbolic space, preserving interpretability and improving performance; it offers a strong baseline for comparative studies with belief rule bases.",
+      "llm_tldr_cn": "自适应神经模糊推理系统虽能生成显式IF-THEN规则，但在欧氏空间中构造规则限制了其表示能力与性能。本文提出HyperANFIS，将规则原型学习、规则激活和结论聚合迁移到双曲空间，同时保留原有模糊语义和架构。实验显示HyperANFIS在保持可解释性的同时显著提升预测性能，并能继续生成可读规则。作为一种改进的规则基推理系统，它为与置信规则库的对比与融合研究提供了新思路。",
+      "llm_tldr": "自适应神经模糊推理系统虽能生成显式IF-THEN规则，但在欧氏空间中构造规则限制了其表示能力与性能。本文提出HyperANFIS，将规则原型学习、规则激活和结论聚合迁移到双曲空间，同时保留原有模糊语义和架构。实验显示HyperANFIS在保持可解释性的同时显著提升预测性能，并能继续生成可读规则。作为一种改进的规则基推理系统，它为与置信规则库的对比与融合研究提供了新思路。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "Comparative studies of belief rule base with other rule based systems",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.11287v1",
+      "source": "arxiv",
+      "title": "CLEAR: Class-wise Expert Aggregation with Structured Sampling for Long-Tailed Classification",
+      "abstract": "Long-tailed classification poses a reliability challenge because models trained on imbalanced data are unevenly reliable across frequent and underrepresented classes. While existing methods address imbalance through re-balancing, adjustment, representation learning, or multi-expert modeling, they rarely estimate which expert should be trusted for each class. This paper proposes CLEAR (Class-wise reLiability-aware Expert Aggregation for long-tailed Recognition), a modular ensemble framework for long-tailed classification. CLEAR generates diverse experts through threshold-based structured sampling while preserving the full label space, then estimates a class-wise trust score for each expert using a smoothed class-wise precision formulation. During inference, expert predictions are combined through class-wise generalized product-of-experts aggregation, allowing different experts to be emphasized for different classes. Experiments on CIFAR-100-LT, ImageNet-LT, and Places-LT across multiple backbones show that CLEAR achieves competitive overall accuracy and particularly strong few-shot performance. These results support class-wise expert reliability as a useful design principle for long-tailed ensemble learning.",
+      "authors": [
+        "Gawon Lim"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-08-11T15:45:09+00:00",
+      "link": "https://arxiv.org/pdf/2608.11287v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "class-wise reliability-aware expert aggregation analogous to evidential reasoning",
+      "llm_evidence_cn": "类别级专家可信度聚合，类似证据推理中的证据组合",
+      "llm_evidence": "类别级专家可信度聚合，类似证据推理中的证据组合",
+      "canonical_evidence": "类别级专家可信度聚合，类似证据推理中的证据组合",
+      "llm_tldr_en": "CLEAR tackles long-tailed classification by generating diverse experts via structured sampling and estimating class-wise trust scores to aggregate them, improving reliability; its reliability-aware combination parallels evidential reasoning in expert systems.",
+      "llm_tldr_cn": "长尾分类中模型对常见类和稀有类的可靠性差异显著，而现有集成方法很少显式估计每个专家在不同类别上的可信度。本文提出CLEAR，通过阈值化结构化采样生成保留完整标签空间的多个专家，并用平滑的类别级精度估计信任分数，指导专家加权聚合。实验表明该方法在长尾识别上优于现有重平衡和多专家方法。其思想与证据推理中依可信度组合多源信息的方式高度契合，可为BRB/ER系统中的证据权重学习提供参考。",
+      "llm_tldr": "长尾分类中模型对常见类和稀有类的可靠性差异显著，而现有集成方法很少显式估计每个专家在不同类别上的可信度。本文提出CLEAR，通过阈值化结构化采样生成保留完整标签空间的多个专家，并用平滑的类别级精度估计信任分数，指导专家加权聚合。实验表明该方法在长尾识别上优于现有重平衡和多专家方法。其思想与证据推理中依可信度组合多源信息的方式高度契合，可为BRB/ER系统中的证据权重学习提供参考。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "Evidence reasoning theory applications in expert systems",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.11905v1",
+      "source": "arxiv",
+      "title": "Policy-as-logic for robust reasoning over rules",
+      "abstract": "In many practical applications of generative AI systems, from tax rules to airline baggage allowance, responses to natural language queries must respect written policies or rules. We present a hybrid symbolic approach that expresses policies in formal logic and at inference time exploits the representation power of language models for fact extraction to ground predicates, and an answer set solver for reasoning such that responses are interpretable, auditable, and as we show, accurate and robust under input perturbations. Specifically, we show this separation of extraction and reasoning steps outperforms policy-as-prompt and policy-as-code methods in most cases with ~10x reduction in token usage. The results point to the value of structured reasoning and symbolic solvers in conjunction with generative models to make robust decisions involving objective criteria.",
+      "authors": [
+        "Rahul Nair",
+        "Bastian Lipka",
+        "Elizabeth Daly"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG",
+        "cs.SC"
+      ],
+      "published": "2026-08-12T10:30:25+00:00",
+      "link": "https://arxiv.org/pdf/2608.11905v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "hybrid symbolic policy-as-logic approach for robust reasoning over rules",
+      "llm_evidence_cn": "策略即逻辑的符号化规则推理方法，可用于规则基推理系统",
+      "llm_evidence": "策略即逻辑的符号化规则推理方法，可用于规则基推理系统",
+      "canonical_evidence": "策略即逻辑的符号化规则推理方法，可用于规则基推理系统",
+      "llm_tldr_en": "Policy-as-logic encodes written policies as formal logic, uses LLMs for fact extraction and answer-set solving for reasoning, achieving robust, auditable rule-based inference with ~10x token reduction; a valuable methodology for rule-based reasoning systems.",
+      "llm_tldr_cn": "在税务规则、行李限额等场景中，生成式AI必须遵守书面策略，但现有提示词与代码方法不够鲁棒且难审计。本文提出策略即逻辑，将规则编码为形式逻辑，由语言模型抽取事实谓词，再由回答集求解器完成推理，实现解释与审计。实验表明该方法优于策略即提示与策略即代码，并带来约10倍token节省。其抽取与推理分离的设计对规则基推理及证据推理系统具有启发性。",
+      "llm_tldr": "在税务规则、行李限额等场景中，生成式AI必须遵守书面策略，但现有提示词与代码方法不够鲁棒且难审计。本文提出策略即逻辑，将规则编码为形式逻辑，由语言模型抽取事实谓词，再由回答集求解器完成推理，实现解释与审计。实验表明该方法优于策略即提示与策略即代码，并带来约10倍token节省。其抽取与推理分离的设计对规则基推理及证据推理系统具有启发性。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "rule based inference methodology using evidential reasoning",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
