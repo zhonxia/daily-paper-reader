@@ -1,0 +1,54 @@
+{
+  "label": "2026-08-17",
+  "date": "2026-08-17",
+  "generated_at": "2026-08-17T20:26:56",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202608/17/2608.08940v1-difficulty-gated-fusion-of-reasoning-views-for-temporal-retrieval",
+      "section": "quick",
+      "title_en": "Difficulty-Gated Fusion of Reasoning Views for Temporal Retrieval",
+      "authors": "Jamie Holdcroft, Abdelrahman Abdallah, Adam Jatowt",
+      "date": "2026-08-09",
+      "pdf": "https://arxiv.org/pdf/2608.08940v1",
+      "score": "7.0",
+      "evidence": "基于难度门控的推理视图融合与权重估计，类似于证据推理的加权合成",
+      "tldr": "推理密集的时间检索需要匹配共享时间推理的查询和文档，现有方法通过查询重写生成多个显式时间意图并等权融合各视图排名。我们提出查询难度门控融合，从每个视图提取八维评分分布特征，如softmax熵、分数差距与离散度，用约千参数的门控网络为每个查询学习视图权重。在Tempo基准上，该方法一致提升六种检索器，最强nDCG@10达到0.297和0.303，且推理时不需标签、不重排序、不微调。轻量门控尤其强化弱骨干，但相比逐查询oracle的0.364仍有提升空间，下一步可聚焦逐查询视图选择。",
+      "tags": "query:brb-er",
+      "abstract_en": "Reasoning-intensive temporal retrieval requires matching a query to documents whose relevance depends on shared temporal reasoning rather than lexical overlap. Expanding a query into several reformulations that make its temporal intent explicit, and retrieving with each, supplies this reasoning, but fusing the resulting rankings with equal weights wastes accuracy: for any single query, only some reformulations are reliable. We propose query-difficulty-gated fusion of reasoning views. From each view we read an eight-dimensional signature of its score distribution, built from query-performance-prediction quantities such as softmax entropy, score gaps, and dispersion, and a gate of roughly one thousand parameters maps these signatures to per-query view weights. The fused ranking uses no relevance labels at inference, no re-ranking, and no fine-tuning of the retriever; the gate is trained leave-one-task-out. On the \\textsc{Tempo} benchmark, the method improves all six retrievers we evaluate, from BERT encoders to 7B decoder retrievers, with the largest gains on the weaker backbones. The strongest retrievers reach $0.297$ and $0.303$ nDCG@10, and the per-query gain over the original query is significant under a paired bootstrap ($p<0.001$). A per-query oracle reaches $0.364$ against our realized $0.297$, exposing headroom that identifies per-query view selection as a concrete next step.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/17/2608.12027v1-uncertainty-aware-probabilistic-constrained-clustering-from-entangled-pairwise-supervision",
+      "section": "quick",
+      "title_en": "Uncertainty-Aware Probabilistic Constrained Clustering from Entangled Pairwise Supervision",
+      "authors": "Shaojie Zhang, Ke Chen",
+      "date": "2026-08-12",
+      "pdf": "https://arxiv.org/pdf/2608.12027v1",
+      "score": "6.0",
+      "evidence": "对成对监督中的专家判断与内在歧义进行不确定性感知概率建模",
+      "tldr": "真实场景中的成对监督常是实值且有噪声，现有深度约束聚类方法多假设硬标签而忽视语义不确定性。本文将问题形式化为不确定性感知的概率约束聚类（UPCC），提出角度化目标ProbPair及估计-校正-集成框架ECI-PP，通过信念估计、修正和可靠性加权集成细化不完美监督。实验表明ECI-PP在多种概率监督设置下优于现有方法，且默认配置鲁棒。",
+      "tags": "query:brb-er",
+      "abstract_en": "Pairwise constrained clustering typically relies on hard must-link/cannot-link labels, whereas realistic pairwise supervision may be real-valued and entangle intrinsic ambiguity, expert judgment, and stochastic corruption. Existing deep constrained clustering (DCC) methods mainly target hard, expert-agnostic constraints, treating soft labels mostly numerically rather than semantically. We formalize this setting as uncertainty-aware probabilistic constrained clustering (UPCC), defining a canonical aleatoric target through a heterogeneous observation process and analyzing its conditional identifiability. We introduce ProbPair, an angular pairwise objective for probabilistic relations, and build ECI-PP, an estimator--corrector--integrator framework that refines imperfect supervision via belief estimation, correction, and reliability-aware integration. Across challenging probabilistic supervision settings, experiments on diverse benchmarks show that ECI-PP outperforms state-of-the-art DCC methods and remains robust with a shared default configuration.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/17/2608.12585v1-reasoning-jury-multi-model-consensus-for-evaluating-reasoning-traces",
+      "section": "quick",
+      "title_en": "Reasoning Jury: Multi-Model Consensus for Evaluating Reasoning Traces",
+      "authors": "Congchao Wang, Diwakar Singh, Qiaozi Gao, Spyros Matsoukas, Yang Liu, Mahdi Namazifar",
+      "date": "2026-08-12",
+      "pdf": "https://arxiv.org/pdf/2608.12585v1",
+      "score": "6.0",
+      "evidence": "多模型陪审团共识机制对推理轨迹进行评判，类似证据聚合",
+      "tldr": "评估长推理轨迹中的缺陷对提升推理大模型至关重要，但单一裁判模型即便是前沿模型也难以准确识别，且在线训练受协议限制。为此提出 Reasoning Jury 系统，用一组开放权重 LLM 组成陪审团，在主持人引导下互相质询并修订初始判断，最终达成共识。实验表明，使用 gpt-oss-120b 等开源模型，推理陪审团在发现推理缺陷上显著超过 opus-4.6 等前沿模型，成本仅为后者的 8%–15%。该系统还能帮助剖析基准测试中的失败模式，提供更深入的可解释性。",
+      "tags": "query:brb-er",
+      "abstract_en": "Improving reasoning LLMs requires the ability to judge the quality of long reasoning traces for effective reasoning data curation, strong training signals during reinforcement learning, and an in-depth understanding of reasoning behaviors during model performance evaluation. Additionally, surfacing reasoning mistakes that the model makes would enable improving the model's performance at runtime through providing feedback. Due to the difficulty of this complex task on long reasoning traces, single-model judges (even frontier models) do not do well at identifying reasoning defects. Additionally, leveraging frontier models during online training of reasoning LLMs is generally prohibited due to guardrails in terms of use. In this work, we introduce Reasoning Jury, a system that replaces the single judge with a jury of LLMs and a moderated consensus mechanism, to improve the fidelity of judgments for identifying reasoning defects. In reasoning jury, defects of a reasoning trace and their severity are surfaced through a deliberation where a moderator conducts a discussion amongst the jury where the jurors critique each other's judgments and get to modify their initial votes. The moderator derives a consensus through deliberation amongst jurors or consolidation of judgements. We show that Reasoning Jury with a jury of open-weight models (e.g., gpt-oss-120b) is able to significantly outperform frontier models (opus-4.6, sonnet-4.6, and gemini-3.1-pro) at correctly identifying reasoning defects. Besides accuracy performance improvements, the aggregated cost of the jury (initial verdicts, deliberations, consolidation, etc.) is a fraction (8 to 15%) of the cost of running frontier models in LLM-as-a-judge setup. We also show how these judgements can be leveraged to understand failure modes of reasoning LLMs on benchmarks, which allows much deeper understanding of a model's performance.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,131 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-17T20:23:47.599272+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.08940v1",
+      "source": "arxiv",
+      "title": "Difficulty-Gated Fusion of Reasoning Views for Temporal Retrieval",
+      "abstract": "Reasoning-intensive temporal retrieval requires matching a query to documents whose relevance depends on shared temporal reasoning rather than lexical overlap. Expanding a query into several reformulations that make its temporal intent explicit, and retrieving with each, supplies this reasoning, but fusing the resulting rankings with equal weights wastes accuracy: for any single query, only some reformulations are reliable. We propose query-difficulty-gated fusion of reasoning views. From each view we read an eight-dimensional signature of its score distribution, built from query-performance-prediction quantities such as softmax entropy, score gaps, and dispersion, and a gate of roughly one thousand parameters maps these signatures to per-query view weights. The fused ranking uses no relevance labels at inference, no re-ranking, and no fine-tuning of the retriever; the gate is trained leave-one-task-out. On the \\textsc{Tempo} benchmark, the method improves all six retrievers we evaluate, from BERT encoders to 7B decoder retrievers, with the largest gains on the weaker backbones. The strongest retrievers reach $0.297$ and $0.303$ nDCG@10, and the per-query gain over the original query is significant under a paired bootstrap ($p<0.001$). A per-query oracle reaches $0.364$ against our realized $0.297$, exposing headroom that identifies per-query view selection as a concrete next step.",
+      "authors": [
+        "Jamie Holdcroft",
+        "Abdelrahman Abdallah",
+        "Adam Jatowt"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR"
+      ],
+      "published": "2026-08-09T22:31:49+00:00",
+      "link": "https://arxiv.org/pdf/2608.08940v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Query-difficulty-gated fusion of reasoning views with reliability-based weighting, akin to evidence combination",
+      "llm_evidence_cn": "基于难度门控的推理视图融合与权重估计，类似于证据推理的加权合成",
+      "llm_evidence": "基于难度门控的推理视图融合与权重估计，类似于证据推理的加权合成",
+      "canonical_evidence": "基于难度门控的推理视图融合与权重估计，类似于证据推理的加权合成",
+      "llm_tldr_en": "Proposes query-difficulty-gated fusion that learns per-query weights for multiple reasoning views using score distribution features, avoiding equal-weight fusion waste. The reliability-driven gating parallels evidential reasoning weighting.",
+      "llm_tldr_cn": "针对时间检索中多路查询改写结果同权融合会降低精度的问题，提出基于查询难度门控的融合方法。从每个推理视图的得分分布提取八维特征，用约千参数的门控网络逐查询分配权重，从而突出可靠视图、抑制不可靠视图。该加权融合思路与证据推理中的可靠性折扣机制相通，可作为多源证据合成的方法参考。",
+      "llm_tldr": "针对时间检索中多路查询改写结果同权融合会降低精度的问题，提出基于查询难度门控的融合方法。从每个推理视图的得分分布提取八维特征，用约千参数的门控网络逐查询分配权重，从而突出可靠视图、抑制不可靠视图。该加权融合思路与证据推理中的可靠性折扣机制相通，可作为多源证据合成的方法参考。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "evidential reasoning approach decision making",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.12027v1",
+      "source": "arxiv",
+      "title": "Uncertainty-Aware Probabilistic Constrained Clustering from Entangled Pairwise Supervision",
+      "abstract": "Pairwise constrained clustering typically relies on hard must-link/cannot-link labels, whereas realistic pairwise supervision may be real-valued and entangle intrinsic ambiguity, expert judgment, and stochastic corruption. Existing deep constrained clustering (DCC) methods mainly target hard, expert-agnostic constraints, treating soft labels mostly numerically rather than semantically. We formalize this setting as uncertainty-aware probabilistic constrained clustering (UPCC), defining a canonical aleatoric target through a heterogeneous observation process and analyzing its conditional identifiability. We introduce ProbPair, an angular pairwise objective for probabilistic relations, and build ECI-PP, an estimator--corrector--integrator framework that refines imperfect supervision via belief estimation, correction, and reliability-aware integration. Across challenging probabilistic supervision settings, experiments on diverse benchmarks show that ECI-PP outperforms state-of-the-art DCC methods and remains robust with a shared default configuration.",
+      "authors": [
+        "Shaojie Zhang",
+        "Ke Chen"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-08-12T13:07:19+00:00",
+      "link": "https://arxiv.org/pdf/2608.12027v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Uncertainty-aware probabilistic modeling of pairwise supervision with expert judgment and ambiguity",
+      "llm_evidence_cn": "对成对监督中的专家判断与内在歧义进行不确定性感知概率建模",
+      "llm_evidence": "对成对监督中的专家判断与内在歧义进行不确定性感知概率建模",
+      "canonical_evidence": "对成对监督中的专家判断与内在歧义进行不确定性感知概率建模",
+      "llm_tldr_en": "Formalizes uncertainty-aware probabilistic constrained clustering (UPCC) with entangled pairwise supervision, introducing ProbPair objective and ECI-PP. Treats soft labels semantically, with identifiability analysis. Relevant to uncertainty modeling under expert knowledge.",
+      "llm_tldr_cn": "该文提出不确定性感知的概率约束聚类（UPCC），将现实中的成对监督建模为内在歧义、专家判断与随机噪声纠缠的观测过程，并给出条件可识别性分析。提出角向概率目标ProbPair与估计-校正-积分框架ECI-PP，从语义层面处理软标签。其表征专家不确定性的思路可迁移到信念规则库中专家信念度的建模。",
+      "llm_tldr": "该文提出不确定性感知的概率约束聚类（UPCC），将现实中的成对监督建模为内在歧义、专家判断与随机噪声纠缠的观测过程，并给出条件可识别性分析。提出角向概率目标ProbPair与估计-校正-积分框架ECI-PP，从语义层面处理软标签。其表征专家不确定性的思路可迁移到信念规则库中专家信念度的建模。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "uncertainty modeling in belief rule base",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.12585v1",
+      "source": "arxiv",
+      "title": "Reasoning Jury: Multi-Model Consensus for Evaluating Reasoning Traces",
+      "abstract": "Improving reasoning LLMs requires the ability to judge the quality of long reasoning traces for effective reasoning data curation, strong training signals during reinforcement learning, and an in-depth understanding of reasoning behaviors during model performance evaluation. Additionally, surfacing reasoning mistakes that the model makes would enable improving the model's performance at runtime through providing feedback. Due to the difficulty of this complex task on long reasoning traces, single-model judges (even frontier models) do not do well at identifying reasoning defects. Additionally, leveraging frontier models during online training of reasoning LLMs is generally prohibited due to guardrails in terms of use. In this work, we introduce Reasoning Jury, a system that replaces the single judge with a jury of LLMs and a moderated consensus mechanism, to improve the fidelity of judgments for identifying reasoning defects. In reasoning jury, defects of a reasoning trace and their severity are surfaced through a deliberation where a moderator conducts a discussion amongst the jury where the jurors critique each other's judgments and get to modify their initial votes. The moderator derives a consensus through deliberation amongst jurors or consolidation of judgements. We show that Reasoning Jury with a jury of open-weight models (e.g., gpt-oss-120b) is able to significantly outperform frontier models (opus-4.6, sonnet-4.6, and gemini-3.1-pro) at correctly identifying reasoning defects. Besides accuracy performance improvements, the aggregated cost of the jury (initial verdicts, deliberations, consolidation, etc.) is a fraction (8 to 15%) of the cost of running frontier models in LLM-as-a-judge setup. We also show how these judgements can be leveraged to understand failure modes of reasoning LLMs on benchmarks, which allows much deeper understanding of a model's performance.",
+      "authors": [
+        "Congchao Wang",
+        "Diwakar Singh",
+        "Qiaozi Gao",
+        "Spyros Matsoukas",
+        "Yang Liu",
+        "Mahdi Namazifar"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-12T21:00:22+00:00",
+      "link": "https://arxiv.org/pdf/2608.12585v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Multi-model consensus for judging reasoning traces; evidence-like aggregation of judge opinions",
+      "llm_evidence_cn": "多模型陪审团共识机制对推理轨迹进行评判，类似证据聚合",
+      "llm_evidence": "多模型陪审团共识机制对推理轨迹进行评判，类似证据聚合",
+      "canonical_evidence": "多模型陪审团共识机制对推理轨迹进行评判，类似证据聚合",
+      "llm_tldr_en": "Presents Reasoning Jury, a multi-model consensus framework to judge long reasoning traces, overcoming single-model judge unreliability. Aggregating multiple judge opinions resembles evidential combination in expert evaluation.",
+      "llm_tldr_cn": "针对单个模型裁判难以评估长推理链质量问题，提出多模型陪审团共识机制，通过聚合多个模型的评判来识别推理缺陷。该方法在不依赖受限前沿模型的情况下，为推理质量评估提供可靠信号。其多源意见整合和共识判断方式与证据推理中的多源证据合成具有方法上的相通性，可用于基于规则的推理系统评测。",
+      "llm_tldr": "针对单个模型裁判难以评估长推理链质量问题，提出多模型陪审团共识机制，通过聚合多个模型的评判来识别推理缺陷。该方法在不依赖受限前沿模型的情况下，为推理质量评估提供可靠信号。其多源意见整合和共识判断方式与证据推理中的多源证据合成具有方法上的相通性，可用于基于规则的推理系统评测。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "evidential reasoning approach decision making",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
