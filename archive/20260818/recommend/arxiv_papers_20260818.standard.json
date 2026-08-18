@@ -1,0 +1,91 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-18T20:53:04.980535+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.12836v1",
+      "source": "arxiv",
+      "title": "From Atomic Evidence to Logical Composition: Structured Compositional Reasoning over Compound Answer Options",
+      "abstract": "Large language models often fail when answer options require combining atomic judgments under explicit logical operators, even when they judge the individual atoms correctly. We study compound options connected by AND, OR, and NEITHER/NOR, introducing a framework that decomposes each option into atomic answers and scores contrastive hypotheses about each one, so the model never sees a compound option. An operator-constrained integer linear program then composes the calibrated scores into a single prediction. We evaluate on LOGICAL-COMMONSENSEQA and introduce LOGICAL-SATA, a reading-comprehension benchmark derived from SATA-Bench. Our framework improves Macro-F1 from 48.3 to 77.0 on the human-validated LOGICAL-COMMONSENSEQA split and from 47.0 to 75.6 on LOGICAL-SATA, with the largest gains on NEITHER/NOR.",
+      "authors": [
+        "Obed Junias",
+        "Maria Leonor Pacheco"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-08-13T05:18:55+00:00",
+      "link": "https://arxiv.org/pdf/2608.12836v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "composition of calibrated evidence scores under logical operators",
+      "llm_evidence_cn": "在逻辑算子下组合校准证据分数",
+      "llm_evidence": "在逻辑算子下组合校准证据分数",
+      "canonical_evidence": "在逻辑算子下组合校准证据分数",
+      "llm_tldr_en": "A framework decomposes compound options into atomic judgments, scores hypotheses individually, and composes via an operator-constrained integer linear program, improving Macro-F1 on LOGICAL-COMMONSENSEQA.",
+      "llm_tldr_cn": "本文针对大模型在AND/OR/NEITHER复合选项上推理能力不足的问题，提出将每个选项分解为原子答案，分别给原子判断打分，再用算子约束的整数线性规划组合成最终预测。在LOGICAL-COMMONSENSEQA上，Macro-F1从48.3提升到77.0，并引入LOGICAL-SATA基准。该方法展示了一种结构化组合证据分数的范式，与证据推理中多源证据组合方法深度契合，可为BRB与ER的决策建模提供借鉴。",
+      "llm_tldr": "本文针对大模型在AND/OR/NEITHER复合选项上推理能力不足的问题，提出将每个选项分解为原子答案，分别给原子判断打分，再用算子约束的整数线性规划组合成最终预测。在LOGICAL-COMMONSENSEQA上，Macro-F1从48.3提升到77.0，并引入LOGICAL-SATA基准。该方法展示了一种结构化组合证据分数的范式，与证据推理中多源证据组合方法深度契合，可为BRB与ER的决策建模提供借鉴。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "evidential reasoning approach decision making",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.16565v1",
+      "source": "arxiv",
+      "title": "Probabilistic Circuits as Reasoning Machines in Artificial Intelligence (Part I)",
+      "abstract": "This cumulative habilitation thesis studies probabilistic circuits (PCs) as a powerful and tractable framework for reasoning and learning under uncertainty in artificial intelligence (AI). It first advocates for probability as a core language for AI, emphasizing its connections to logic and information theory; the conceptual simplicity of probabilistic reasoning---based primarily on the sum and product rules; the parallels between probabilistic inference and human cognition; and the role of probability in optimal decision making. However, probability also faces significant computational challenges, as probabilistic inference is NP-hard in almost all probabilistic models. PCs address these challenges through structural constraints that ensure exact computation of a wide range of inference queries in polynomial time, such as marginals, conditionals, most probable explanations, expectations, and more advanced inference tasks. This thesis synthesizes a decade of research across foundations, algorithmic developments, and empirical validation of PCs. Key contributions highlighted in this work are foundational theory of PCs, Bayesian approaches for learning PCs, scalable implementations and integration with deep learning, hybrid models that combine PCs with intractable models, and connections with symbolic machine learning paradigms.   This is the first part of my Habilitation Thesis. The second part is omitted, as it comprises the cumulative part of the thesis and has been published at various venues (see Chapter 5).",
+      "authors": [
+        "Robert Peharz"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG",
+        "math.PR"
+      ],
+      "published": "2026-08-17T13:29:05+00:00",
+      "link": "https://arxiv.org/pdf/2608.16565v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "probabilistic circuits for tractable reasoning and learning under uncertainty",
+      "llm_evidence_cn": "概率电路提供可计算的概率推理与不确定决策框架，可为BRB/ER方法提供借鉴",
+      "llm_evidence": "概率电路提供可计算的概率推理与不确定决策框架，可为BRB/ER方法提供借鉴",
+      "canonical_evidence": "概率电路提供可计算的概率推理与不确定决策框架，可为BRB/ER方法提供借鉴",
+      "llm_tldr_en": "Presents probabilistic circuits as tractable frameworks for reasoning and learning under uncertainty, using structural constraints to make inference efficient. Offers transferable computational ideas for BRB/ER modeling.",
+      "llm_tldr_cn": "该论文系统阐述概率电路作为人工智能中可处理的推理与学习框架，强调概率作为不确定推理核心语言，并通过结构约束避免一般概率推理的NP困难。概率电路的求和与乘积规则在可计算条件下支持概率推断、学习与最优决策。虽然没有使用置信规则库或证据推理，但其对结构约束与可计算不确定推理的系统讨论，可为BRB/ER方法的设计与可计算实现提供重要方法学参考。",
+      "llm_tldr": "该论文系统阐述概率电路作为人工智能中可处理的推理与学习框架，强调概率作为不确定推理核心语言，并通过结构约束避免一般概率推理的NP困难。概率电路的求和与乘积规则在可计算条件下支持概率推断、学习与最优决策。虽然没有使用置信规则库或证据推理，但其对结构约束与可计算不确定推理的系统讨论，可为BRB/ER方法的设计与可计算实现提供重要方法学参考。",
+      "llm_tags": [
+        "query:brb-er:composite"
+      ],
+      "matched_query_tag": "query:brb-er:composite",
+      "matched_query_text": "Papers central to 请你帮我找有关置信规则库（BRB）和证据推理（E-R）的相关论文，或者是其他领域有助于这个研究的论文。, especially work that connects or combines: belief rule base inference methodology; evidential reasoning approach decision making; belief rule base expert system uncertainty; rule based inference methodology using evidential reasoning; uncertainty modeling in belief rule base; belief distribution inference in BRB; Belief rule base and evidential reasoning for uncertain decision making; BRB optimization and parameter learning methods; Evidence reasoning theory applications in expert systems; Comparative studies of belief rule base with other rule based systems.",
+      "matched_requirement_id": "req-composite-brb-er",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

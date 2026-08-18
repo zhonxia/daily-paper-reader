@@ -1,0 +1,39 @@
+{
+  "label": "2026-08-18",
+  "date": "2026-08-18",
+  "generated_at": "2026-08-18T20:55:22",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/18/2608.12836v1-from-atomic-evidence-to-logical-composition-structured-compositional-reasoning-over-compound-answer-options",
+      "section": "quick",
+      "title_en": "From Atomic Evidence to Logical Composition: Structured Compositional Reasoning over Compound Answer Options",
+      "authors": "Obed Junias, Maria Leonor Pacheco",
+      "date": "2026-08-13",
+      "pdf": "https://arxiv.org/pdf/2608.12836v1",
+      "score": "7.0",
+      "evidence": "在逻辑算子下组合校准证据分数",
+      "tldr": "大型语言模型在需要组合多个原子判断的逻辑复合选项（如AND、OR、NEITHER/NOR）上常失败，即使单个原子判断正确。本文提出将每个选项分解为原子答案并分别进行对比假设评分，再通过运算符约束的整数线性规划组合校准分数，使模型不再直接看到复合选项。在LOGICAL-COMMONSENSEQA和LOGICAL-SATA上，Macro-F1分别从48.3/47.0提升至77.0/75.6，其中NEITHER/NOR提升最大。该工作为结构化组合推理提供了有效范式，并贡献了新基准。",
+      "tags": "query:brb-er",
+      "abstract_en": "Large language models often fail when answer options require combining atomic judgments under explicit logical operators, even when they judge the individual atoms correctly. We study compound options connected by AND, OR, and NEITHER/NOR, introducing a framework that decomposes each option into atomic answers and scores contrastive hypotheses about each one, so the model never sees a compound option. An operator-constrained integer linear program then composes the calibrated scores into a single prediction. We evaluate on LOGICAL-COMMONSENSEQA and introduce LOGICAL-SATA, a reading-comprehension benchmark derived from SATA-Bench. Our framework improves Macro-F1 from 48.3 to 77.0 on the human-validated LOGICAL-COMMONSENSEQA split and from 47.0 to 75.6 on LOGICAL-SATA, with the largest gains on NEITHER/NOR.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/18/2608.16565v1-probabilistic-circuits-as-reasoning-machines-in-artificial-intelligence-part-i",
+      "section": "quick",
+      "title_en": "Probabilistic Circuits as Reasoning Machines in Artificial Intelligence (Part I)",
+      "authors": "Robert Peharz",
+      "date": "2026-08-17",
+      "pdf": "https://arxiv.org/pdf/2608.16565v1",
+      "score": "6.0",
+      "evidence": "概率电路提供可计算的概率推理与不确定决策框架，可为BRB/ER方法提供借鉴",
+      "tldr": "概率推理在AI中重要但计算困难，传统概率模型推理多为NP难。概率电路通过结构性约束保证多种推理查询在多项式时间内精确计算。本论文综合十年研究，涵盖概率电路理论基础、贝叶斯学习、可扩展实现及与深度学习集成，并探索与符号机器学习结合。",
+      "tags": "query:brb-er",
+      "abstract_en": "This cumulative habilitation thesis studies probabilistic circuits (PCs) as a powerful and tractable framework for reasoning and learning under uncertainty in artificial intelligence (AI). It first advocates for probability as a core language for AI, emphasizing its connections to logic and information theory; the conceptual simplicity of probabilistic reasoning---based primarily on the sum and product rules; the parallels between probabilistic inference and human cognition; and the role of probability in optimal decision making. However, probability also faces significant computational challenges, as probabilistic inference is NP-hard in almost all probabilistic models. PCs address these challenges through structural constraints that ensure exact computation of a wide range of inference queries in polynomial time, such as marginals, conditionals, most probable explanations, expectations, and more advanced inference tasks. This thesis synthesizes a decade of research across foundations, algorithmic developments, and empirical validation of PCs. Key contributions highlighted in this work are foundational theory of PCs, Bayesian approaches for learning PCs, scalable implementations and integration with deep learning, hybrid models that combine PCs with intractable models, and connections with symbolic machine learning paradigms.   This is the first part of my Habilitation Thesis. The second part is omitted, as it comprises the cumulative part of the thesis and has been published at various venues (see Chapter 5).",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
