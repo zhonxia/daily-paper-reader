@@ -1,0 +1,170 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-20T19:15:39.492581+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.18185v1",
+      "source": "arxiv",
+      "title": "H$^2$EDL: Hyper Evidential Deep Learning for Hierarchical Classification",
+      "abstract": "Fine-grained recognition often involves hierarchical label spaces, where a model may be confident about a coarse semantic concept while remaining uncertain among its descendant classes. Such structured ambiguity requires uncertainty representations that capture both fine-grained classes and intermediate concepts. However, existing tools each capture only half of it: flat evidential classifiers quantify total ignorance with a single vacuity on the leaf frame, and hierarchical classifiers propagate point probabilities with no notion of evidence. Hyper-opinions would unify the two, but their general form is exponential in the label count, and existing hyper-evidential networks either require composite labels to be supplied in the training data or read them off an unstructured weight pattern, with no principled notion of which composites deserve mass. We observe that the taxonomy itself is the missing hyperdomain. Its subtrees and leaf singletons form a linear-size focal family, and one local Dirichlet opinion per branching node induces every composite mass in closed form. The resulting model, H$^2$EDL, can be interpreted in two complementary ways using the same set of parameters. From a prediction perspective, it functions as a hierarchical classifier that preserves consistency across different levels of the label tree. From a probabilistic perspective, it defines a valid tree-structured hyper-opinion, where the mass assigned to each node represents the belief that reaches that node but does not provide sufficient confidence to further specialize into its descendants. On FGVC-Aircraft and DERM12345, H$^2$EDL reduces calibration error by approximately half compared with cross-entropy baselines, with the improvement becoming more pronounced at deeper hierarchy levels and under larger training budgets.",
+      "authors": [
+        "Yuanye Liu",
+        "Xiahai Zhuang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CV"
+      ],
+      "published": "2026-08-18T08:42:32+00:00",
+      "link": "https://arxiv.org/pdf/2608.18185v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Hyper evidential deep learning uses belief functions for hierarchical classification, contributing to evidential reasoning and uncertainty-aware decision making.",
+      "llm_evidence_cn": "基于证据理论构建超意见，用于层次分类中的不确定性建模，是证据推理方法的扩展。",
+      "llm_evidence": "基于证据理论构建超意见，用于层次分类中的不确定性建模，是证据推理方法的扩展。",
+      "canonical_evidence": "基于证据理论构建超意见，用于层次分类中的不确定性建模，是证据推理方法的扩展。",
+      "llm_tldr_en": "Proposes H2EDL to represent both fine-grained and intermediate uncertainty in hierarchical classification by extending evidential deep learning with hyper-opinions, avoiding exponential label blowup.",
+      "llm_tldr_cn": "针对细粒度识别中层次标签空间的模糊性，现有平坦证据分类器只能量化叶子层的整体无知，而层次分类器只传播点概率，缺乏对中间概念的证据表示。本文提出H²EDL，利用超意见同时刻画细粒度类别与中间概念的证据，避免一般超意见随标签数指数爆炸的问题。实验证明该方法在层次分类中比现有方法更准确地表达结构化不确定性，为证据深度学习在复杂决策任务中的应用提供了新途径。",
+      "llm_tldr": "针对细粒度识别中层次标签空间的模糊性，现有平坦证据分类器只能量化叶子层的整体无知，而层次分类器只传播点概率，缺乏对中间概念的证据表示。本文提出H²EDL，利用超意见同时刻画细粒度类别与中间概念的证据，避免一般超意见随标签数指数爆炸的问题。实验证明该方法在层次分类中比现有方法更准确地表达结构化不确定性，为证据深度学习在复杂决策任务中的应用提供了新途径。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "evidential reasoning approach decision making",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.16093v1",
+      "source": "arxiv",
+      "title": "Type-Directed Discretization of Probabilistic Programs (Extended Version)",
+      "abstract": "We study exact discretization as a semantics-preserving transformation for recursive, higher-order probabilistic programs with continuous distributions. We target programs where continuous values are compared against finitely many constants, so exact inference reduces to a discrete problem. Our central technical contribution is a non-local, type-directed analysis that infers where continuous values can be partitioned into finitely many observationally relevant regions, then rewrites sampling and comparison behavior over those regions. We call this transformation Slice. Because this construction is global and type-directed, correctness requires reasoning beyond the local syntax: we formalize the transformation and prove soundness for boolean queries using a coupling-style logical relations argument over operational semantics. As an application, transformed programs can be executed by discrete engines such as Dice, Roulette, and Storm. Our empirical evaluation shows two complementary strengths of Slice when paired with discrete backends: it enables exact inference for challenging continuous programs that lie beyond the reach of previous exact systems, and, on benchmarks where direct comparison is possible, it is competitive with state-of-the-art exact inference systems for continuous programs.",
+      "authors": [
+        "Katherine Wu",
+        "Jules Jacobs",
+        "Kevin Batz",
+        "Alexandra Silva"
+      ],
+      "primary_category": "cs.PL",
+      "categories": [
+        "cs.PL"
+      ],
+      "published": "2026-08-17T04:33:06+00:00",
+      "link": "https://arxiv.org/pdf/2608.16093v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Method for exact discretization of continuous distributions into finite regions, directly transferable to belief distribution inference in BRB",
+      "llm_evidence_cn": "提出将连续分布精确离散化为有限区域的方法，可迁移用于BRB中的置信分布推理",
+      "llm_evidence": "提出将连续分布精确离散化为有限区域的方法，可迁移用于BRB中的置信分布推理",
+      "canonical_evidence": "提出将连续分布精确离散化为有限区域的方法，可迁移用于BRB中的置信分布推理",
+      "llm_tldr_en": "Presents Slice, a type-directed transformation that exactly discretizes continuous distributions in probabilistic programs into finitely many observationally relevant regions, enabling exact inference and soundness proofs for boolean queries.",
+      "llm_tldr_cn": "该文提出一种名为Slice的精确离散化变换，针对递归高阶概率程序中的连续分布，利用非局部、类型导向的分析将连续值划分为有限个观测相关区域，并重写采样与比较行为。这使得连续程序的精确推理可以归约为离散问题，并证明了布尔查询下的语义保持性。对于置信规则库中连续输入属性到参考值的映射，该方法提供了一种形式化、语义保留的离散化思路，有助于提升BRB中置信分布推理的准确性与可解释性。",
+      "llm_tldr": "该文提出一种名为Slice的精确离散化变换，针对递归高阶概率程序中的连续分布，利用非局部、类型导向的分析将连续值划分为有限个观测相关区域，并重写采样与比较行为。这使得连续程序的精确推理可以归约为离散问题，并证明了布尔查询下的语义保持性。对于置信规则库中连续输入属性到参考值的映射，该方法提供了一种形式化、语义保留的离散化思路，有助于提升BRB中置信分布推理的准确性与可解释性。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "belief distribution inference in BRB",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.17741v1",
+      "source": "arxiv",
+      "title": "Neuro-symbolic learning over OWL 2 DL via consequence-based compilation to differentiable circuits",
+      "abstract": "OWL 2 DL ontologies, grounded in the description logic $\\mathcal{SROIQ}$, express large knowledge bases in biomedicine and the Semantic Web. Neuro-symbolic (NeSy) learners over description logics either embed the ontology in a continuous space, abandoning classical entailment, or restrict to the Horn fragment $\\mathcal{EL}^{++}$, which has a single canonical model. We present Baobab, which compiles a $\\mathcal{SROIQ}$ ontology with a finite ABox into a Sentential Decision Diagram (SDD): it saturates a propositional core under a consequence-based calculus and instantiates the remaining $\\mathcal{SROIQ}$ features (nominals, number restrictions, and the role axioms) over the active domain. The SDD's evidence-conditioned weighted model count then trains a perception network to recognize real images under partial ABox supervision: on an ontology that exercises every distinctive $\\mathcal{SROIQ}$ feature, a CNN learns to read MNIST digits coupled by a successor relation and recovers latent ontology concepts that an independent perception leaves at chance. When the supervision admits several ontology-consistent completions, an independent perception collapses onto one, a reasoning shortcut: we show that a mixture indexed by the query's justifications can represent the calibrated posterior no independent perception can, and that seeding it from the circuit's enumerated completions attains the Bayes-optimal posterior on a real-image MNIST task where single-WMC and learned mixtures (the BEARS-ensemble hypothesis class) do not: to our knowledge the first to characterize and mitigate reasoning shortcuts in a non-Horn description logic. Soundness of the compiler and the representation result are machine-checked in Lean 4. Code is available at https://github.com/bio-ontology-research-group/baobab.",
+      "authors": [
+        "Olga Mashkova",
+        "Asaad Mohammedsaleh",
+        "Fernando Zhapa-Camacho",
+        "Robert Hoehndorf"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-18T13:04:51+00:00",
+      "link": "https://arxiv.org/pdf/2608.17741v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "compiles logical rules into differentiable circuits with evidence-conditioned weighted reasoning, a transferable inference methodology for rule-based systems",
+      "llm_evidence_cn": "将逻辑规则编译为带证据条件的加权可微电路，为基于规则的系统提供可迁移的推理方法",
+      "llm_evidence": "将逻辑规则编译为带证据条件的加权可微电路，为基于规则的系统提供可迁移的推理方法",
+      "canonical_evidence": "将逻辑规则编译为带证据条件的加权可微电路，为基于规则的系统提供可迁移的推理方法",
+      "llm_tldr_en": "Baobab compiles OWL 2 DL ontologies into Sentential Decision Diagrams using consequence-based saturation, enabling neuro-symbolic learning with weighted model counting and evidence-conditioned reasoning over full SROIQ without Horn restrictions.",
+      "llm_tldr_cn": "论文针对OWL 2 DL本体上的神经符号学习局限于Horn片段或连续嵌入的问题，提出Baobab方法，将SROIQ本体与有限ABox编译为句子决策图。该方法通过基于后果的演算饱和命题核心，并在活动域上实例化其余特征，利用证据条件加权模型计数进行可微推理。实验表明Baobab能不损失经典蕴含地处理完整本体，为基于规则的推理和学习提供了新的编译思路。该技术可迁移至置信规则库的推理与参数学习场景。",
+      "llm_tldr": "论文针对OWL 2 DL本体上的神经符号学习局限于Horn片段或连续嵌入的问题，提出Baobab方法，将SROIQ本体与有限ABox编译为句子决策图。该方法通过基于后果的演算饱和命题核心，并在活动域上实例化其余特征，利用证据条件加权模型计数进行可微推理。实验表明Baobab能不损失经典蕴含地处理完整本体，为基于规则的推理和学习提供了新的编译思路。该技术可迁移至置信规则库的推理与参数学习场景。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "belief rule base inference methodology",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.19115v1",
+      "source": "arxiv",
+      "title": "Pretraining Reusable Inference Across Views with Synthetic Task Priors",
+      "abstract": "Modern pretrained encoders make representations from heterogeneous views increasingly reusable, but the procedure that determines view utility and combines evidence is still relearned for each downstream task. Consequently, knowledge about view relevance, complementarity, reliability, and missingness is repeatedly discarded rather than transferred across tasks. We therefore reformulate multi-view learning as learning a reusable, task-conditioned inference procedure rather than a fixed fusion function. Based on this perspective, we propose SIMPLE, a prior-fitted multi-view in-context learner that predicts query labels by conditioning on a small labeled support set. Since existing real-world datasets cover only a limited range of view configurations and task structures, we construct a controllable synthetic task prior in embedding space. It generates diverse support-query episodes with varying class structures, shared and view-specific factors, representation geometries, cross-view dependencies, reliability levels, missingness patterns, and distribution shifts. A hierarchical inference architecture then performs reasoning within views, across views, and across support and query samples. Experiments on multi-view and multi-omics benchmarks demonstrate that the frozen variant of SIMPLE achieves competitive performance without updating the inference backbone, while lightweight adapter calibration attains leading performance on most evaluated datasets. Together, the results under frozen, one-shot, and missing-view settings support the central hypothesis that multi-view reasoning itself can be pretrained and reused, while lightweight adapter calibration provides task-specific alignment when needed.",
+      "authors": [
+        "Jielong Lu",
+        "Zhihao Wu",
+        "Jiajun Yu",
+        "Zhaoliang Chen",
+        "Haishuai Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.MM"
+      ],
+      "published": "2026-08-19T17:10:03+00:00",
+      "link": "https://arxiv.org/pdf/2608.19115v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "combines evidence from multiple views with explicit handling of reliability and missingness, transferable to evidential reasoning",
+      "llm_evidence_cn": "从多视图组合证据并显式处理可靠性信息与缺失性，可迁移至证据推理方法",
+      "llm_evidence": "从多视图组合证据并显式处理可靠性信息与缺失性，可迁移至证据推理方法",
+      "canonical_evidence": "从多视图组合证据并显式处理可靠性信息与缺失性，可迁移至证据推理方法",
+      "llm_tldr_en": "Proposes SIMPLE, a prior-fitted multi-view in-context learner that uses support sets to combine evidence across views, capturing view relevance, complementarity, reliability, and missingness, and moving beyond fixed fusion functions.",
+      "llm_tldr_cn": "论文针对多视角学习中证据组合规则随任务反复重学的问题，提出SIMPLE方法，将多视角学习重构为可迁移的、由小样本支持集条件化的推理过程。该方法在各类视角配置上学习通用证据组合策略，显式刻画视角的相关性、互补性、可靠性与缺失性。实验验证其在多种视图配置下有效，表明证据组合知识能够跨任务复用。这一思想对证据推理中的多源信息融合具有借鉴价值。",
+      "llm_tldr": "论文针对多视角学习中证据组合规则随任务反复重学的问题，提出SIMPLE方法，将多视角学习重构为可迁移的、由小样本支持集条件化的推理过程。该方法在各类视角配置上学习通用证据组合策略，显式刻画视角的相关性、互补性、可靠性与缺失性。实验验证其在多种视图配置下有效，表明证据组合知识能够跨任务复用。这一思想对证据推理中的多源信息融合具有借鉴价值。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "evidential reasoning approach decision making",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
