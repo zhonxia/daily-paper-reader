@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-21T20:40:59.153467+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.19701v1",
+      "source": "arxiv",
+      "title": "Beyond Memory Majority: Latent-Source Reasoning for Multi-Agent Memory Arbitration",
+      "abstract": "Long-term multi-agent systems continuously accumulate the memories produced by different agents. Existing memory methods typically treat retrieved memories as independent evidence and combine them through voting or weighting. However, this independence assumption often fails in multi-agent settings: memories written by different agents may inherit the same upstream source or shared bias, causing correlated evidence to be repeatedly counted and creating a false majority. We term this failure mode \\textit{Memory Correlation Bias}. To address the issue, we propose the \\textbf{C}orrelation-\\textbf{A}ware \\textbf{M}emory \\textbf{A}rbitration (CAMA) framework that jointly decouples retrieved memories and recovers missing independent evidence. We model the retrieved memories as query-conditioned evidence groups and combine neural dependency inference with provenance-based symbolic priors to estimate the effective number of independent evidence sources, thereby preventing correlated memories from forming a false majority. Since critical independent evidence may be absent from the initial retrieval set, \\textsc{CAMA} further learns a sequential recovery policy that actively retrieves alternative evidence or traces upstream sources before making the final decision, aiming to recover sufficient independent evidence for reliable arbitration while minimizing retrieval cost. Experiments on multiple benchmarks demonstrate the superiority of our method over the state-of-the-art baseline methods, suppressing false majorities induced by correlated memories.",
+      "authors": [
+        "Chenchen Lin",
+        "Wenhao Yuan",
+        "Xuehe Wang",
+        "Edith Cheuk Han Ngai"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-20T06:50:23+00:00",
+      "link": "https://arxiv.org/pdf/2608.19701v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "combining correlated evidence from multiple sources; recovers independent evidence to avoid false majority, analogous to evidence theory independence handling",
+      "llm_evidence_cn": "多源证据组合中相关证据导致虚假多数；提出恢复独立证据的框架，与证据理论中的独立性处理类似",
+      "llm_evidence": "多源证据组合中相关证据导致虚假多数；提出恢复独立证据的框架，与证据理论中的独立性处理类似",
+      "canonical_evidence": "多源证据组合中相关证据导致虚假多数；提出恢复独立证据的框架，与证据理论中的独立性处理类似",
+      "llm_tldr_en": "Combining correlated evidence from multiple agents can create false majorities; CAMA jointly decouples retrieved memories and recovers missing independent evidence, reducing correlation bias in memory arbitration.",
+      "llm_tldr_cn": "长期多智能体系统中不同智能体产生的记忆可能存在共同的来源或偏差，若按独立证据投票会产生虚假多数。针对该记忆相关性偏差，本文提出CAMA框架，联合解耦检索到的记忆并恢复缺失的独立证据。实验表明该方法能减轻相关证据重复计数的影响，为多源证据组合提供了一种处理依赖关系的新思路，可借鉴到证据推理和置信规则库等不确定性决策方法中。",
+      "llm_tldr": "长期多智能体系统中不同智能体产生的记忆可能存在共同的来源或偏差，若按独立证据投票会产生虚假多数。针对该记忆相关性偏差，本文提出CAMA框架，联合解耦检索到的记忆并恢复缺失的独立证据。实验表明该方法能减轻相关证据重复计数的影响，为多源证据组合提供了一种处理依赖关系的新思路，可借鉴到证据推理和置信规则库等不确定性决策方法中。",
+      "llm_tags": [
+        "query:brb-er:composite"
+      ],
+      "matched_query_tag": "query:brb-er:composite",
+      "matched_query_text": "Papers central to 请你帮我找有关置信规则库（BRB）和证据推理（E-R）的相关论文，或者是其他领域有助于这个研究的论文。, especially work that connects or combines: belief rule base inference methodology; evidential reasoning approach decision making; belief rule base expert system uncertainty; rule based inference methodology using evidential reasoning; uncertainty modeling in belief rule base; belief distribution inference in BRB; Belief rule base and evidential reasoning for uncertain decision making; BRB optimization and parameter learning methods; Evidence reasoning theory applications in expert systems; Comparative studies of belief rule base with other rule based systems.",
+      "matched_requirement_id": "req-composite-brb-er",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-08-21 <!--dpr-date:20260821-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/21/2608.19701v1-beyond-memory-majority-latent-source-reasoning-for-multi-agent-memory-arbitration" data-sidebar-item="{&quot;title&quot;: &quot;Beyond Memory Majority: Latent-Source Reasoning for Multi-Agent Memory Arbitration&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.19701v1-beyond-memory-majority-latent-source-reasoning-for-multi-agent-memory-arbitration&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;brb-er&quot;}], &quot;evidence&quot;: &quot;多源证据组合中相关证据导致虚假多数；提出恢复独立证据的框架，与证据理论中的独立性处理类似&quot;}">Beyond Memory Majority: Latent-Source Reasoning for Multi-Agent Memory Arbitration</a>
   * 2026-08-20 <!--dpr-date:20260820-->
     * 速读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/20/2608.18185v1-h2edl-hyper-evidential-deep-learning-for-hierarchical-classification" data-sidebar-item="{&quot;title&quot;: &quot;H$^2$EDL: Hyper Evidential Deep Learning for Hierarchical Classification&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.18185v1-h2edl-hyper-evidential-deep-learning-for-hierarchical-classification&quot;, &quot;score&quot;: &quot;7.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;brb-er&quot;}], &quot;evidence&quot;: &quot;基于证据理论构建超意见，用于层次分类中的不确定性建模，是证据推理方法的扩展。&quot;}">H$^2$EDL: Hyper Evidential Deep Learning for Hierarchical Classification</a>
