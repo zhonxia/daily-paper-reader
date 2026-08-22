@@ -6,26 +6,22 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-08-21
-- 运行时间：2026-08-21 20:41:30 UTC
+- 最新运行日期：2026-08-22
+- 运行时间：2026-08-22 19:36:39 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：0
 - 精读区：0
-- 速读区：1
+- 速读区：0
 
 ### 今日简报（AI）
-今日仅速读1篇论文，暂无精读。  
-值得关注的是多智能体记忆仲裁中基于潜在来源推理的“超越多数表决”思路，评分为6.0。  
-建议可先浏览该文框架，后续再深入对比其他记忆机制方法。
-- 详情：[/202608/21/README](/202608/21/README)
+> 今日无新推荐，系统未产出可展示论文。
+- 详情：[/202608/22/README](/202608/22/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Beyond Memory Majority: Latent-Source Reasoning for Multi-Agent Memory Arbitration](/202608/21/2608.19701v1-beyond-memory-majority-latent-source-reasoning-for-multi-agent-memory-arbitration)  
-   标签：评分：6.0/10、query:brb-er
-   evidence：多源证据组合中相关证据导致虚假多数；提出恢复独立证据的框架，与证据理论中的独立性处理类似
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
