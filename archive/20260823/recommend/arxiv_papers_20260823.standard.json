@@ -1,0 +1,287 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-23T20:17:37.641824+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 7,
+    "quick_skim_target": 11,
+    "quick_selected": 7
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.16565v1",
+      "source": "arxiv",
+      "title": "Probabilistic Circuits as Reasoning Machines in Artificial Intelligence (Part I)",
+      "abstract": "This cumulative habilitation thesis studies probabilistic circuits (PCs) as a powerful and tractable framework for reasoning and learning under uncertainty in artificial intelligence (AI). It first advocates for probability as a core language for AI, emphasizing its connections to logic and information theory; the conceptual simplicity of probabilistic reasoning---based primarily on the sum and product rules; the parallels between probabilistic inference and human cognition; and the role of probability in optimal decision making. However, probability also faces significant computational challenges, as probabilistic inference is NP-hard in almost all probabilistic models. PCs address these challenges through structural constraints that ensure exact computation of a wide range of inference queries in polynomial time, such as marginals, conditionals, most probable explanations, expectations, and more advanced inference tasks. This thesis synthesizes a decade of research across foundations, algorithmic developments, and empirical validation of PCs. Key contributions highlighted in this work are foundational theory of PCs, Bayesian approaches for learning PCs, scalable implementations and integration with deep learning, hybrid models that combine PCs with intractable models, and connections with symbolic machine learning paradigms.   This is the first part of my Habilitation Thesis. The second part is omitted, as it comprises the cumulative part of the thesis and has been published at various venues (see Chapter 5).",
+      "authors": [
+        "Robert Peharz"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG",
+        "math.PR"
+      ],
+      "published": "2026-08-17T13:29:05+00:00",
+      "link": "https://arxiv.org/pdf/2608.16565v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "tractable probabilistic reasoning and learning under uncertainty; core methods applicable to belief/evidence-based inference",
+      "llm_evidence_cn": "可处理的概率推理与不确定性学习框架，对信念/证据推理有方法借鉴",
+      "llm_evidence": "可处理的概率推理与不确定性学习框架，对信念/证据推理有方法借鉴",
+      "canonical_evidence": "可处理的概率推理与不确定性学习框架，对信念/证据推理有方法借鉴",
+      "llm_tldr_en": "This thesis advocates probability as a core AI language and shows probabilistic circuits provide tractable reasoning and learning under uncertainty through structural constraints that guarantee efficient inference.",
+      "llm_tldr_cn": "概率推理在AI中概念简洁且贴近认知，但一般概率模型推断是NP难的。论文以概率电路(PC)为统一框架，通过求和与乘积规则以及结构性约束保证推断可处理，支持高效学习和不确定性推理。作者强调概率与逻辑、信息论的联系，并展示其用于最优决策与类人认知推理的潜力。对置信规则库和证据推理而言，该框架提供了一条可扩展的不确定性建模与推理路径。",
+      "llm_tldr": "概率推理在AI中概念简洁且贴近认知，但一般概率模型推断是NP难的。论文以概率电路(PC)为统一框架，通过求和与乘积规则以及结构性约束保证推断可处理，支持高效学习和不确定性推理。作者强调概率与逻辑、信息论的联系，并展示其用于最优决策与类人认知推理的潜力。对置信规则库和证据推理而言，该框架提供了一条可扩展的不确定性建模与推理路径。",
+      "llm_tags": [
+        "query:brb-er:composite"
+      ],
+      "matched_query_tag": "query:brb-er:composite",
+      "matched_query_text": "Papers central to 请你帮我找有关置信规则库（BRB）和证据推理（E-R）的相关论文，或者是其他领域有助于这个研究的论文。, especially work that connects or combines: belief rule base inference methodology; evidential reasoning approach decision making; belief rule base expert system uncertainty; rule based inference methodology using evidential reasoning; uncertainty modeling in belief rule base; belief distribution inference in BRB; Belief rule base and evidential reasoning for uncertain decision making; BRB optimization and parameter learning methods; Evidence reasoning theory applications in expert systems; Comparative studies of belief rule base with other rule based systems.",
+      "matched_requirement_id": "req-composite-brb-er",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.15673v1",
+      "source": "arxiv",
+      "title": "PL-Guard: Probabilistic Logic Reasoning for LLM Guardrails",
+      "abstract": "Large language model guardrails can be viewed as policy-consistency problems: a system must determine which policy-relevant facts hold in a prompt-response pair and what those facts imply under a given policy. Common approaches, including policy prompting and LLM-as-a-judge pipelines, often overlap the tasks of semantic grounding and policy reasoning: the model both interprets the prompt-response pair and reasons about whether a policy has been violated. This can lead to unsafe compliance with harmful prompts, or refusals to assist benign ones. To separate grounding and reasoning roles, we propose PL-Guard, a neurosymbolic guardrail architecture. Using a symbolic policy interface consisting of predicates and ProbLog rules, a local LLM grounds prompt-response pairs into predicate probabilities using renormalized True/False token scores, while ProbLog performs explicit probabilistic rule inference over the symbolic policy. On the XSTest benchmark, an offline Qwen-based evaluator finds that PL-Guard with a hand-curated policy reduces unsafe compliance from 22.0% for the base model to 0.5%, and below the 6.0% rate of an LLM-as-a-judge baseline. This comes at the cost of higher over-refusal than the LLM-as-a-judge baseline, 14.4% versus 5.2%. These results suggest that separating neural grounding from probabilistic symbolic reasoning can expose the safety-helpfulness tradeoff while making the guardrail's intermediate reasoning steps explicit and auditable.",
+      "authors": [
+        "Satchit Chatterji",
+        "Shihan Wang",
+        "Giovanni Sileno",
+        "Erman Acar"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-08-16T10:58:19+00:00",
+      "link": "https://arxiv.org/pdf/2608.15673v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uses ProbLog rules and LLM grounding to separate semantic grounding from policy reasoning, similar to rule-based inference under uncertainty",
+      "llm_evidence_cn": "使用ProbLog规则与大语言模型事实提取，将语义基座与策略推理分离，类似不确定环境下的规则推理",
+      "llm_evidence": "使用ProbLog规则与大语言模型事实提取，将语义基座与策略推理分离，类似不确定环境下的规则推理",
+      "canonical_evidence": "使用ProbLog规则与大语言模型事实提取，将语义基座与策略推理分离，类似不确定环境下的规则推理",
+      "llm_tldr_en": "PL-Guard separates grounding and reasoning in LLM guardrails by using a symbolic policy interface with ProbLog rules, improving safety and reducing both unsafe compliance and overly cautious refusals.",
+      "llm_tldr_cn": "大语言模型护栏可视为策略一致性问题，但现有方法常将语义基座与策略推理混为一体，导致安全或过度拒绝。PL-Guard提出神经符号护栏架构，用谓词与ProbLog规则构成符号策略接口，由本地大语言模型将提示-响应对映射为事实，再交给概率逻辑推理策略是否被违反。该设计解耦了语义理解与规则推理，提升了对有害请求的检测能力。其规则化不确定推理的思路与置信规则库中的证据推理有相似之处。",
+      "llm_tldr": "大语言模型护栏可视为策略一致性问题，但现有方法常将语义基座与策略推理混为一体，导致安全或过度拒绝。PL-Guard提出神经符号护栏架构，用谓词与ProbLog规则构成符号策略接口，由本地大语言模型将提示-响应对映射为事实，再交给概率逻辑推理策略是否被违反。该设计解耦了语义理解与规则推理，提升了对有害请求的检测能力。其规则化不确定推理的思路与置信规则库中的证据推理有相似之处。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "rule based inference methodology using evidential reasoning",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.19701v1",
+      "source": "arxiv",
+      "title": "Beyond Memory Majority: Latent-Source Reasoning for Multi-Agent Memory Arbitration",
+      "abstract": "Long-term multi-agent systems continuously accumulate the memories produced by different agents. Existing memory methods typically treat retrieved memories as independent evidence and combine them through voting or weighting. However, this independence assumption often fails in multi-agent settings: memories written by different agents may inherit the same upstream source or shared bias, causing correlated evidence to be repeatedly counted and creating a false majority. We term this failure mode \\textit{Memory Correlation Bias}. To address the issue, we propose the \\textbf{C}orrelation-\\textbf{A}ware \\textbf{M}emory \\textbf{A}rbitration (CAMA) framework that jointly decouples retrieved memories and recovers missing independent evidence. We model the retrieved memories as query-conditioned evidence groups and combine neural dependency inference with provenance-based symbolic priors to estimate the effective number of independent evidence sources, thereby preventing correlated memories from forming a false majority. Since critical independent evidence may be absent from the initial retrieval set, \\textsc{CAMA} further learns a sequential recovery policy that actively retrieves alternative evidence or traces upstream sources before making the final decision, aiming to recover sufficient independent evidence for reliable arbitration while minimizing retrieval cost. Experiments on multiple benchmarks demonstrate the superiority of our method over the state-of-the-art baseline methods, suppressing false majorities induced by correlated memories.",
+      "authors": [
+        "Chenchen Lin",
+        "Wenhao Yuan",
+        "Xuehe Wang",
+        "Edith Cheuk Han Ngai"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-20T06:50:23+00:00",
+      "link": "https://arxiv.org/pdf/2608.19701v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "addresses correlation bias in evidence combination, tying to evidential reasoning",
+      "llm_evidence_cn": "解决证据组合中的相关性偏差，与证据推理相关",
+      "llm_evidence": "解决证据组合中的相关性偏差，与证据推理相关",
+      "canonical_evidence": "解决证据组合中的相关性偏差，与证据推理相关",
+      "llm_tldr_en": "This paper addresses memory correlation bias in multi-agent systems, where correlated evidence creates false majorities, and proposes the CAMA framework to decouple sources and recover independent evidence; it is relevant to evidential reasoning.",
+      "llm_tldr_cn": "多智能体系统中，不同智能体产生的记忆可能继承相同上游来源或共享偏差，导致相关证据被重复计数并形成虚假多数。针对这一记忆相关偏差，论文提出相关性感知记忆仲裁框架（CAMA），联合解耦检索到的记忆并恢复缺失的独立证据。其思想与证据推理中证据独立假设的修正直接相关，可为置信规则库与证据推理提供方法借鉴。",
+      "llm_tldr": "多智能体系统中，不同智能体产生的记忆可能继承相同上游来源或共享偏差，导致相关证据被重复计数并形成虚假多数。针对这一记忆相关偏差，论文提出相关性感知记忆仲裁框架（CAMA），联合解耦检索到的记忆并恢复缺失的独立证据。其思想与证据推理中证据独立假设的修正直接相关，可为置信规则库与证据推理提供方法借鉴。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "evidential reasoning approach decision making",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2608.16002v2",
+      "source": "arxiv",
+      "title": "From Sequence to Structure: Relational Uncertainty Propagation for LLM Agents",
+      "abstract": "Reliable uncertainty quantification (UQ) is essential for deploying large language model (LLM) agents in complex interactive environments. Existing UQ methods largely rely on local signals, such as token probabilities, predictive entropy, or per-step confidence, and therefore overlook the long-range dependencies through which errors accumulate across an execution trajectory. As a result, they may fail to identify agent failures whose causes originate several reasoning or interaction steps before the final answer. We propose RUPA (Relational Uncertainty Propagation for Agents), a trajectory-level UQ framework for LLM agents. RUPA represents an execution history as a directed trajectory graph in which reasoning states, tool interactions, and environment feedback are nodes connected by temporal and semantic dependency edges. It then propagates uncertainty over this graph to capture how execution risk accumulates and transfers across interaction steps. The propagated signal is combined with trajectory-level behavioral features and goal-alignment information to produce a confidence estimate for the full agent trajectory. We evaluate RUPA on representative agent benchmarks, including $τ$-2, Terminal-Bench-2, and GAIA, using 6 open-source LLMs spanning multiple model families. Experimental results show that RUPA consistently outperforms existing UQ methods by providing more accurate uncertainty estimates, enabling earlier failure detection, and improving uncertainty-guided agent execution across diverse agent tasks. These results demonstrate that explicitly modeling relational dependency is crucial to reliable UQ for long-horizon LLM agents, providing a practical foundation for trustworthy agent execution.",
+      "authors": [
+        "Zhengzhao Ma",
+        "Boxi Cao",
+        "Yaojie Lu",
+        "Hongyu Lin",
+        "Xianpei Han",
+        "Le Sun"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-08-17T01:40:14+00:00",
+      "link": "https://arxiv.org/pdf/2608.16002v2",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "trajectory-level uncertainty propagation over relational graph; transferable to uncertainty modeling in multi-step reasoning",
+      "llm_evidence_cn": "基于关系图传播轨迹级不确定性，可迁移到多步推理的不确定性建模",
+      "llm_evidence": "基于关系图传播轨迹级不确定性，可迁移到多步推理的不确定性建模",
+      "canonical_evidence": "基于关系图传播轨迹级不确定性，可迁移到多步推理的不确定性建模",
+      "llm_tldr_en": "RUPA models LLM agent execution as a directed trajectory graph and propagates relational uncertainty across reasoning states and tool interactions, capturing failures caused by long-range error dependencies.",
+      "llm_tldr_cn": "大语言模型智能体的不确定性量化多依赖局部信号（如token概率），忽略了错误沿执行轨迹跨步累积的问题。RUPA将执行历史建模为有向轨迹图，把推理状态、工具交互与环境反馈组织成关系结构并实施不确定性传播。相比局部置信度方法，RUPA能识别原因发生在若干步之前的失败，提升了可靠性评估的整体性。这种结构化传播方法可为规则推理系统中不确定性的传递提供借鉴。",
+      "llm_tldr": "大语言模型智能体的不确定性量化多依赖局部信号（如token概率），忽略了错误沿执行轨迹跨步累积的问题。RUPA将执行历史建模为有向轨迹图，把推理状态、工具交互与环境反馈组织成关系结构并实施不确定性传播。相比局部置信度方法，RUPA能识别原因发生在若干步之前的失败，提升了可靠性评估的整体性。这种结构化传播方法可为规则推理系统中不确定性的传递提供借鉴。",
+      "llm_tags": [
+        "query:brb-er:composite"
+      ],
+      "matched_query_tag": "query:brb-er:composite",
+      "matched_query_text": "Papers central to 请你帮我找有关置信规则库（BRB）和证据推理（E-R）的相关论文，或者是其他领域有助于这个研究的论文。, especially work that connects or combines: belief rule base inference methodology; evidential reasoning approach decision making; belief rule base expert system uncertainty; rule based inference methodology using evidential reasoning; uncertainty modeling in belief rule base; belief distribution inference in BRB; Belief rule base and evidential reasoning for uncertain decision making; BRB optimization and parameter learning methods; Evidence reasoning theory applications in expert systems; Comparative studies of belief rule base with other rule based systems.",
+      "matched_requirement_id": "req-composite-brb-er",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.16428v1",
+      "source": "arxiv",
+      "title": "Visualizing Uncertainty-to-Action Composition for Human Oversight",
+      "abstract": "Artificial intelligence systems often disclose uncertainty, yet they rarely make clear what response that uncertainty should trigger. Most uncertainty visualizations encode uncertainty in model outputs, leaving users to discern the most appropriate course of action. A second region of the design space--uncertainty in the decision process itself, including how multiple uncertainty conditions compose into an oversight response-- remains comparatively underexplored. We address this gap with two coupled contributions. First, we introduce an uncertainty-to-action binding framework that composes multiple uncertainty conditions into a single oversight response under a precedence policy with a contextual safety modifier. That response concerns whether and how an AI-supported decision may proceed, not the substantive domain decision itself. Second, we present ActionCue, a process-transparency visualization that renders that composition explicit. We demonstrate the approach through a three-way comparison with confidence-only and data-level uncertainty displays, using worked cases from healthcare, credit assessment, and disaster forecasting. Together, the framework specifies how uncertainty conditions are resolved into an oversight response, and the visualization makes that resolution inspectable rather than implicit.",
+      "authors": [
+        "Chisom Anyabolu",
+        "Akshat Dubey",
+        "Georges Hattab"
+      ],
+      "primary_category": "cs.HC",
+      "categories": [
+        "cs.HC",
+        "cs.AI"
+      ],
+      "published": "2026-08-17T11:28:41+00:00",
+      "link": "https://arxiv.org/pdf/2608.16428v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "composes multiple uncertainty conditions into an oversight action, addressing uncertain decision making",
+      "llm_evidence_cn": "将多个不确定性条件组合成监督行动，面向不确定决策",
+      "llm_evidence": "将多个不确定性条件组合成监督行动，面向不确定决策",
+      "canonical_evidence": "将多个不确定性条件组合成监督行动，面向不确定决策",
+      "llm_tldr_en": "This paper introduces an uncertainty-to-action binding framework that composes multiple uncertainty conditions into a single oversight response under a precedence policy, addressing the underexplored space of uncertainty in the decision process itself.",
+      "llm_tldr_cn": "当前人工智能系统虽然会显示不确定性，却很少明确这种不确定性应触发何种行动，且在决策过程中的不确定性组合问题较少被研究。该论文提出不确定性-行动绑定框架，通过优先级策略和上下文安全修饰符，将多个不确定性条件组合成单一的监督响应，决定AI是否以及如何行动。该框架弥补了不确定性可视化设计中缺失的决策环节。其思想与证据推理中依据多条不确定证据进行决策组合的视角相通。",
+      "llm_tldr": "当前人工智能系统虽然会显示不确定性，却很少明确这种不确定性应触发何种行动，且在决策过程中的不确定性组合问题较少被研究。该论文提出不确定性-行动绑定框架，通过优先级策略和上下文安全修饰符，将多个不确定性条件组合成单一的监督响应，决定AI是否以及如何行动。该框架弥补了不确定性可视化设计中缺失的决策环节。其思想与证据推理中依据多条不确定证据进行决策组合的视角相通。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "evidential reasoning approach decision making",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.17063v1",
+      "source": "arxiv",
+      "title": "J-Miner: Recovering Executable Decision Knowledge from Language-Model Classifiers",
+      "abstract": "Large language models can be fine-tuned into specialized classifiers that perform well across diverse text tasks and make complex judgments, but they typically expose only final labels, leaving the decision knowledge acquired through fine-tuning implicit within the model. We study how to mine this internal decision knowledge from a fine-tuned classifier and encode it in an executable representation that can be inspected, validated, and reused beyond the source classifier. We introduce J-Miner, which mines text-level named concepts by aggregating vocabulary-aligned internal signals across layers and token positions, and uses the classifier's own predictions to learn executable decision rules over them. This process distills local internal readouts into an explicit classifier-level knowledge representation. Across multiple classification tasks, J-Miner rules reproduce up to 98.3\\% of source-classifier decisions and achieve 6.0--29.5 percentage points higher behavioral fidelity than equally compact rules learned from input words. Further analysis shows that the named concepts reflect internal semantic evidence associated with task decisions, while the learned rules consolidate these distributed signals into inspectable decision structures. The resulting decision knowledge also transfers to lightweight standalone students: using about 1/24 as many parameters as the source classifiers, they reconstruct and execute the representation from raw text while retaining 99.8\\% of the source classifiers' mean task accuracy. These findings show that task-specific decision knowledge can be faithfully represented in an explicit, executable form and reused beyond the classifier in which it was learned.",
+      "authors": [
+        "Yunfan Gao",
+        "Xinyi Huang",
+        "Tao Sheng",
+        "Haorui Song",
+        "Yun Xiong",
+        "Haofen Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CL"
+      ],
+      "published": "2026-08-17T19:09:38+00:00",
+      "link": "https://arxiv.org/pdf/2608.17063v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "mines executable decision rules from classifiers; relevant to rule learning and knowledge acquisition for rule-based systems",
+      "llm_evidence_cn": "从分类器中挖掘可执行决策规则，可服务于规则系统的规则学习与知识获取",
+      "llm_evidence": "从分类器中挖掘可执行决策规则，可服务于规则系统的规则学习与知识获取",
+      "canonical_evidence": "从分类器中挖掘可执行决策规则，可服务于规则系统的规则学习与知识获取",
+      "llm_tldr_en": "J-Miner extracts executable decision rules from fine-tuned LLM classifiers by aggregating internal concept signals and using classifier predictions to learn rules over named concepts, making implicit decision knowledge inspectable and reusable.",
+      "llm_tldr_cn": "微调后的大模型分类器只输出标签，内部获得的决策知识隐含且不可复用。J-Miner 通过跨层和跨词元的内部信号聚合挖掘文字级命名概念，再利用分类器自身预测来学习这些概念上的可执行决策规则，从而把局部推理蒸馏为可检查、可验证和可复用的规则。该方法为从黑箱模型中恢复决策逻辑提供了一条自动化路径，有助于规则库和专家系统的知识获取。",
+      "llm_tldr": "微调后的大模型分类器只输出标签，内部获得的决策知识隐含且不可复用。J-Miner 通过跨层和跨词元的内部信号聚合挖掘文字级命名概念，再利用分类器自身预测来学习这些概念上的可执行决策规则，从而把局部推理蒸馏为可检查、可验证和可复用的规则。该方法为从黑箱模型中恢复决策逻辑提供了一条自动化路径，有助于规则库和专家系统的知识获取。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "BRB optimization and parameter learning methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.18820v1",
+      "source": "arxiv",
+      "title": "Pairwise Logical Selection of Enthymeme Completions under Semantic-Link Uncertainty",
+      "abstract": "Arguments often omit premises or claims, forming enthymemes. We study pairwise logical selection between two candidates for the omitted component. Existing natural language methods can identify or generate candidates but often do not expose how the selected candidate completes the inference, while logic-based approaches usually assume that the required formulae and background knowledge are available. We extend a prior neuro-symbolic pipeline from missing-premise to missing-claim selection and replace binary entailment outcomes with logical-resistance scores. Top-Link uses weighted Partial MaxSAT under a single configuration of highest-confidence semantic links. We then introduce Possible-World Atom-Link Formalization (PWAL), which keeps translated formulae fixed and marginalizes logical resistance over alternative cross-formula semantic-link configurations. We evaluate PWAL on five tasks: ARCT and a CDED-derived task for missing-premise selection, iDebate- and AAE2-derived tasks for missing-claim selection, and alphaNLI for abductive hypothesis selection. Relative to Top-Link, PWAL raises strict accuracy by 2.95-30.86 percentage points and reduces tie rates by 4.57-58.00 percentage points on all five tasks. When ties receive half credit, accuracy still increases by 0.45-6.04 percentage points. PWAL also records the translated formulae, sampled link configurations, and resistance components for every comparison, providing a transparent trace of each score.",
+      "authors": [
+        "Xuyao Feng",
+        "Antonis Bikakis"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-08-19T11:21:59+00:00",
+      "link": "https://arxiv.org/pdf/2608.18820v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uses weighted MaxSAT and possible-world formalization for logical inference under uncertainty, akin to rule-based inference",
+      "llm_evidence_cn": "使用加权MaxSAT和可能世界形式化进行不确定性逻辑推理，与基于规则的推理相似",
+      "llm_evidence": "使用加权MaxSAT和可能世界形式化进行不确定性逻辑推理，与基于规则的推理相似",
+      "canonical_evidence": "使用加权MaxSAT和可能世界形式化进行不确定性逻辑推理，与基于规则的推理相似",
+      "llm_tldr_en": "This paper studies pairwise logical selection of enthymeme completions under semantic-link uncertainty, using weighted Partial MaxSAT and possible-world atom-link formalization; it is relevant to rule-based inference under uncertainty.",
+      "llm_tldr_cn": "论证中常省略前提或结论形成省略式，现有方法难以解释补全项如何完成推理。论文将神经符号流程从缺失前提扩展到缺失结论选择，并用逻辑抵抗分数替代二元蕴含结果，引入加权部分MaxSAT与可能世界原子链接形式化来处理语义链接不确定性。这为基于规则的不确定性推理提供了可借鉴的建模方法。",
+      "llm_tldr": "论证中常省略前提或结论形成省略式，现有方法难以解释补全项如何完成推理。论文将神经符号流程从缺失前提扩展到缺失结论选择，并用逻辑抵抗分数替代二元蕴含结果，引入加权部分MaxSAT与可能世界原子链接形式化来处理语义链接不确定性。这为基于规则的不确定性推理提供了可借鉴的建模方法。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "rule based inference methodology using evidential reasoning",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
