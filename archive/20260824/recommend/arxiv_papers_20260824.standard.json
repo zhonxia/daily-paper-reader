@@ -1,0 +1,93 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-24T20:40:05.414432+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.15922v2",
+      "source": "arxiv",
+      "title": "Information Geometry of Message Passing",
+      "abstract": "We show that the natural-gradient stationary condition of variational inference has an edge-local form on a Forney-style factor graph. We start from the Bethe free energy and constrain a selected edge marginal to an exponential family. At a stationary point, the natural parameter of that edge equals the sum of two projected messages, one from each incident factor. Each projected message is the natural-gradient projection of the exact belief-propagation log-message at the current receiving marginal, or equivalently, the gradient of its expectation in the so-called mean coordinates. We call the resulting scheme natural-gradient message passing (NGMP). The rule is local; each edge may carry its own exponential family, and the message a factor sends depends on the marginal that receives it. Compared with variational message passing, NGMP keeps the part of the exact message that the receiving family can represent instead of averaging the factor under the neighboring beliefs. The two coincide when the uncertainty on the edges entering a non-conjugate factor vanishes, and NGMP is more accurate when that uncertainty persists, for example, along a partially observed latent chain or when parameters are filtered through successive data batches. Experiments on Poisson smoothing, heteroskedastic regression, and hourly ETTh forecasting confirm this and show that the gain appears mainly in uncertainty calibration.",
+      "authors": [
+        "Mykola Lukashchuk",
+        "Kyrylo Yemets",
+        "Alex Ledbetter",
+        "İsmail Şenöz"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-08-16T20:36:58+00:00",
+      "link": "https://arxiv.org/pdf/2608.15922v2",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Message passing with natural-gradient updates for inference and learning in factor graphs; methodologically relevant to BRB parameter optimization.",
+      "llm_evidence_cn": "因子图上的自然梯度消息传递方法，可用于置信规则库的参数优化与学习。",
+      "llm_evidence": "因子图上的自然梯度消息传递方法，可用于置信规则库的参数优化与学习。",
+      "canonical_evidence": "因子图上的自然梯度消息传递方法，可用于置信规则库的参数优化与学习。",
+      "llm_tldr_en": "Shows natural-gradient stationarity has an edge-local form on factor graphs and proposes natural-gradient message passing (NGMP) with per-edge exponential families. Provides a principled variational inference and learning framework transferable to belief-rule-base inference and optimization.",
+      "llm_tldr_cn": "现有消息传递方法在变分推断中的收敛性和最优性缺乏统一的理论刻画。本文证明了在Forney式因子图上，自然梯度平稳条件具有边局部形式，并提出了自然梯度消息传递（NGMP）算法。该算法将每个边的消息定义为两个投影消息之和，各边可独立选择指数族，具有模块化与灵活性。该工作为置信规则库等复杂概率模型的推断与参数学习提供了可借鉴的优化框架，有助于提升BRB的推理效率和学习能力。",
+      "llm_tldr": "现有消息传递方法在变分推断中的收敛性和最优性缺乏统一的理论刻画。本文证明了在Forney式因子图上，自然梯度平稳条件具有边局部形式，并提出了自然梯度消息传递（NGMP）算法。该算法将每个边的消息定义为两个投影消息之和，各边可独立选择指数族，具有模块化与灵活性。该工作为置信规则库等复杂概率模型的推断与参数学习提供了可借鉴的优化框架，有助于提升BRB的推理效率和学习能力。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "BRB optimization and parameter learning methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2608.17084v1",
+      "source": "arxiv",
+      "title": "Uncertainty-Aware Decision Making in Multimodal Large Language Models",
+      "abstract": "Multimodal large language models (MLLMs) increasingly answer questions whose correctness depends on visual, textual, temporal, acoustic, document, chart, or embodied evidence. Their failures are therefore not only linguistic. A fluent answer may conceal poor input quality, a perceptual error, weak grounding, conflict between modalities, unstable reasoning, distribution shift, or a question that is not answerable from the supplied evidence. This survey organizes the literature on uncertainty-aware MLLMs around a decision-centered framework: uncertainty sources give rise to observable signals, signals must be calibrated or controlled for risk, and calibrated uncertainty should determine the system action. We review work on token and logit uncertainty, semantic disagreement, perturbation instability, grounding and attribution scores, verbalized confidence, verifier and judge scores, conformal prediction, selective answering, abstention, clarification, retrieval, self-checking, and escalation. The central argument is that uncertainty should not be evaluated only as a confidence number; it should be evaluated by whether it improves behavior under insufficient, conflicting, shifted, or high-risk multimodal evidence. We position this survey against text-only uncertainty and abstention surveys, broad MLLM surveys, MLLM hallucination surveys, and safety-oriented reviews. We conclude with open problems in source-aware decomposition, action-aware benchmarks, calibration under shift, black-box uncertainty estimation, broader modality coverage, reproducible reporting, and human-centered uncertainty communication.",
+      "authors": [
+        "Abderrahmene Boudiaf",
+        "Irfan Hussain",
+        "Sajid Javed"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-08-17T19:43:21+00:00",
+      "link": "https://arxiv.org/pdf/2608.17084v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uncertainty-aware decision making framework emphasizing calibration and risk-controlled action",
+      "llm_evidence_cn": "不确定性感知决策框架，强调校准与风险控制",
+      "llm_evidence": "不确定性感知决策框架，强调校准与风险控制",
+      "canonical_evidence": "不确定性感知决策框架，强调校准与风险控制",
+      "llm_tldr_en": "Surveys uncertainty-aware MLLMs with a decision-centered framework from uncertainty sources to calibrated system actions, covering token, logit, and semantic uncertainty methods.",
+      "llm_tldr_cn": "多模态大语言模型的错误不仅源于语言，还涉及感知、接地、模态冲突和推理不稳定等不确定性因素。该综述提出一个决策中心框架：不确定性来源产生可观测信号，信号需经校准或风险控制，最终校准结果决定系统行动。文章系统梳理了token、逻辑、语义等不确定性量化方法，并强调校准后的不确定性应驱动决策动作。这项工作为复杂证据环境下构建可靠的不确定性感知决策系统提供了统一视角。",
+      "llm_tldr": "多模态大语言模型的错误不仅源于语言，还涉及感知、接地、模态冲突和推理不稳定等不确定性因素。该综述提出一个决策中心框架：不确定性来源产生可观测信号，信号需经校准或风险控制，最终校准结果决定系统行动。文章系统梳理了token、逻辑、语义等不确定性量化方法，并强调校准后的不确定性应驱动决策动作。这项工作为复杂证据环境下构建可靠的不确定性感知决策系统提供了统一视角。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "evidential reasoning approach decision making",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

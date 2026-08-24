@@ -1,0 +1,39 @@
+{
+  "label": "2026-08-24",
+  "date": "2026-08-24",
+  "generated_at": "2026-08-24T20:42:45",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/24/2608.15922v2-information-geometry-of-message-passing",
+      "section": "quick",
+      "title_en": "Information Geometry of Message Passing",
+      "authors": "Mykola Lukashchuk, Kyrylo Yemets, Alex Ledbetter, İsmail Şenöz",
+      "date": "2026-08-16",
+      "pdf": "https://arxiv.org/pdf/2608.15922v2",
+      "score": "6.0",
+      "evidence": "因子图上的自然梯度消息传递方法，可用于置信规则库的参数优化与学习。",
+      "tldr": "变分推断在因子图上依赖消息传递，但传统变分消息传递在非共轭因子下会丢失精确消息的可表示部分。本文提出自然梯度消息传递（NGMP），从Bethe自由能出发，将边边缘约束到指数族，推导出边自然参数等于两个局部投影消息之和的规则。在泊松平滑、异方差回归和小时级ETTh预测中，NGMP在不确定性校准上更准确。该工作为消息传递提供了信息几何解释，且规则局部灵活。",
+      "tags": "query:brb-er",
+      "abstract_en": "We show that the natural-gradient stationary condition of variational inference has an edge-local form on a Forney-style factor graph. We start from the Bethe free energy and constrain a selected edge marginal to an exponential family. At a stationary point, the natural parameter of that edge equals the sum of two projected messages, one from each incident factor. Each projected message is the natural-gradient projection of the exact belief-propagation log-message at the current receiving marginal, or equivalently, the gradient of its expectation in the so-called mean coordinates. We call the resulting scheme natural-gradient message passing (NGMP). The rule is local; each edge may carry its own exponential family, and the message a factor sends depends on the marginal that receives it. Compared with variational message passing, NGMP keeps the part of the exact message that the receiving family can represent instead of averaging the factor under the neighboring beliefs. The two coincide when the uncertainty on the edges entering a non-conjugate factor vanishes, and NGMP is more accurate when that uncertainty persists, for example, along a partially observed latent chain or when parameters are filtered through successive data batches. Experiments on Poisson smoothing, heteroskedastic regression, and hourly ETTh forecasting confirm this and show that the gain appears mainly in uncertainty calibration.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/24/2608.17084v1-uncertainty-aware-decision-making-in-multimodal-large-language-models",
+      "section": "quick",
+      "title_en": "Uncertainty-Aware Decision Making in Multimodal Large Language Models",
+      "authors": "Abderrahmene Boudiaf, Irfan Hussain, Sajid Javed",
+      "date": "2026-08-17",
+      "pdf": "https://arxiv.org/pdf/2608.17084v1",
+      "score": "6.0",
+      "evidence": "不确定性感知决策框架，强调校准与风险控制",
+      "tldr": "多模态大语言模型在视觉、文本、时序等证据下回答问题，失败可能源于感知错误、模态冲突或推理不稳定，不能仅看语言流畅度。本综述提出决策中心框架，将不确定性来源、可观测信号、风险校准和系统动作有机串联，系统梳理置信度、自检、拒答等核心技术。关键结论是：不确定性应以是否改善实际行为来评估，而非仅仅作为置信度分数。该综述区别于文本不确定性、幻觉和安全类综述，并展望了源感知分解与动作感知基准等开放问题。",
+      "tags": "query:brb-er",
+      "abstract_en": "Multimodal large language models (MLLMs) increasingly answer questions whose correctness depends on visual, textual, temporal, acoustic, document, chart, or embodied evidence. Their failures are therefore not only linguistic. A fluent answer may conceal poor input quality, a perceptual error, weak grounding, conflict between modalities, unstable reasoning, distribution shift, or a question that is not answerable from the supplied evidence. This survey organizes the literature on uncertainty-aware MLLMs around a decision-centered framework: uncertainty sources give rise to observable signals, signals must be calibrated or controlled for risk, and calibrated uncertainty should determine the system action. We review work on token and logit uncertainty, semantic disagreement, perturbation instability, grounding and attribution scores, verbalized confidence, verifier and judge scores, conformal prediction, selective answering, abstention, clarification, retrieval, self-checking, and escalation. The central argument is that uncertainty should not be evaluated only as a confidence number; it should be evaluated by whether it improves behavior under insufficient, conflicting, shifted, or high-risk multimodal evidence. We position this survey against text-only uncertainty and abstention surveys, broad MLLM surveys, MLLM hallucination surveys, and safety-oriented reviews. We conclude with open problems in source-aware decomposition, action-aware benchmarks, calibration under shift, black-box uncertainty estimation, broader modality coverage, reproducible reporting, and human-centered uncertainty communication.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
