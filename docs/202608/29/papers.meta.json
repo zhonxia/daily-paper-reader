@@ -1,8 +1,39 @@
 {
   "label": "2026-08-29",
   "date": "2026-08-29",
-  "generated_at": "2026-08-29T03:20:01",
-  "count": 0,
-  "papers": [],
+  "generated_at": "2026-08-29T22:38:56",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202608/29/2608.23244v1-credal-large-language-models-for-semantic-commitment-under-uncertainty",
+      "section": "deep",
+      "title_en": "Credal Large Language Models for Semantic Commitment under Uncertainty",
+      "authors": "Shireen Kudukkil Manchingal, Sofiia Nikolenko, Fabio Cuzzolin",
+      "date": "2026-08-24",
+      "pdf": "https://arxiv.org/pdf/2608.23244v1",
+      "score": "8.0",
+      "evidence": "可信集与上下概率和证据推理中的信念函数思想一致",
+      "tldr": "大型语言模型常以单一预测分布表达不确定性，混淆认知不确定性与真实歧义，导致过度自信的错误回答。本文提出信度大语言模型（CLLM），通过集成LoRA适配器构造信度集，用上下概率刻画预测分布分歧。基于该表示提出词元级CTC与语义级SCC评分，无需额外生成即可暴露不确定性。在四个基准上，CLLM问答准确率最优，幻觉检测AUROC与最优相差1.5个百分点内，选择性预测可达99%准确率。",
+      "tags": "query:brb-er",
+      "abstract_en": "Large language models (LLMs) often produce fluent but incorrect answers with unwarranted confidence. A central limitation is that standard LLMs represent uncertainty through a single predictive distribution, conflating epistemic ignorance with genuine ambiguity. We introduce Credal Large Language Models (CLLMs): an ensemble of LoRA adapters induces a credal set whose lower and upper probabilities expose the spread of plausible predictive distributions rather than collapsing to a single softmax output. From this representation we derive two complementary commitment scores. Credal Token Commitment (CTC) is a token-space score that combines lower-bound support, credal width, and intersection entropy, computed without additional generation. Semantic Commitment Consistency (SCC) extends commitment to semantic space using sampled completions, with SCC-Gap measuring the mismatch between token-level and semantic-level support. We evaluate hallucination detection, calibration, selective prediction, and reasoning on Gemma-2-9B, Llama-3.1-8B, and Qwen2.5-7B across OpenBookQA, CoQA, TriviaQA, and ARC-Challenge. CLLM is the best method on QA accuracy at competitive expected calibration error, and CTC tracks the best hallucination AUROC within 1.5 pp on most settings without additional generation. On selective prediction at 80% coverage, CLLM with SCC reaches 99.0% accuracy on OpenBookQA, and on ARC-Challenge CLLM with Csem confidence achieves <= 0.6% ECE across the three backbones.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202608/29/2608.24518v1-it-depends-incorporating-correlations-for-joint-aleatoric-and-epistemic-uncertainties-of-high-dimensional-output-spaces",
+      "section": "quick",
+      "title_en": "It depends: Incorporating correlations for joint aleatoric and epistemic uncertainties of high-dimensional output spaces",
+      "authors": "Leonhard F. Feiner, Manuel Nickel, Martin Menten, Laurin Lux, Rickmer Braren, Daniel Rueckert, Georgios Kaissis, Raphael Rehms, Johannes Paetzold",
+      "date": "2026-08-25",
+      "pdf": "https://arxiv.org/pdf/2608.24518v1",
+      "score": "7.0",
+      "evidence": "联合建模任意与认知不确定性，可迁移至置信规则库的不确定性建模",
+      "tldr": "高维回归任务中同时存在偶然不确定性与认知不确定性，二者联合建模对可靠预测至关重要。本文提出低秩加对角协方差结构近似联合不确定性，显式捕捉输出相关性并避免全协方差计算负担。引入稳定化策略实现高效训练与推理，在图像修复、着色、光流和深度估计任务上取得优越的不确定性量化性能。该统一二阶分布支持采样与似然评估等下游分析，提升了模型的透明性与鲁棒性。",
+      "tags": "query:brb-er",
+      "abstract_en": "Uncertainty Quantification (UQ) plays a vital role in enhancing the reliability of deep learning model predictions, especially in scenarios with high-dimensional output spaces. This paper addresses the dual nature of uncertainty -- aleatoric and epistemic -- focusing on their joint integration in high-dimensional regression tasks. For example, in applications like medical image segmentation or restoration, aleatoric uncertainty captures inherent data noise, while epistemic uncertainty quantifies the model's confidence in unfamiliar conditions. Modeling both jointly enables more reliable predictions by reflecting both unavoidable variability and knowledge gaps, whereas modeling only one limits transparency and robustness. We propose a novel approach that approximates the resulting joint uncertainty using a low-rank plus diagonal covariance structure, capturing essential output correlations while avoiding the computational burdens of full covariance matrices. Unlike prior work, our method explicitly combines aleatoric and epistemic uncertainties into a unified second-order distribution that supports robust downstream analyses like sampling and log-likelihood evaluation. We further introduce stabilization strategies for efficient training and inference, achieving superior UQ in the tasks of image inpainting, colorization, optical flow, and depth estimation.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
   "errors": []
 }

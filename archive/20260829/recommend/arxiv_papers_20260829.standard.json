@@ -1,16 +1,101 @@
 {
   "mode": "standard",
-  "generated_at": "2026-08-29T03:20:01.496829+00:00",
+  "generated_at": "2026-08-29T22:35:14.920801+00:00",
   "stats": {
     "mode": "standard",
     "tag_count": 1,
-    "deep_divecandidates": 0,
+    "deep_divecandidates": 1,
     "deep_cap": 6,
-    "deep_selected": 0,
-    "quick_candidates": 0,
+    "deep_selected": 1,
+    "quick_candidates": 1,
     "quick_skim_target": 11,
-    "quick_selected": 0
+    "quick_selected": 1
   },
-  "deep_dive": [],
-  "quick_skim": []
+  "deep_dive": [
+    {
+      "id": "2608.23244v1",
+      "source": "arxiv",
+      "title": "Credal Large Language Models for Semantic Commitment under Uncertainty",
+      "abstract": "Large language models (LLMs) often produce fluent but incorrect answers with unwarranted confidence. A central limitation is that standard LLMs represent uncertainty through a single predictive distribution, conflating epistemic ignorance with genuine ambiguity. We introduce Credal Large Language Models (CLLMs): an ensemble of LoRA adapters induces a credal set whose lower and upper probabilities expose the spread of plausible predictive distributions rather than collapsing to a single softmax output. From this representation we derive two complementary commitment scores. Credal Token Commitment (CTC) is a token-space score that combines lower-bound support, credal width, and intersection entropy, computed without additional generation. Semantic Commitment Consistency (SCC) extends commitment to semantic space using sampled completions, with SCC-Gap measuring the mismatch between token-level and semantic-level support. We evaluate hallucination detection, calibration, selective prediction, and reasoning on Gemma-2-9B, Llama-3.1-8B, and Qwen2.5-7B across OpenBookQA, CoQA, TriviaQA, and ARC-Challenge. CLLM is the best method on QA accuracy at competitive expected calibration error, and CTC tracks the best hallucination AUROC within 1.5 pp on most settings without additional generation. On selective prediction at 80% coverage, CLLM with SCC reaches 99.0% accuracy on OpenBookQA, and on ARC-Challenge CLLM with Csem confidence achieves <= 0.6% ECE across the three backbones.",
+      "authors": [
+        "Shireen Kudukkil Manchingal",
+        "Sofiia Nikolenko",
+        "Fabio Cuzzolin"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI",
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-08-24T13:30:55+00:00",
+      "link": "https://arxiv.org/pdf/2608.23244v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "credal sets and lower/upper probabilities parallel evidential reasoning belief functions",
+      "llm_evidence_cn": "可信集与上下概率和证据推理中的信念函数思想一致",
+      "llm_evidence": "可信集与上下概率和证据推理中的信念函数思想一致",
+      "canonical_evidence": "可信集与上下概率和证据推理中的信念函数思想一致",
+      "llm_tldr_en": "This paper represents LLM uncertainty as a credal set with lower/upper probabilities and commitment scores, avoiding a single distribution. This conceptually matches evidential reasoning, providing a methodological bridge to belief-rule-base inference and decision making.",
+      "llm_tldr_cn": "该论文指出标准大语言模型用单一预测分布表达不确定性，混淆了认知无知与真实歧义。作者提出可信大语言模型，通过LoRA集成构造可信集，用上下概率刻画预测分布的分散程度，并据此推导令牌级与语义级承诺分数。该方法与证据推理中基于信念函数的表示和组合思想高度一致，为置信规则库中的信念分布推断和不确定性决策提供了直接的可借鉴方法。",
+      "llm_tldr": "该论文指出标准大语言模型用单一预测分布表达不确定性，混淆了认知无知与真实歧义。作者提出可信大语言模型，通过LoRA集成构造可信集，用上下概率刻画预测分布的分散程度，并据此推导令牌级与语义级承诺分数。该方法与证据推理中基于信念函数的表示和组合思想高度一致，为置信规则库中的信念分布推断和不确定性决策提供了直接的可借鉴方法。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "evidential reasoning approach decision making",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2608.24518v1",
+      "source": "arxiv",
+      "title": "It depends: Incorporating correlations for joint aleatoric and epistemic uncertainties of high-dimensional output spaces",
+      "abstract": "Uncertainty Quantification (UQ) plays a vital role in enhancing the reliability of deep learning model predictions, especially in scenarios with high-dimensional output spaces. This paper addresses the dual nature of uncertainty -- aleatoric and epistemic -- focusing on their joint integration in high-dimensional regression tasks. For example, in applications like medical image segmentation or restoration, aleatoric uncertainty captures inherent data noise, while epistemic uncertainty quantifies the model's confidence in unfamiliar conditions. Modeling both jointly enables more reliable predictions by reflecting both unavoidable variability and knowledge gaps, whereas modeling only one limits transparency and robustness. We propose a novel approach that approximates the resulting joint uncertainty using a low-rank plus diagonal covariance structure, capturing essential output correlations while avoiding the computational burdens of full covariance matrices. Unlike prior work, our method explicitly combines aleatoric and epistemic uncertainties into a unified second-order distribution that supports robust downstream analyses like sampling and log-likelihood evaluation. We further introduce stabilization strategies for efficient training and inference, achieving superior UQ in the tasks of image inpainting, colorization, optical flow, and depth estimation.",
+      "authors": [
+        "Leonhard F. Feiner",
+        "Manuel Nickel",
+        "Martin Menten",
+        "Laurin Lux",
+        "Rickmer Braren",
+        "Daniel Rueckert",
+        "Georgios Kaissis",
+        "Raphael Rehms",
+        "Johannes Paetzold"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CV"
+      ],
+      "published": "2026-08-25T13:08:17+00:00",
+      "link": "https://arxiv.org/pdf/2608.24518v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "jointly models aleatoric and epistemic uncertainties with correlations, transferable to belief rule base uncertainty modeling",
+      "llm_evidence_cn": "联合建模任意与认知不确定性，可迁移至置信规则库的不确定性建模",
+      "llm_evidence": "联合建模任意与认知不确定性，可迁移至置信规则库的不确定性建模",
+      "canonical_evidence": "联合建模任意与认知不确定性，可迁移至置信规则库的不确定性建模",
+      "llm_tldr_en": "This paper jointly models aleatoric and epistemic uncertainties for high-dimensional outputs, introducing correlations to improve reliability. Although targeting deep regression, its uncertainty separation and joint integration approach provides a methodological bridge for belief rule base uncertainty modeling and evidence-based reasoning.",
+      "llm_tldr_cn": "该论文针对高维输出空间中同时考虑数据固有噪声与模型知识缺失的需求，提出联合建模任意不确定性与认知不确定性并纳入相关性的方法。在医学图像分割等任务上，该方法相比仅建模单一不确定性更可靠。其不确定性分解与联合集成思想可迁移到置信规则库的不确定性建模中，为基于证据推理的决策系统提供方法论借鉴。",
+      "llm_tldr": "该论文针对高维输出空间中同时考虑数据固有噪声与模型知识缺失的需求，提出联合建模任意不确定性与认知不确定性并纳入相关性的方法。在医学图像分割等任务上，该方法相比仅建模单一不确定性更可靠。其不确定性分解与联合集成思想可迁移到置信规则库的不确定性建模中，为基于证据推理的决策系统提供方法论借鉴。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "uncertainty modeling in belief rule base",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
 }
