@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-31T23:20:41.270441+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2608.25116v1",
+      "source": "arxiv",
+      "title": "GRAPE: Gradient Refinement and Progress-Aware Exploitation for Query-Efficient High-Dimensional Bayesian Optimization",
+      "abstract": "Optimizing expensive, high-dimensional black-box functions remains a central challenge in modern machine learning and scientific discovery. While local Bayesian optimization mitigates the curse of dimensionality, existing techniques often prioritize the probability of descent over the magnitude of progress. This leads to overly conservative steps that yield negligible improvement, wasting queries on directions that are nearly certain to descend but offer little decrease. We introduce Gradient Refinement and Progress-Aware Exploitation (GRAPE), a two-stage framework that first sharpens the local gradient posterior via a closed-form acquisition function, then selects update directions by maximizing the expected decrease conditional on descent. Theoretical analysis proves that this gradient refinement stage monotonically minimizes local uncertainty and that the progress-aware direction converges to true steepest descent as the posterior sharpens. Empirically, GRAPE demonstrates superior query efficiency across high-dimensional tasks: in black-box adversarial attacks, it achieves an average 5.4$\\times$ speedup over baselines, and on large language model prompt optimization tasks, it outperforms the second best method by a reduction of 3.8 log-units in the final average regret.",
+      "authors": [
+        "Richard Cornelius Suwandi",
+        "Feng Yin"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "stat.ML"
+      ],
+      "published": "2026-08-25T20:12:12+00:00",
+      "link": "https://arxiv.org/pdf/2608.25116v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Progress-aware Bayesian optimization method transferable to BRB parameter learning",
+      "llm_evidence_cn": "进展感知的贝叶斯优化方法可迁移至BRB参数学习",
+      "llm_evidence": "进展感知的贝叶斯优化方法可迁移至BRB参数学习",
+      "canonical_evidence": "进展感知的贝叶斯优化方法可迁移至BRB参数学习",
+      "llm_tldr_en": "A two-stage Bayesian optimization framework that refines gradient posteriors and selects progress-aware directions, improving query efficiency in high-dimensional black-box optimization and potentially transferable to belief-rule-base parameter learning.",
+      "llm_tldr_cn": "针对高维昂贵黑盒函数优化中保守步长导致查询浪费的问题，本文提出GRAPE两阶段框架：先通过闭式采集函数精化局部梯度后验，再基于期望改进选择更新方向。实验表明该方法能有效减少无效查询并提升优化效果。该优化策略可迁移至置信规则库BRB的参数学习，为其高效训练提供方法借鉴。",
+      "llm_tldr": "针对高维昂贵黑盒函数优化中保守步长导致查询浪费的问题，本文提出GRAPE两阶段框架：先通过闭式采集函数精化局部梯度后验，再基于期望改进选择更新方向。实验表明该方法能有效减少无效查询并提升优化效果。该优化策略可迁移至置信规则库BRB的参数学习，为其高效训练提供方法借鉴。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "BRB optimization and parameter learning methods",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,6 +1,9 @@
 * <a class="dpr-sidebar-root-link" href="#/">首页</a>
 * <a class="dpr-sidebar-root-link dpr-sidebar-noactive-link" href="javascript:void(0)" data-dpr-hash="#/tutorial/README">使用教程</a>
 * Daily Papers
+  * 2026-08-31 <!--dpr-date:20260831-->
+    * 速读区
+      * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/31/2608.25116v1-grape-gradient-refinement-and-progress-aware-exploitation-for-query-efficient-high-dimensional-bayesian-optimization" data-sidebar-item="{&quot;title&quot;: &quot;GRAPE: Gradient Refinement and Progress-Aware Exploitation for Query-Efficient High-Dimensional Bayesian Optimization&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.25116v1-grape-gradient-refinement-and-progress-aware-exploitation-for-query-efficient-high-dimensional-bayesian-optimization&quot;, &quot;score&quot;: &quot;6.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;brb-er&quot;}], &quot;evidence&quot;: &quot;进展感知的贝叶斯优化方法可迁移至BRB参数学习&quot;}">GRAPE: Gradient Refinement and Progress-Aware Exploitation for Query-Efficient High-Dimensional Bayesian Optimization</a>
   * 2026-08-29 <!--dpr-date:20260829-->
     * 精读区
       * <a class="dpr-sidebar-item-link dpr-sidebar-item-structured" href="#/202608/29/2608.23244v1-credal-large-language-models-for-semantic-commitment-under-uncertainty" data-sidebar-item="{&quot;title&quot;: &quot;Credal Large Language Models for Semantic Commitment under Uncertainty&quot;, &quot;link&quot;: &quot;https://arxiv.org/abs/2608.23244v1-credal-large-language-models-for-semantic-commitment-under-uncertainty&quot;, &quot;score&quot;: &quot;8.0&quot;, &quot;tags&quot;: [{&quot;kind&quot;: &quot;query&quot;, &quot;label&quot;: &quot;brb-er&quot;}], &quot;evidence&quot;: &quot;可信集与上下概率和证据推理中的信念函数思想一致&quot;}">Credal Large Language Models for Semantic Commitment under Uncertainty</a>
