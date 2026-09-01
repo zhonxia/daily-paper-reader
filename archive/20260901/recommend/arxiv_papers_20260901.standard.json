@@ -1,0 +1,53 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-01T21:37:17.445211+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2608.29235v1",
+      "source": "arxiv",
+      "title": "Uncertainty-Aware Multimodal Anti-UAV Detection via Evidential Fusion and Conflict-Discounted Belief Aggregation",
+      "abstract": "Anti-UAV perception systems must remain reliable when sensor streams degrade under occlusion, fast motion, or modality-specific failure. Existing multimodal anti-UAV systems fuse RGB and thermal streams deterministically, without modeling predictive uncertainty, and cannot express doubt when streams disagree. Evidential Deep Learning (EDL) produces calibrated per-class uncertainty in a single forward pass. EDTC already exploits this for thermal-only perception, yet cross-modal evidential fusion remains unaddressed.   This paper extends EDTC to multimodal RGB-Thermal perception via Discounted Belief Fusion (DBF), which converts inter-modal conflict into uncertainty mass before aggregating stream opinions. Bounding boxes are resolved by selecting the lower-uncertainty modality. On the Anti-UAV benchmark, multimodal fusion consistently outperforms either single stream (test Acc 0.670 vs. 0.604 IR, 0.598 RGB) at real-time speed (at least 38 FPS). However, DBF is empirically indistinguishable from undiscounted averaging: near-zero inter-modal conflict on this presence-dominated benchmark leaves the discounting step inert. The fused uncertainty is well-calibrated (ECE 0.057) yet expectedly a weaker localization failure detector than spatial variance (AUROC 0.626 vs. 0.739). The null result is structural: the benchmark's near-universal presence and vacuous miss-encoding jointly suppress inter-modal conflict, a diagnosis that delimits where conflict-aware fusion provides measurable benefit.",
+      "authors": [
+        "Sharanda Suttorp",
+        "Seyed Sahand Mohammadi Ziabari",
+        "Ali Mohammed Mansour Alsahag"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-08-29T12:48:22+00:00",
+      "link": "https://arxiv.org/pdf/2608.29235v1",
+      "tags": [
+        "keyword:BRB-ER",
+        "query:BRB-ER"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "evidential fusion and discounted belief aggregation for uncertain decision making in multimodal detection",
+      "llm_evidence_cn": "多模态检测中基于证据融合与冲突折扣信念聚合的不确定性决策",
+      "llm_evidence": "多模态检测中基于证据融合与冲突折扣信念聚合的不确定性决策",
+      "canonical_evidence": "多模态检测中基于证据融合与冲突折扣信念聚合的不确定性决策",
+      "llm_tldr_en": "Extends evidential deep learning to RGB-Thermal anti-UAV detection via Discounted Belief Fusion, converting inter-modal conflict into uncertainty mass for robust decisions under sensor degradation.",
+      "llm_tldr_cn": "针对多模态反无人机感知在遮挡、快速运动或单模态失效时可靠性下降的问题，现有RGB-Thermal融合是确定性的，无法表达不确定性和冲突。论文提出基于折扣信念融合（DBF）的跨模态证据融合方法，将模态间冲突转换为不确定性质量后再聚合各方意见，扩展了仅用热成像的EDTC方法。这使得系统在传感器流退化时仍能表达怀疑并做出可靠检测决策。工作直接应用证据推理与信念聚合解决不确定决策问题，与BRB/ER需求高度契合。",
+      "llm_tldr": "针对多模态反无人机感知在遮挡、快速运动或单模态失效时可靠性下降的问题，现有RGB-Thermal融合是确定性的，无法表达不确定性和冲突。论文提出基于折扣信念融合（DBF）的跨模态证据融合方法，将模态间冲突转换为不确定性质量后再聚合各方意见，扩展了仅用热成像的EDTC方法。这使得系统在传感器流退化时仍能表达怀疑并做出可靠检测决策。工作直接应用证据推理与信念聚合解决不确定决策问题，与BRB/ER需求高度契合。",
+      "llm_tags": [
+        "query:brb-er"
+      ],
+      "matched_query_tag": "query:brb-er",
+      "matched_query_text": "evidential reasoning approach decision making",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}
